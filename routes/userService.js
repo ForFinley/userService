@@ -20,7 +20,7 @@ router.post('/signIn', passport.initialize(), passport.authenticate(
 router.post('/changePassword', authenticate, userServiceController.changePassword);
 
 //test
-router.post('/me', authenticate, function (req, res) {
+router.get('/me', authenticate, function (req, res) {
     res.status(200).json(req.user);
 });
 
