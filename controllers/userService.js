@@ -1,42 +1,41 @@
-const uuidv1 = require('uuid/v1');
 const jwt = require('jsonwebtoken');
-const database = require('../db');
 const passwordUtil = require('../utils/passwordUtil');
 const httpUtil = require('../utils/httpUtil');
+const database = require('./mongo.js');
 const secret = require('../utils/keys/privateKey');
 const TOKENTIME = 120 * 60; // in seconds
 
 //passport config
-async function passportStrategy(email, password, done) {
-    email = email.trim().toLowerCase();
-    let user = await database.query("users", "email", email);
-    if (user.Count > 0) {
-        if (passwordUtil.checkPassword(password, user.Items[0].password, user.Items[0].salt)) done(null, user.Items[0]);
+async function passportStrategy(username, password, done) {
+    username = username.trim().toLowerCase();
+    let user = await database.queryUserByusername(username);
+    console.log(user)
+    if (user) {
+        if (passwordUtil.checkPassword(password, user.password, user.salt)) done(null, user);
     }
     done(null, false);
 }
 
 async function registration(req, res) {
     console.log("Starting function registration...");
-    let email = req.body.email;
+    console.log(req.body);
+    let username = req.body.username;
     let password = req.body.password;
 
-    if (email && password) {
-        let id = uuidv1();
+    if (username && password) {
         let passwordResult = passwordUtil.encryptPassword(password);
-        email = email.trim().toLowerCase();
-        //Checks to see if email is already in use.
-        let user = await database.query("users", "email", email);
-        if (user.Count > 0) res.send(httpUtil.createResponse(400, "**ERROR** - Email in use."));
+        username = username.trim().toLowerCase();
+        let user = await database.queryUserByusername(username);
+        if (user) res.send(httpUtil.createResponse(400, "**ERROR** - username in use."));
 
         else {
             let user = {
-                id: id,
-                email: email,
+                username: username,
                 password: passwordResult.encryptPass,
                 salt: passwordResult.salt
             }
-            database.write("users", user);
+            console.log("USER: ", user)
+            database.putUser(user);
             res.send(httpUtil.createResponse(200, "User added."));
         }
     }
@@ -49,16 +48,16 @@ async function registration(req, res) {
 //What fields are returned
 async function serialize(req, res, next) {
     req.user = {
-        id: req.user.id,
-        email: req.user.email
+        id: req.user._id,
+        username: req.user.username
     };
     next(null, req.user);
 }
 
 function generateToken(req, res, next) {
     req.token = jwt.sign({
-        id: req.user.id,
-        email: req.user.email
+        id: req.user._id,
+        username: req.user.username
     }, secret.key, {
             expiresIn: TOKENTIME
         });
@@ -74,32 +73,32 @@ function respond(req, res) {
 
 async function changePassword(req, res) {
     console.log("Starting function changePassword...");
-    let email = req.body.email;
+    let username = req.body.username;
+    username = username.trim().toLowerCase();
     let password = req.body.password;
     let newPassword = req.body.newPassword;
 
-    email = email.trim().toLowerCase();
-    let emailBool = true; //Checks to see if email is in database 
-    let user = await database.query('users', "email", email);
+    let usernameBool = true; //Checks to see if username is in database 
+    let user = await database.queryUserByusername(username);
 
-    if (user.Count > 0) {
-        emailBool = false;
-        if (passwordUtil.checkPassword(password, user.Items[0].password, user.Items[0].salt)) {
+    if (user) {
+        usernameBool = false;
+        if (passwordUtil.checkPassword(password, user.password, user.salt)) {
             let passwordResult = passwordUtil.encryptPassword(newPassword);
-            user.Items[0].password = passwordResult.encryptPass;
-            user.Items[0].salt = passwordResult.salt;
+            user.password = passwordResult.encryptPass;
+            user.salt = passwordResult.salt;
 
-            database.write("users", user.Items[0]);
+            database.putUser(user);
             res.send(httpUtil.createResponse(200, "Password changed."));
         }
         else {
             console.log("Password incorrect.")
-            res.send(httpUtil.createResponse(200, "Email or password invalid."));
+            res.send(httpUtil.createResponse(200, "username or password invalid."));
         }
     }
-    if (emailBool) {
-        console.log("Email does not exist.");
-        res.send(httpUtil.createResponse(200, "Email or password invalid."));
+    if (usernameBool) {
+        console.log("username does not exist.");
+        res.send(httpUtil.createResponse(200, "username or password invalid."));
     }
 }
 
