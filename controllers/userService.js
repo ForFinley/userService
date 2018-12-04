@@ -5,7 +5,9 @@ const database = require('./mongo.js');
 const secret = require('../utils/keys/privateKey');
 const TOKENTIME = 120 * 60; // in seconds
 
-//passport config
+/**
+ * Passport stuff, these four functions
+ */
 async function passportStrategy(username, password, done) {
     username = username.trim().toLowerCase();
     let user = await database.queryUserByusername(username);
@@ -16,6 +18,35 @@ async function passportStrategy(username, password, done) {
     done(null, false);
 }
 
+async function serialize(req, res, next) {
+    req.user = {
+        id: req.user._id,
+        username: req.user.username
+    };
+    next(null, req.user);
+}
+
+function generateToken(req, res, next) {
+    req.token = jwt.sign({
+        id: req.user._id,
+        username: req.user.username
+    }, secret.key, {
+            expiresIn: TOKENTIME
+        });
+    next();
+}
+
+function respond(req, res) {
+    res.status(200).json({
+        user: req.user,
+        token: req.token
+    });
+}
+/**
+ * Adds user to database
+ * @param {*} req 
+ * @param {*} res 
+ */
 async function registration(req, res) {
     console.log("Starting function registration...");
     console.log(req.body);
@@ -46,33 +77,11 @@ async function registration(req, res) {
     }
 }
 
-//These 3 functions are for passport
-//What fields are returned
-async function serialize(req, res, next) {
-    req.user = {
-        id: req.user._id,
-        username: req.user.username
-    };
-    next(null, req.user);
-}
-
-function generateToken(req, res, next) {
-    req.token = jwt.sign({
-        id: req.user._id,
-        username: req.user.username
-    }, secret.key, {
-            expiresIn: TOKENTIME
-        });
-    next();
-}
-
-function respond(req, res) {
-    res.status(200).json({
-        user: req.user,
-        token: req.token
-    });
-}
-
+/**
+ * Changes password in database
+ * @param {*} req 
+ * @param {*} res 
+ */
 async function changePassword(req, res) {
     console.log("Starting function changePassword...");
     let username = req.body.username;
@@ -104,6 +113,11 @@ async function changePassword(req, res) {
     }
 }
 
+/**
+ * Changes emailVerified field to true
+ * @param {*} req 
+ * @param {*} res 
+ */
 async function verifyEmail(req, res){
     let userId = req.body.id;
     let result = await database.updateUser(userId, {emailVerified: true});
