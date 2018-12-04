@@ -35,28 +35,31 @@ function putUser(obj) {
   });
 }
 
+function updateUser(id, changes) {
+  return new Promise((resolve, reject) => {
+    mongoUser.updateOne({ _id: id }, { $set: changes }, function (err, result) {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+
+}
+
 module.exports = {
   queryAllUsers,
   queryUserByusername,
-  putUser
+  putUser,
+  updateUser
 }
-
-// putUser(obj).then((d)=>{
-//   console.log(d);
-// });
 
 queryAllUsers().then((d) => {
   console.log(d);
 });
 
-
-
-// let  userN = new mongoUser({ username: "TEST@GMAIL" });
-
-  // mongoUser.deleteOne({_id:"5c014dbd70b2a859e3617301"}, (err, result)=>{ //deleteMany
-  //   if (err) return console.error(err);
-  //   console.log(result);
-  // })
+// mongoUser.deleteOne({ _id: "5c05864f648313a0ef1d1e4f" }, (err, result) => { //deleteMany
+//   if (err) return console.error(err);
+//   console.log(result);
+// })
 
 
 
