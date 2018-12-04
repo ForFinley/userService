@@ -26,25 +26,27 @@ async function registration(req, res) {
         let passwordResult = passwordUtil.encryptPassword(password);
         username = username.trim().toLowerCase();
         let user = await database.queryUserByusername(username);
-        if (user) res.send(httpUtil.createResponse(400, "**ERROR** - username in use."));
-
+        if (user) return res.send(httpUtil.createResponse(400, "**ERROR** - username in use."));
         else {
             let user = {
                 username: username,
+                email: username,
                 password: passwordResult.encryptPass,
-                salt: passwordResult.salt
+                salt: passwordResult.salt,
+                emailVerified: false
             }
             console.log("USER: ", user)
             database.putUser(user);
-            res.send(httpUtil.createResponse(200, "User added."));
+            return res.send(httpUtil.createResponse(200, "User added."));
         }
     }
     else {
         console.log("**ERROR** - Not all data present.");
-        res.send(httpUtil.createResponse(400, "**ERROR** - Not all data present."));
+        return res.send(httpUtil.createResponse(400, "**ERROR** - Not all data present."));
     }
 }
 
+//These 3 functions are for passport
 //What fields are returned
 async function serialize(req, res, next) {
     req.user = {
@@ -89,17 +91,24 @@ async function changePassword(req, res) {
             user.salt = passwordResult.salt;
 
             database.putUser(user);
-            res.send(httpUtil.createResponse(200, "Password changed."));
+            return res.send(httpUtil.createResponse(200, "Password changed."));
         }
         else {
             console.log("Password incorrect.")
-            res.send(httpUtil.createResponse(200, "username or password invalid."));
+            return res.send(httpUtil.createResponse(200, "username or password invalid."));
         }
     }
     if (usernameBool) {
         console.log("username does not exist.");
-        res.send(httpUtil.createResponse(200, "username or password invalid."));
+        return res.send(httpUtil.createResponse(200, "username or password invalid."));
     }
+}
+
+async function verifyEmail(req, res){
+    let userId = req.body.id;
+    let result = await database.updateUser(userId, {emailVerified: true});
+    console.log(result);
+    res.send(httpUtil.createResponse(200, "Email verified."));
 }
 
 module.exports = {
@@ -108,6 +117,7 @@ module.exports = {
     serialize,
     generateToken,
     respond,
-    changePassword
+    changePassword,
+    verifyEmail
 }
 

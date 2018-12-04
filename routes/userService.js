@@ -6,20 +6,44 @@ const secret = require('../utils/keys/privateKey');
 const authenticate = expressJwt({secret: secret.key});
 const userServiceController = require('../controllers/userService');
   
-//Takes in email and password
+/** 
+ * /userService/registration
+ * Body: email, password
+ * Adds user to DB
+ */
 router.post('/registration', userServiceController.registration);
 
-//Takes in email and password
+/** 
+ * /userService/signIn
+ * Body: email, password
+ * Returns Bearer authorization token
+ */
 router.post('/signIn', passport.initialize(), passport.authenticate(
     'local', {
         session: false,
         scope: []
     }), userServiceController.serialize, userServiceController.generateToken, userServiceController.respond);
 
-//Takes in email, password(current), and newPassword
+/**
+ * /userService/changePassword
+ * Headers: content-type: application/json, authorization: Bearer <Token>
+ * Body: email, password(current), newPassword
+ * Will save new password to DB
+ */
 router.post('/changePassword', authenticate, userServiceController.changePassword);
 
-//test
+/**
+ * /userService/verifyEmail
+ * Headers: content-type: application/json, authorization: Bearer <Token>
+ * Body: id(_id from mongodb)
+ * Changes record in DB to emailVerified: true
+ */
+router.post('/verifyEmail', authenticate, userServiceController.verifyEmail);
+
+/**
+ * userService/me
+ * Headers: authorization: Bearer <Token>
+ */
 router.get('/me', authenticate, function (req, res) {
     res.status(200).json(req.user);
 });
