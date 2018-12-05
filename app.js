@@ -13,9 +13,6 @@ app.use(bodyParser.json());
 app.use(logger('dev'));
 passport.use(new Strategy(userServiceController.passportStrategy));
 
-/**
- * React app goes here
- */
 const index = require('./routes/index');
 app.use('/', index);
 
