@@ -6,7 +6,7 @@ const Strategy = require('passport-local');
 const userServiceController = require('./controllers/userService');
 
 const app = express();
-const PORT = 80;
+const PORT = 4000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
