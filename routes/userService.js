@@ -3,9 +3,9 @@ const router = express.Router();
 const passport = require('passport');
 const expressJwt = require('express-jwt');
 const secret = require('../utils/keys/privateKey');
-const authenticate = expressJwt({secret: secret.key});
+const authenticate = expressJwt({ secret: secret.key });
 const userServiceController = require('../controllers/userService');
-  
+
 /** 
  * /userService/registration
  * Body: email, password
@@ -33,12 +33,12 @@ router.post('/signIn', passport.initialize(), passport.authenticate(
 router.post('/changePassword', authenticate, userServiceController.changePassword);
 
 /**
- * /userService/verifyEmail
- * Headers: content-type: application/json, authorization: Bearer <Token>
- * Body: id(_id from mongodb)
+ * /userService/verifyEmail/<emailHash>
+ * Headers: content-type: application/json
+ * Body: emailHash
  * Changes record in DB to emailVerified: true
  */
-router.post('/verifyEmail', authenticate, userServiceController.verifyEmail);
+router.get('/verifyEmail/:emailHash', userServiceController.verifyEmail);
 
 /**
  * userService/me

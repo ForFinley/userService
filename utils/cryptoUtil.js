@@ -20,13 +20,26 @@ function checkPassword(password, encryptedDBPassword, salt){
     return false;
 }
 
-function decryptPassword(password, salt) {
+function decryptPassword(hash) {
     var cipher = crypto.createDecipher('aes-256-ecb', encryptKey);
-    return cipher.update(password + salt, 'hex', 'utf8') + cipher.final('utf8');
+    return cipher.update(hash, 'hex', 'utf8') + cipher.final('utf8');
+};
+
+function emailHashEncrypt(username){
+    let cipher = crypto.createCipher('aes-256-ecb', encryptKey);
+    let emailHash = cipher.update(username,'utf8', 'hex') + cipher.final('hex');
+    return emailHash;
+}
+
+function emailHashDecrypt(emailHash) {
+    var cipher = crypto.createDecipher('aes-256-ecb', encryptKey);
+    return cipher.update(emailHash, 'hex', 'utf8') + cipher.final('utf8');
 };
 
 module.exports = {
     encryptPassword,
     checkPassword,
-    decryptPassword
+    decryptPassword,
+    emailHashEncrypt,
+    emailHashDecrypt
 };

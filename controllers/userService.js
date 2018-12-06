@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
-const passwordUtil = require('../utils/passwordUtil');
-const httpUtil = require('../utils/httpUtil');
+const cryptoUtil = require('../utils/cryptoUtil.js');
+const httpUtil = require('../utils/httpUtil.js');
 const database = require('./mongo.js');
-const secret = require('../utils/keys/privateKey');
+const nodeMailer = require('./nodemailer.js')
+const secret = require('../utils/keys/privateKey.js');
 const TOKENTIME = 120 * 60; // in seconds
 
 /**
@@ -13,7 +14,7 @@ async function passportStrategy(username, password, done) {
     let user = await database.queryUserByusername(username);
     console.log(user)
     if (user) {
-        if (passwordUtil.checkPassword(password, user.password, user.salt)) done(null, user);
+        if (cryptoUtil.checkPassword(password, user.password, user.salt)) done(null, user);
     }
     done(null, false);
 }
@@ -42,6 +43,7 @@ function respond(req, res) {
         token: req.token
     });
 }
+
 /**
  * Adds user to database
  * @param {*} req 
@@ -54,7 +56,8 @@ async function registration(req, res) {
     let password = req.body.password;
 
     if (username && password) {
-        let passwordResult = passwordUtil.encryptPassword(password);
+        let passwordResult = cryptoUtil.encryptPassword(password);
+        let emailHash = cryptoUtil.emailHashEncrypt(username);
         username = username.trim().toLowerCase();
         let user = await database.queryUserByusername(username);
         if (user) return res.send(httpUtil.createResponse(400, "**ERROR** - username in use."));
@@ -64,10 +67,12 @@ async function registration(req, res) {
                 email: username,
                 password: passwordResult.encryptPass,
                 salt: passwordResult.salt,
-                emailVerified: false
+                emailVerified: false,
+                emailVerificationHash: emailHash
             }
             console.log("USER: ", user)
             database.putUser(user);
+            nodeMailer.sendEmailVerification(username, emailHash);
             return res.send(httpUtil.createResponse(200, "User added."));
         }
     }
@@ -94,8 +99,8 @@ async function changePassword(req, res) {
 
     if (user) {
         usernameBool = false;
-        if (passwordUtil.checkPassword(password, user.password, user.salt)) {
-            let passwordResult = passwordUtil.encryptPassword(newPassword);
+        if (cryptoUtil.checkPassword(password, user.password, user.salt)) {
+            let passwordResult = cryptoUtil.encryptPassword(newPassword);
             user.password = passwordResult.encryptPass;
             user.salt = passwordResult.salt;
 
@@ -118,11 +123,15 @@ async function changePassword(req, res) {
  * @param {*} req 
  * @param {*} res 
  */
-async function verifyEmail(req, res){
-    let userId = req.body.id;
-    let result = await database.updateUser(userId, {emailVerified: true});
-    console.log(result);
-    res.send(httpUtil.createResponse(200, "Email verified."));
+async function verifyEmail(req, res) {
+    let emailHash = req.params.emailHash;
+    if (emailHash) {
+        let username = cryptoUtil.emailHashDecrypt(emailHash);
+        let result = await database.updateUser(username, { emailVerified: true });
+        console.log(result);
+        res.send(httpUtil.createResponse(200, "Email verified."));
+    }
+    else res.send(httpUtil.createResponse(400, "No hash."));
 }
 
 module.exports = {
