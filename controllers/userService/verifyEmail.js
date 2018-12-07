@@ -5,7 +5,7 @@ const database = require('../utils/mongoUser.js');
 function validate(params, res) {
     
     if (!params.emailHash) {
-        res.send(httpUtil.createResponse(400, "**ERROR** : EMAIL HASH"));
+        res.send(httpUtil.createResponse(400, "**ERROR** : MISSING_EMAIL_HASH"));
         return false;
     }
 

@@ -39,7 +39,6 @@ router.post('/changePassword', authenticate, changePassword.handler);
 /**
  * /userService/verifyEmail/<emailHash>
  * Headers: content-type: application/json
- * Body: emailHash
  * Changes record in DB to emailVerified: true
  */
 router.get('/verifyEmail/:emailHash', verifyEmail.handler);

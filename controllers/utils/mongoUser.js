@@ -56,7 +56,7 @@ queryAllUsers().then((d) => {
   console.log(d);
 });
 
-mongoUser.deleteOne({ _id: "5c09bde6c1974b3084f78beb" }, (err, result) => { //deleteMany
+mongoUser.deleteOne({ _id: "5c0955f1cf9cc5139e337406" }, (err, result) => { //deleteMany
   if (err) return console.error(err);
   console.log(result);
 });

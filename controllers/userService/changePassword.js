@@ -52,11 +52,11 @@ module.exports.handler = async function (req, res) {
         }
         else {
             console.log("Password incorrect.")
-            return res.send(httpUtil.createResponse(200, "username or password invalid."));
+            return res.send(httpUtil.createResponse(401, "username or password invalid."));
         }
     }
     if (usernameBool) {
         console.log("username does not exist.");
-        return res.send(httpUtil.createResponse(200, "username or password invalid."));
+        return res.send(httpUtil.createResponse(401, "username or password invalid."));
     }
 }
