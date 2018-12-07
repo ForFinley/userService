@@ -5,7 +5,7 @@ const database = require('../utils/mongoUser.js');
 function validate(params, res) {
     
     if (!params.emailHash) {
-        res.send(httpUtil.createResponse(400, "**ERROR** : MISSING_EMAIL_HASH"));
+        res.send(httpUtil.createResponse(400, "ERROR : Missing emailHash."));
         return false;
     }
 
@@ -30,5 +30,5 @@ module.exports.handler = async function (req, res) {
     let username = cryptoUtil.emailHashDecrypt(emailHash);
     let result = await database.updateUser(username, { emailVerified: true });
     console.log(result);
-    res.send(httpUtil.createResponse(200, "Email verified."));
+    res.send(httpUtil.createResponse(200, "SUCCESS : Email verified."));
 }

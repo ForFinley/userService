@@ -5,15 +5,15 @@ const database = require('../utils/mongoUser.js');
 function validate(body, res) {
 
     if (!body.username) {
-        res.send(httpUtil.createResponse(400, "**ERROR** : MISSING_USERNAME"));
+        res.send(httpUtil.createResponse(400, "ERROR : Missing username."));
         return false;
     }
     if (!body.password) {
-        res.send(httpUtil.createResponse(400, "**ERROR** : MISSING_PASSWORD"));
+        res.send(httpUtil.createResponse(400, "ERROR : Missing password."));
         return false;
     }
     if (!body.newPassword) {
-        res.send(httpUtil.createResponse(400, "**ERROR** : MISSING_NEWPASSWORD"));
+        res.send(httpUtil.createResponse(400, "ERROR : Missing newPassword."));
         return false;
     }
     return true;
@@ -48,15 +48,15 @@ module.exports.handler = async function (req, res) {
             user.salt = passwordResult.salt;
 
             database.putUser(user);
-            return res.send(httpUtil.createResponse(200, "Password changed."));
+            return res.send(httpUtil.createResponse(200, "SUCCESS : Password changed."));
         }
         else {
             console.log("Password incorrect.")
-            return res.send(httpUtil.createResponse(401, "username or password invalid."));
+            return res.send(httpUtil.createResponse(401, "ERROR : username or password invalid."));
         }
     }
     if (usernameBool) {
         console.log("username does not exist.");
-        return res.send(httpUtil.createResponse(401, "username or password invalid."));
+        return res.send(httpUtil.createResponse(401, "ERROR : username or password invalid."));
     }
 }
