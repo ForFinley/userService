@@ -2,16 +2,20 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const expressJwt = require('express-jwt');
-const secret = require('../utils/keys/privateKey');
+const secret = require('../controllers/utils/keys/privateKey');
 const authenticate = expressJwt({ secret: secret.key });
-const userServiceController = require('../controllers/userService');
+
+const registration = require("../controllers/userService/registration.js");
+const passportFunctions = require('../controllers/userService/passport.js');
+const changePassword = require("../controllers/userService/changePassword.js");
+const verifyEmail = require("../controllers/userService/verifyEmail.js");
 
 /** 
  * /userService/registration
  * Body: email, password
  * Adds user to DB
  */
-router.post('/registration', userServiceController.registration);
+router.post('/registration', registration.handler);
 
 /** 
  * /userService/signIn
@@ -22,7 +26,7 @@ router.post('/signIn', passport.initialize(), passport.authenticate(
     'local', {
         session: false,
         scope: []
-    }), userServiceController.serialize, userServiceController.generateToken, userServiceController.respond);
+    }), passportFunctions.serialize, passportFunctions.generateToken, passportFunctions.respond);
 
 /**
  * /userService/changePassword
@@ -30,7 +34,7 @@ router.post('/signIn', passport.initialize(), passport.authenticate(
  * Body: email, password(current), newPassword
  * Will save new password to DB
  */
-router.post('/changePassword', authenticate, userServiceController.changePassword);
+router.post('/changePassword', authenticate, changePassword.handler);
 
 /**
  * /userService/verifyEmail/<emailHash>
@@ -38,7 +42,7 @@ router.post('/changePassword', authenticate, userServiceController.changePasswor
  * Body: emailHash
  * Changes record in DB to emailVerified: true
  */
-router.get('/verifyEmail/:emailHash', userServiceController.verifyEmail);
+router.get('/verifyEmail/:emailHash', verifyEmail.handler);
 
 /**
  * userService/me

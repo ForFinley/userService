@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const mongoUser = require('../models/users.js');
+const mongoUser = require('../../models/users.js');
 
 mongoose.connect("mongodb://localhost:27017/local", { useNewUrlParser: true });
 const db = mongoose.connection;
@@ -35,15 +35,9 @@ function putUser(obj) {
   });
 }
 
-<<<<<<< HEAD
 function updateUser(username, changes) {
   return new Promise((resolve, reject) => {
     mongoUser.updateOne({ username: username }, { $set: changes }, function (err, result) {
-=======
-function updateUser(id, changes) {
-  return new Promise((resolve, reject) => {
-    mongoUser.updateOne({ _id: id }, { $set: changes }, function (err, result) {
->>>>>>> 2c34576b9f725d7aa696e8ae492017225b0d9953
       if (err) reject(err);
       else resolve(result);
     });
@@ -62,17 +56,10 @@ queryAllUsers().then((d) => {
   console.log(d);
 });
 
-<<<<<<< HEAD
-mongoUser.deleteOne({ _id: "5c09545e7241b11299058bb3" }, (err, result) => { //deleteMany
+mongoUser.deleteOne({ _id: "5c09bde6c1974b3084f78beb" }, (err, result) => { //deleteMany
   if (err) return console.error(err);
   console.log(result);
 });
-=======
-// mongoUser.deleteOne({ _id: "5c05864f648313a0ef1d1e4f" }, (err, result) => { //deleteMany
-//   if (err) return console.error(err);
-//   console.log(result);
-// })
->>>>>>> 2c34576b9f725d7aa696e8ae492017225b0d9953
 
 
 

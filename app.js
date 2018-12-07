@@ -3,22 +3,21 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const passport = require('passport');
 const Strategy = require('passport-local');
-const userServiceController = require('./controllers/userService');
+const passportFunctions = require('./controllers/userService/passport.js');
 
 const app = express();
 const PORT = 4000;
 
+const index = require('./routes/index');
+const userService = require('./routes/userService');
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
-passport.use(new Strategy(userServiceController.passportStrategy));
+passport.use(new Strategy(passportFunctions.passportStrategy));
 
-const index = require('./routes/index');
 app.use('/', index);
-
-const userService = require('./routes/userService');
 app.use('/userService', userService);
-
 
 app.listen(PORT, () => {
   console.log('server running at ' + PORT);
