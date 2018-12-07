@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const cryptoUtil = require('../crypto/index.js');
-const database = require('../mongo/mongo.js');
+const cryptoUtil = require('../utils/crypto.js');
+const database = require('../utils/mongoUser.js');
 const secret = require('../utils/keys/privateKey.js');
 const TOKENTIME = 120 * 60; // in seconds
 

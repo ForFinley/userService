@@ -1,7 +1,7 @@
 const httpUtil = require('../utils/httpUtil.js');
-const database = require('../mongo/mongo.js');
-const cryptoUtil = require('../crypto/index.js');
-const nodemailer = require('../nodemailer/nodemailer.js');
+const database = require('../utils/mongoUser.js');
+const cryptoUtil = require('../utils/crypto.js');
+const nodemailer = require('../utils/nodemailer.js');
 
 function validate(body, res) {
 

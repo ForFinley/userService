@@ -1,6 +1,6 @@
-const cryptoUtil = require('../crypto/index.js');
+const cryptoUtil = require('../utils/crypto.js');
 const httpUtil = require('../utils/httpUtil.js');
-const database = require('../mongo/mongo.js');
+const database = require('../utils/mongoUser.js');
 
 function validate(params, res) {
     
