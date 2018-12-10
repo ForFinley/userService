@@ -6,10 +6,11 @@ const secret = require("../controllers/utils/keys/privateKey");
 const authenticate = expressJwt({ secret: secret.key });
 
 const registration = require("../controllers/userService/registration.js");
-const signIn = require("../controllers/userService/signIn");
-const passportFunctions = require("../controllers/userService/passport.js");
+const signIn = require("../controllers/userService/signIn.js");
 const changePassword = require("../controllers/userService/changePassword.js");
 const verifyEmail = require("../controllers/userService/verifyEmail.js");
+const passwordResetInit = require("../controllers/userService/passwordResetInit.js");
+const passwordResetConfirm = require("../controllers/userService/passwordResetConfirm.js");
 
 /**
  * /userService/registration
@@ -23,16 +24,10 @@ router.post("/registration", registration.handler);
  * Body: email, password
  * Returns Bearer authorization token
  */
-router.post(
-  "/signIn",
-  passport.initialize(),
-  passport.authenticate("local", {
+router.post("/signIn", passport.initialize(), passport.authenticate("local", {
     session: false,
     scope: []
-  }),
-  passportFunctions.serialize,
-  signIn.handler
-);
+  }),signIn.handler);
 
 /**
  * /userService/changePassword
@@ -56,5 +51,21 @@ router.get("/verifyEmail/:emailHash", verifyEmail.handler);
 router.get("/me", authenticate, function(req, res) {
   res.status(200).json(req.user);
 });
+
+/**
+ * userService/passwordResetInit
+ * Headers: authorization: Bearer <Token>
+ * Body: email, _id
+ * Sends reset password email.
+ */
+router.post("/passwordResetInit", authenticate, passwordResetInit.handler);
+
+/**
+ * userService/passwordResetConfirm
+ * Headers: content-type: application/json
+ * Body: passwordResetHash, password(new password)
+ * Sets new password.
+ */
+router.post("/passwordResetConfirm", passwordResetConfirm.handler);
 
 module.exports = router;

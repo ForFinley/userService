@@ -25,21 +25,20 @@ function decryptPassword(hash) {
     return cipher.update(hash, 'hex', 'utf8') + cipher.final('utf8');
 };
 
-function emailHashEncrypt(username){
+function hashEncrypt(hash){
     let cipher = crypto.createCipher('aes-256-ecb', encryptKey);
-    let emailHash = cipher.update(username,'utf8', 'hex') + cipher.final('hex');
-    return emailHash;
+    return cipher.update(hash,'utf8', 'hex') + cipher.final('hex');
 }
 
-function emailHashDecrypt(emailHash) {
+function hashDecrypt(hash) {
     var cipher = crypto.createDecipher('aes-256-ecb', encryptKey);
-    return cipher.update(emailHash, 'hex', 'utf8') + cipher.final('utf8');
+    return cipher.update(hash, 'hex', 'utf8') + cipher.final('utf8');
 };
 
 module.exports = {
     encryptPassword,
     checkPassword,
     decryptPassword,
-    emailHashEncrypt,
-    emailHashDecrypt
+    hashEncrypt,
+    hashDecrypt
 };

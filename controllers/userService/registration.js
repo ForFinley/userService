@@ -34,7 +34,7 @@ module.exports.handler = async function(req, res) {
   username = username.trim().toLowerCase();
 
   let passwordResult = cryptoUtil.encryptPassword(password);
-  let emailHash = cryptoUtil.emailHashEncrypt(username);
+  let emailHash = cryptoUtil.hashEncrypt(username);
   let user = await database.queryUserByusername(username);
   if (user)
     return res.send(httpUtil.createResponse(400, "ERROR - username in use."));
@@ -44,8 +44,7 @@ module.exports.handler = async function(req, res) {
       email: email,
       password: passwordResult.encryptPass,
       salt: passwordResult.salt,
-      emailVerified: false,
-      emailVerificationHash: emailHash
+      emailVerified: false
     };
     console.log("USER: ", user);
     database.putUser(user);

@@ -21,13 +21,13 @@ module.exports.handler = async function (req, res) {
     console.log("Starting function verifyEmail...");
     console.log(req.params);
 
-    if (req.body === null || !validate(req.params, res)) {
+    if (req.params === null || !validate(req.params, res)) {
         return;
     }
 
     let emailHash = req.params.emailHash;
 
-    let username = cryptoUtil.emailHashDecrypt(emailHash);
+    let username = cryptoUtil.hashDecrypt(emailHash);
     let result = await database.updateUser(username, { emailVerified: true });
     console.log(result);
     res.send(httpUtil.createResponse(200, "SUCCESS : Email verified."));

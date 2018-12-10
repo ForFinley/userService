@@ -42,21 +42,30 @@ function updateUser(username, changes) {
       else resolve(result);
     });
   });
+}
 
+function updateUserById(id, changes) {
+  return new Promise((resolve, reject) => {
+    mongoUser.updateOne({ _id: id }, { $set: changes }, function (err, result) {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
 }
 
 module.exports = {
   queryAllUsers,
   queryUserByusername,
   putUser,
-  updateUser
+  updateUser,
+  updateUserById
 }
 
 queryAllUsers().then((d) => {
   console.log(d);
 });
 
-mongoUser.deleteOne({ _id: "5c0955f1cf9cc5139e337406" }, (err, result) => { //deleteMany
+mongoUser.deleteOne({ _id: "5c09bff889c342316601eaff" }, (err, result) => { //deleteMany
   if (err) return console.error(err);
   console.log(result);
 });
