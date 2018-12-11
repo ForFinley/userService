@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const passport = require('passport');
 const Strategy = require('passport-local');
-const passportFunctions = require('./controllers/userService/passport.js');
+const passportFunctions = require('./controllers/utils/passport.js');
 
 const app = express();
 const PORT = 4000;

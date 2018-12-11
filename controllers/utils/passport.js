@@ -1,5 +1,5 @@
-const cryptoUtil = require("../utils/crypto.js");
-const database = require("../utils/mongoUser.js");
+const cryptoUtil = require("./crypto.js");
+const database = require("./mongoUser.js");
 
 async function passportStrategy(username, password, done) {
   username = username.trim().toLowerCase();
