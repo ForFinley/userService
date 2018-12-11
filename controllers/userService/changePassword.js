@@ -4,8 +4,8 @@ const database = require('../utils/mongoUser.js');
 
 function validate(body, res) {
 
-    if (!body.username) {
-        res.send(httpUtil.createResponse(400, "ERROR : Missing username."));
+    if (!body.email) {
+        res.send(httpUtil.createResponse(400, "ERROR : Missing email."));
         return false;
     }
     if (!body.password) {
@@ -32,16 +32,16 @@ module.exports.handler = async function (req, res) {
         return;
     }
 
-    let username = req.body.username;
+    let email = req.body.email;
     let password = req.body.password;
     let newPassword = req.body.newPassword;
-    username = username.trim().toLowerCase();
+    email = email.trim().toLowerCase();
 
-    let usernameBool = true; //Checks to see if username is in database 
-    let user = await database.queryUserByusername(username);
+    let emailBool = true; //Checks to see if emnail is in database 
+    let user = await database.queryUserByEmail(email);
 
     if (user) {
-        usernameBool = false;
+        emailBool = false;
         if (cryptoUtil.checkPassword(password, user.password, user.salt)) {
             let passwordResult = cryptoUtil.encryptPassword(newPassword);
             user.password = passwordResult.encryptPass;
@@ -52,11 +52,11 @@ module.exports.handler = async function (req, res) {
         }
         else {
             console.log("Password incorrect.")
-            return res.send(httpUtil.createResponse(401, "ERROR : username or password invalid."));
+            return res.send(httpUtil.createResponse(401, "ERROR : email or password invalid."));
         }
     }
-    if (usernameBool) {
-        console.log("username does not exist.");
-        return res.send(httpUtil.createResponse(401, "ERROR : username or password invalid."));
+    if (emailBool) {
+        console.log("email does not exist.");
+        return res.send(httpUtil.createResponse(401, "ERROR : email or password invalid."));
     }
 }

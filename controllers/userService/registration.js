@@ -4,8 +4,8 @@ const cryptoUtil = require("../utils/crypto.js");
 const nodemailer = require("../utils/nodemailer.js");
 
 function validate(body, res) {
-  if (!body.username) {
-    res.send(httpUtil.createResponse(400, "ERROR : Missing username."));
+  if (!body.email) {
+    res.send(httpUtil.createResponse(400, "ERROR : Missing email."));
     return false;
   }
   if (!body.password) {
@@ -28,19 +28,18 @@ module.exports.handler = async function(req, res) {
     return;
   }
 
-  let username = req.body.username;
-  let password = req.body.password;
   let email = req.body.email;
-  username = username.trim().toLowerCase();
+  let password = req.body.password;
+  email = email.trim().toLowerCase();
 
   let passwordResult = cryptoUtil.encryptPassword(password);
-  let emailHash = cryptoUtil.hashEncrypt(username);
-  let user = await database.queryUserByusername(username);
+  let emailHash = cryptoUtil.hashEncrypt(email);
+  let user = await database.queryUserByEmail(email);
   if (user)
-    return res.send(httpUtil.createResponse(400, "ERROR - username in use."));
+    return res.send(httpUtil.createResponse(400, "ERROR - email in use."));
   else {
     let user = {
-      username: username,
+      email: email,
       email: email,
       password: passwordResult.encryptPass,
       salt: passwordResult.salt,

@@ -16,9 +16,9 @@ function queryAllUsers() {
   });
 }
 
-function queryUserByusername(username) {
+function queryUserByEmail(email) {
   return new Promise((resolve, reject) => {
-    mongoUser.findOne({ username: username }, (err, data) => {
+    mongoUser.findOne({ email: email }, (err, data) => {
       if (err) reject(err);
       resolve(data);
     });
@@ -35,9 +35,9 @@ function putUser(obj) {
   });
 }
 
-function updateUser(username, changes) {
+function updateUser(email, changes) {
   return new Promise((resolve, reject) => {
-    mongoUser.updateOne({ username: username }, { $set: changes }, function (err, result) {
+    mongoUser.updateOne({ email: email }, { $set: changes }, function (err, result) {
       if (err) reject(err);
       else resolve(result);
     });
@@ -55,7 +55,7 @@ function updateUserById(id, changes) {
 
 module.exports = {
   queryAllUsers,
-  queryUserByusername,
+  queryUserByEmail,
   putUser,
   updateUser,
   updateUserById

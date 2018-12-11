@@ -14,7 +14,7 @@ const userService = require('./routes/userService');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
-passport.use(new Strategy(passportFunctions.passportStrategy));
+passport.use(new Strategy({usernameField: 'email'}, passportFunctions.passportStrategy));
 
 app.use('/', index);
 app.use('/userService', userService);
