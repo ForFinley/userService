@@ -58,7 +58,7 @@ router.get("/me", authenticate, function(req, res) {
  * Body: email, _id
  * Sends reset password email.
  */
-router.post("/passwordResetInit", authenticate, passwordResetInit.handler);
+router.post("/passwordResetInit", passwordResetInit.handler);
 
 /**
  * userService/passwordResetConfirm
