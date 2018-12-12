@@ -11,6 +11,8 @@ const changePassword = require("../controllers/userService/changePassword.js");
 const verifyEmail = require("../controllers/userService/verifyEmail.js");
 const passwordResetInit = require("../controllers/userService/passwordResetInit.js");
 const passwordResetConfirm = require("../controllers/userService/passwordResetConfirm.js");
+const changeEmailInit = require("../controllers/userService/changeEmailInit.js");
+const changeEmailConfirm = require("../controllers/userService/changeEmailConfirm.js");
 
 /**
  * /userService/registration
@@ -54,8 +56,8 @@ router.get("/me", authenticate, function(req, res) {
 
 /**
  * userService/passwordResetInit
- * Headers: authorization: Bearer <Token>
- * Body: email, _id
+ * Headers: content-type: application/json
+ * Body: email
  * Sends reset password email.
  */
 router.post("/passwordResetInit", passwordResetInit.handler);
@@ -67,5 +69,21 @@ router.post("/passwordResetInit", passwordResetInit.handler);
  * Sets new password.
  */
 router.post("/passwordResetConfirm", passwordResetConfirm.handler);
+
+/**
+ * userService/changeEmailInit
+ * Headers: content-type: application/json, authorization: Bearer <Token>
+ * Body: email, _id
+ * Sends change email email.
+ */
+router.post("/changeEmailInit", authenticate, changeEmailInit.handler);
+
+/**
+ * userService/changeEmailConfirm
+ * Headers: content-type: application/json
+ * Body: changeEmailHash, email(new email)
+ * Changes email.
+ */
+router.post("/changeEmailConfirm", changeEmailConfirm.handler);
 
 module.exports = router;

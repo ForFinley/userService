@@ -35,7 +35,7 @@ function putUser(obj) {
   });
 }
 
-function updateUser(email, changes) {
+function updateUserByEmail(email, changes) {
   return new Promise((resolve, reject) => {
     mongoUser.updateOne({ email: email }, { $set: changes }, function (err, result) {
       if (err) reject(err);
@@ -44,9 +44,9 @@ function updateUser(email, changes) {
   });
 }
 
-function updateUserByEmail(email, changes) {
+function updateUserById(id, changes) {
   return new Promise((resolve, reject) => {
-    mongoUser.updateOne({ email: email }, { $set: changes }, function (err, result) {
+    mongoUser.updateOne({ _id: id }, { $set: changes }, function (err, result) {
       if (err) reject(err);
       else resolve(result);
     });
@@ -57,8 +57,8 @@ module.exports = {
   queryAllUsers,
   queryUserByEmail,
   putUser,
-  updateUser,
-  updateUserByEmail
+  updateUserByEmail,
+  updateUserById
 }
 
 queryAllUsers().then((d) => {

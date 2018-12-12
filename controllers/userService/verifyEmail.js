@@ -28,7 +28,7 @@ module.exports.handler = async function (req, res) {
     let emailHash = req.params.emailHash;
 
     let email = cryptoUtil.hashDecrypt(emailHash);
-    let result = await database.updateUser(email, { emailVerified: true });
+    let result = await database.updateUserByEmail(email, { emailVerified: true });
     console.log(result);
     res.send(httpUtil.createResponse(200, "SUCCESS : Email verified."));
 }

@@ -67,7 +67,42 @@ function passwordReset(email, hash) {
   });
 }
 
+
+function changeEmail(email, hash) {
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "ryqanbb@gmail.com",
+      pass: "Ilovebeyblades!"
+    }
+  });
+
+  let url = "http://localhost:3000/passwordReset/" + hash;
+  let mailOptions = {
+    from: '"Change Email" <ryqanbb@gmail.com>',
+    to: email,
+    subject: "Change Email",
+    // text: 'Hello world?',
+    html:
+      "<p>Click link to change your email.</p> <a href=" +
+      url +
+      ">" +
+      url +
+      "</a>"
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error);
+    }
+    console.log("Message sent: %s", info.messageId);
+  });
+}
+
 module.exports = {
   sendEmailVerification,
-  passwordReset
+  passwordReset,
+  changeEmail
 };
