@@ -34,7 +34,7 @@ router.post("/signIn", passport.initialize(), passport.authenticate("local", {
 /**
  * /userService/changePassword
  * Headers: content-type: application/json, authorization: Bearer <Token>
- * Body: email, password(current), newPassword
+ * Body: password(current), newPassword
  * Will save new password to DB
  */
 router.post("/changePassword", authenticate, changePassword.handler);
@@ -73,7 +73,7 @@ router.post("/passwordResetConfirm", passwordResetConfirm.handler);
 /**
  * userService/changeEmailInit
  * Headers: content-type: application/json, authorization: Bearer <Token>
- * Body: email, _id
+ * Body: email
  * Sends change email email.
  */
 router.post("/changeEmailInit", authenticate, changeEmailInit.handler);
