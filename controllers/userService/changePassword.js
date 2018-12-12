@@ -4,10 +4,6 @@ const database = require('../utils/mongoUser.js');
 
 function validate(body, res) {
 
-    if (!body.email) {
-        res.send(httpUtil.createResponse(400, "ERROR : Missing email."));
-        return false;
-    }
     if (!body.password) {
         res.send(httpUtil.createResponse(400, "ERROR : Missing password."));
         return false;
@@ -21,8 +17,8 @@ function validate(body, res) {
 
 /**
  * Changes password in database
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  */
 module.exports.handler = async function (req, res) {
     console.log("Starting function changePassword...");
@@ -32,12 +28,12 @@ module.exports.handler = async function (req, res) {
         return;
     }
 
-    let email = req.body.email;
+    let email = req.user.email;
     let password = req.body.password;
     let newPassword = req.body.newPassword;
     email = email.trim().toLowerCase();
 
-    let emailBool = true; //Checks to see if emnail is in database 
+    let emailBool = true; //Checks to see if emnail is in database
     let user = await database.queryUserByEmail(email);
 
     if (user) {
