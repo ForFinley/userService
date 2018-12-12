@@ -8,10 +8,6 @@ function validate(body, res) {
       res.send(httpUtil.createResponse(400, "ERROR : Missing email."));
       return false;
     }
-    if (!body._id) {
-      res.send(httpUtil.createResponse(400, "ERROR : _id."));
-      return false;
-    }
     return true;
   }
 
@@ -23,9 +19,8 @@ module.exports.handler = function(req, res) {
       return;
     }
     let email = req.body.email;
-    let _id = req.body._id;
 
-    let passwordResetHash = cryptoUtil.hashEncrypt(_id);
+    let passwordResetHash = cryptoUtil.hashEncrypt(email);
     //save hash
     
     nodemailer.passwordReset(email, passwordResetHash);

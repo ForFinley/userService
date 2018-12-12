@@ -44,9 +44,9 @@ function updateUser(email, changes) {
   });
 }
 
-function updateUserById(id, changes) {
+function updateUserByEmail(email, changes) {
   return new Promise((resolve, reject) => {
-    mongoUser.updateOne({ _id: id }, { $set: changes }, function (err, result) {
+    mongoUser.updateOne({ email: email }, { $set: changes }, function (err, result) {
       if (err) reject(err);
       else resolve(result);
     });
@@ -58,14 +58,14 @@ module.exports = {
   queryUserByEmail,
   putUser,
   updateUser,
-  updateUserById
+  updateUserByEmail
 }
 
 queryAllUsers().then((d) => {
   console.log(d);
 });
 
-mongoUser.deleteOne({ _id: "5c09bff889c342316601eaff" }, (err, result) => { //deleteMany
+mongoUser.deleteOne({ _id: "5c101decc70305195e0a8f24" }, (err, result) => { //deleteMany
   if (err) return console.error(err);
   console.log(result);
 });

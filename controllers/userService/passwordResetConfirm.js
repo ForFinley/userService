@@ -27,11 +27,11 @@ module.exports.handler = async function(req, res) {
     let hash = req.body.passwordResetHash;
     let password = req.body.password;
 
-    let userId = cryptoUtil.hashDecrypt(hash); //passwordResetHash contains _id
+    let email = cryptoUtil.hashDecrypt(hash); //passwordResetHash contains email
 
     let passwordResult = cryptoUtil.encryptPassword(password);
 
-    let result = await database.updateUserById(userId, {password: passwordResult.encryptPass, salt: passwordResult.salt});
+    let result = await database.updateUserByEmail(email, {password: passwordResult.encryptPass, salt: passwordResult.salt});
     console.log(result);
     res.send(httpUtil.createResponse(200, "SUCCESS : Password reset."));
 };
