@@ -20,11 +20,6 @@ function checkPassword(password, encryptedDBPassword, salt){
     return false;
 }
 
-function decryptPassword(hash) {
-    var cipher = crypto.createDecipher('aes-256-ecb', encryptKey);
-    return cipher.update(hash, 'hex', 'utf8') + cipher.final('utf8');
-};
-
 function hashEncrypt(hash){
     let cipher = crypto.createCipher('aes-256-ecb', encryptKey);
     return cipher.update(hash,'utf8', 'hex') + cipher.final('hex');
@@ -38,7 +33,6 @@ function hashDecrypt(hash) {
 module.exports = {
     encryptPassword,
     checkPassword,
-    decryptPassword,
     hashEncrypt,
     hashDecrypt
 };

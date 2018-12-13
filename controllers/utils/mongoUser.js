@@ -25,6 +25,15 @@ function queryUserByEmail(email) {
   });
 }
 
+function queryUserById(id) {
+  return new Promise((resolve, reject) => {
+    mongoUser.findOne({ _id: id }, (err, data) => {
+      if (err) reject(err);
+      resolve(data);
+    });
+  });
+}
+
 function putUser(obj) {
   let user = new mongoUser(obj);
   return new Promise((resolve, reject) => {
@@ -56,6 +65,7 @@ function updateUserById(id, changes) {
 module.exports = {
   queryAllUsers,
   queryUserByEmail,
+  queryUserById,
   putUser,
   updateUserByEmail,
   updateUserById

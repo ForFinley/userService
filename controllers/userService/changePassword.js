@@ -28,16 +28,15 @@ module.exports.handler = async function (req, res) {
         return;
     }
 
-    let email = req.user.email;
+    let id = req.user._id;
     let password = req.body.password;
     let newPassword = req.body.newPassword;
-    email = email.trim().toLowerCase();
 
-    let emailBool = true; //Checks to see if emnail is in database
-    let user = await database.queryUserByEmail(email);
+    let idBool = true; //Checks to see if emnail is in database
+    let user = await database.queryUserById(id);
 
     if (user) {
-        emailBool = false;
+        idBool = false;
         if (cryptoUtil.checkPassword(password, user.password, user.salt)) {
             let passwordResult = cryptoUtil.encryptPassword(newPassword);
             user.password = passwordResult.encryptPass;
@@ -51,7 +50,7 @@ module.exports.handler = async function (req, res) {
             return res.send(httpUtil.createResponse(401, "ERROR : email or password invalid."));
         }
     }
-    if (emailBool) {
+    if (idBool) {
         console.log("email does not exist.");
         return res.send(httpUtil.createResponse(401, "ERROR : email or password invalid."));
     }
