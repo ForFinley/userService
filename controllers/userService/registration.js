@@ -43,7 +43,8 @@ module.exports.handler = async function(req, res) {
       email: email,
       password: passwordResult.encryptPass,
       salt: passwordResult.salt,
-      emailVerified: false
+      emailVerified: false,
+      role: "PEASANT"
     };
     console.log("USER: ", user);
     database.putUser(user);

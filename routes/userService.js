@@ -55,6 +55,20 @@ router.get("/me", authenticate, function(req, res) {
 });
 
 /**
+ * userService/admin
+ * Headers: authorization: Bearer <Token>
+ */
+router.get("/admin", authenticate, function(req, res, next){
+  console.log(req.user);
+  if(req.user.role === "ADMIN") next();
+  else{
+    res.status(401).json("unauthorized.");
+  }
+}, function(req, res) {
+  res.status(200).json(req.user);
+});
+
+/**
  * userService/passwordResetInit
  * Headers: content-type: application/json
  * Body: email

@@ -25,6 +25,7 @@ function hashEncrypt(hash){
     return cipher.update(hash,'utf8', 'hex') + cipher.final('hex');
 }
 
+//This can also be used to decrypt password
 function hashDecrypt(hash) {
     var cipher = crypto.createDecipher('aes-256-ecb', encryptKey);
     return cipher.update(hash, 'hex', 'utf8') + cipher.final('utf8');

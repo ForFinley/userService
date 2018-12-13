@@ -75,11 +75,15 @@ queryAllUsers().then((d) => {
   console.log(d);
 });
 
-mongoUser.deleteOne({ _id: "5c101decc70305195e0a8f24" }, (err, result) => { //deleteMany
+mongoUser.deleteOne({ _id: "5c113eb8077dc823b0212a0f" }, (err, result) => { //deleteMany
   if (err) return console.error(err);
   console.log(result);
 });
 
+// mongoUser.updateOne({ _id: '5c12925fa9ca4d4acbc6b597' }, { $set: {role: "ADMIN"} }, function (err, result) {
+//   if (err) return console.error(err);
+//   console.log(result);
+// });
 
 
 
