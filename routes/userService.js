@@ -47,24 +47,11 @@ router.post("/changePassword", authenticate, changePassword.handler);
 router.get("/verifyEmail/:emailHash", verifyEmail.handler);
 
 /**
+ * TEST
  * userService/me
  * Headers: authorization: Bearer <Token>
  */
 router.get("/me", authenticate, function(req, res) {
-  res.status(200).json(req.user);
-});
-
-/**
- * userService/admin
- * Headers: authorization: Bearer <Token>
- */
-router.get("/admin", authenticate, function(req, res, next){
-  console.log(req.user);
-  if(req.user.role === "ADMIN") next();
-  else{
-    res.status(401).json("unauthorized.");
-  }
-}, function(req, res) {
   res.status(200).json(req.user);
 });
 
