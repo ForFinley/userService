@@ -5,7 +5,7 @@ const httpUtil = require('../utils/httpUtil.js');
 
 function validate(body, res) {
     if (!body.email) {
-      res.send(httpUtil.createResponse(400, "ERROR : Missing email."));
+      res.status(400).send(httpUtil.createResponse(400, "ERROR : Missing email."));
       return false;
     }
     return true;

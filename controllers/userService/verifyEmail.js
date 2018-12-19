@@ -3,9 +3,9 @@ const httpUtil = require('../utils/httpUtil.js');
 const database = require('../utils/mongoUser.js');
 
 function validate(params, res) {
-    
+
     if (!params.emailHash) {
-        res.send(httpUtil.createResponse(400, "ERROR : Missing emailHash."));
+        res.status(400).send(httpUtil.createResponse(400, "ERROR : Missing emailHash."));
         return false;
     }
 
@@ -28,7 +28,13 @@ module.exports.handler = async function (req, res) {
     let emailHash = req.params.emailHash;
 
     let email = cryptoUtil.hashDecrypt(emailHash);
-    let result = await database.updateUserByEmail(email, { emailVerified: true });
-    console.log(result);
-    res.send(httpUtil.createResponse(200, "SUCCESS : Email verified."));
+    try {
+        let result = await database.updateUserByEmail(email, { emailVerified: true });
+        console.log(result);
+        res.send(httpUtil.createResponse(200, "SUCCESS : Email verified."));
+    }
+    catch (e) {
+        console.log('**ERROR** ', e);
+        return res.status(500).send(httpUtil.createResponse(500, "Internal Server Error."));
+    }
 }

@@ -2,7 +2,7 @@ const jwtUtil = require("../utils/jwt.js");
 
 module.exports.handler = (req, res) => {
   console.log("Starting function signIn...");
-  console.log(req.user)
+  console.log(req.user);
   let user = {
     _id: req.user._id,
     email: req.user.email,

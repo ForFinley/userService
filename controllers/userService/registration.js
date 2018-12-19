@@ -5,11 +5,11 @@ const nodemailer = require("../utils/nodemailer.js");
 
 function validate(body, res) {
   if (!body.email) {
-    res.send(httpUtil.createResponse(400, "ERROR : Missing email."));
+    res.status(400).send(httpUtil.createResponse(400, "ERROR : Missing email."));
     return false;
   }
   if (!body.password) {
-    res.send(httpUtil.createResponse(400, "ERROR : Missing password."));
+    res.status(400).send(httpUtil.createResponse(400, "ERROR : Missing password."));
     return false;
   }
   return true;
@@ -20,7 +20,7 @@ function validate(body, res) {
  * @param {*} req
  * @param {*} res
  */
-module.exports.handler = async function(req, res) {
+module.exports.handler = async function (req, res) {
   console.log("Starting function registration...");
   console.log(req.body);
 
@@ -34,21 +34,27 @@ module.exports.handler = async function(req, res) {
 
   let passwordResult = cryptoUtil.encryptPassword(password);
   let emailHash = cryptoUtil.hashEncrypt(email);
-  let user = await database.queryUserByEmail(email);
-  if (user)
-    return res.send(httpUtil.createResponse(400, "ERROR - email in use."));
-  else {
-    let user = {
-      email: email,
-      email: email,
-      password: passwordResult.encryptPass,
-      salt: passwordResult.salt,
-      emailVerified: false,
-      role: "PEASANT"
-    };
-    console.log("USER: ", user);
-    database.putUser(user);
-    nodemailer.sendEmailVerification(email, emailHash);
-    return res.send(httpUtil.createResponse(200, "SUCCESS : User added."));
+  try {
+    let user = await database.queryUserByEmail(email);
+    if (user)
+      return res.status(400).send(httpUtil.createResponse(400, "ERROR - email in use."));
+    else {
+      let user = {
+        email: email,
+        email: email,
+        password: passwordResult.encryptPass,
+        salt: passwordResult.salt,
+        emailVerified: false,
+        role: "PEASANT"
+      };
+      console.log("USER: ", user);
+      database.putUser(user);
+      nodemailer.sendEmailVerification(email, emailHash);
+      return res.send(httpUtil.createResponse(200, "SUCCESS : User added."));
+    }
+  }
+  catch (e) {
+    console.log('**ERROR** ', e);
+    return res.status(500).send(httpUtil.createResponse(500, "Internal Server Error."));
   }
 };

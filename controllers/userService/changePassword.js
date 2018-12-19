@@ -5,11 +5,11 @@ const database = require('../utils/mongoUser.js');
 function validate(body, res) {
 
     if (!body.password) {
-        res.send(httpUtil.createResponse(400, "ERROR : Missing password."));
+        res.status(400).send(httpUtil.createResponse(400, "ERROR : Missing password."));
         return false;
     }
     if (!body.newPassword) {
-        res.send(httpUtil.createResponse(400, "ERROR : Missing newPassword."));
+        res.status(400).send(httpUtil.createResponse(400, "ERROR : Missing newPassword."));
         return false;
     }
     return true;
@@ -33,25 +33,30 @@ module.exports.handler = async function (req, res) {
     let newPassword = req.body.newPassword;
 
     let idBool = true; //Checks to see if emnail is in database
-    let user = await database.queryUserById(id);
 
-    if (user) {
-        idBool = false;
-        if (cryptoUtil.checkPassword(password, user.password, user.salt)) {
-            let passwordResult = cryptoUtil.encryptPassword(newPassword);
-            user.password = passwordResult.encryptPass;
-            user.salt = passwordResult.salt;
-
-            database.putUser(user);
-            return res.send(httpUtil.createResponse(200, "SUCCESS : Password changed."));
+    try{
+        let user = await database.queryUserById(id);
+        if (user) {
+            idBool = false;
+            if (cryptoUtil.checkPassword(password, user.password, user.salt)) {
+                let passwordResult = cryptoUtil.encryptPassword(newPassword);
+                user.password = passwordResult.encryptPass;
+                user.salt = passwordResult.salt;
+    
+                database.putUser(user);
+                return res.send(httpUtil.createResponse(200, "SUCCESS : Password changed."));
+            }
+            else {
+                console.log("Password incorrect.")
+                return res.status(401).send(httpUtil.createResponse(401, "ERROR : email or password invalid."));
+            }
         }
-        else {
-            console.log("Password incorrect.")
-            return res.send(httpUtil.createResponse(401, "ERROR : email or password invalid."));
-        }
+    }
+    catch(e){
+        console.log('**ERROR** ', e);
     }
     if (idBool) {
         console.log("email does not exist.");
-        return res.send(httpUtil.createResponse(401, "ERROR : email or password invalid."));
+        return res.status(401).send(httpUtil.createResponse(401, "ERROR : email or password invalid."));
     }
 }
