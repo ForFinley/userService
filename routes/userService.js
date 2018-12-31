@@ -4,6 +4,7 @@ const passport = require("passport");
 const expressJwt = require("express-jwt");
 const secret = require("../controllers/utils/keys/privateKey");
 const authenticate = expressJwt({ secret: secret.key });
+const addFullUser = require("../controllers/utils/addFullUser");
 
 const registration = require("../controllers/userService/registration.js");
 const signIn = require("../controllers/userService/signIn.js");
@@ -26,10 +27,15 @@ router.post("/registration", registration.handler);
  * Body: email, password
  * Returns Bearer authorization token
  */
-router.post("/signIn", passport.initialize(), passport.authenticate("local", {
+router.post(
+  "/signIn",
+  passport.initialize(),
+  passport.authenticate("local", {
     session: false,
     scope: []
-  }),signIn.handler);
+  }),
+  signIn.handler
+);
 
 /**
  * /userService/changePassword
@@ -51,8 +57,8 @@ router.get("/verifyEmail/:emailHash", verifyEmail.handler);
  * userService/me
  * Headers: authorization: Bearer <Token>
  */
-router.get("/me", authenticate, function(req, res) {
-  res.status(200).json(req.user);
+router.get("/me", authenticate, addFullUser, function(req, res) {
+  res.status(200).json(req.user.publicProperties);
 });
 
 /**
