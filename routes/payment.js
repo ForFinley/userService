@@ -7,6 +7,7 @@ const addFullUser = require("../controllers/utils/addFullUser");
 
 const adminUtil = require("../controllers/utils/adminUtil.js");
 const setBillingCard = require("../controllers/payment/setBillingCard");
+const deleteBillingCard = require("../controllers/payment/deleteBillingCard");
 
 /**
  * payment/setBillingCard
@@ -19,6 +20,18 @@ router.post(
   authenticate,
   addFullUser,
   setBillingCard.handler
+);
+
+/**
+ * payment/deleteBillingCard
+ * Headers: authorization: Bearer <Token>
+ * Deletes a customer in stripe, deletes customerId and card info in userModel
+ */
+router.get(
+  "/deleteBillingCard",
+  authenticate,
+  addFullUser,
+  deleteBillingCard.handler
 );
 
 module.exports = router;
