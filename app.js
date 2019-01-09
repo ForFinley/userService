@@ -20,9 +20,7 @@ const payment = require("./routes/payment");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger("dev"));
-passport.use(
-  new Strategy({ usernameField: "email" }, passportFunctions.passportStrategy)
-);
+passport.use(new Strategy({ usernameField: "email" }, passportFunctions.passportStrategy));
 app.use(helmet());
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes

@@ -14,8 +14,6 @@ module.exports = async (req, res, next) => {
 
     return next();
   } catch (e) {
-    return res
-      .status(500)
-      .send({ error: e, message: "An error occurred finding user" });
+    return res.status(500).send({ error: e, message: "An error occurred finding user" });
   }
 };

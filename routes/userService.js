@@ -27,15 +27,10 @@ router.post("/registration", registration.handler);
  * Body: email, password
  * Returns Bearer authorization token
  */
-router.post(
-  "/signIn",
-  passport.initialize(),
-  passport.authenticate("local", {
-    session: false,
-    scope: []
-  }),
-  signIn.handler
-);
+router.post("/signIn", passport.initialize(), passport.authenticate("local", {
+  session: false,
+  scope: []
+}), signIn.handler);
 
 /**
  * /userService/changePassword
@@ -57,7 +52,7 @@ router.get("/verifyEmail/:emailHash", verifyEmail.handler);
  * userService/me
  * Headers: authorization: Bearer <Token>
  */
-router.get("/me", authenticate, addFullUser, function(req, res) {
+router.get("/me", authenticate, addFullUser, function (req, res) {
   res.status(200).json(req.user.publicProperties);
 });
 

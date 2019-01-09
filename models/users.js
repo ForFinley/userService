@@ -6,6 +6,12 @@ const userSchema = new mongoose.Schema({
   salt: String,
   emailVerified: Boolean,
   role: String,
+  shippingAddressLine1: String,
+  shippingAddressCity: String,
+  shippingAddressCountry: String,
+  shippingAddressLine2: String,
+  shippingAdddressPostalCode: String,
+  shippingAddressState: String,
   stripeCustomerId: String,
   stripeBillingCardBrand: String,
   stripeBillingCardExpMonth: Number,
@@ -13,7 +19,7 @@ const userSchema = new mongoose.Schema({
   stripeBillingCardLast4: Number
 });
 
-userSchema.virtual("publicProperties").get(function() {
+userSchema.virtual("publicProperties").get(function () {
   return {
     email: this.email,
     emailVerified: this.emailVerified,

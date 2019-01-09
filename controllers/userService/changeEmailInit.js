@@ -4,26 +4,26 @@ const httpUtil = require('../utils/httpUtil.js');
 
 
 function validate(body, res) {
-    if (!body.email) {
-      res.status(400).send(httpUtil.createResponse(400, "ERROR : Missing email."));
-      return false;
-    }
-    return true;
+  if (!body.email) {
+    res.status(400).send(httpUtil.createResponse(400, "ERROR : Missing email."));
+    return false;
+  }
+  return true;
+}
+
+module.exports.handler = function (req, res) {
+  console.log("Starting function changeEmailInit...");
+  console.log(req.body);
+
+  if (req.body === null || !validate(req.body, res)) {
+    return;
   }
 
-module.exports.handler = function(req, res) {
-    console.log("Starting function changeEmailInit...");
-    console.log(req.body);
+  let email = req.body.email;
+  let id = req.user._id;
 
-    if (req.body === null || !validate(req.body, res)) {
-      return;
-    }
+  let newEmailHash = cryptoUtil.hashEncrypt(id);
 
-    let email = req.body.email;
-    let id = req.user._id;
-
-    let newEmailHash = cryptoUtil.hashEncrypt(id);
-
-    nodemailer.changeEmail(email, newEmailHash);
-    return res.send(httpUtil.createResponse(200, "SUCCESS : change email email sent."));
+  nodemailer.changeEmail(email, newEmailHash);
+  return res.send(httpUtil.createResponse(200, "SUCCESS : change email email sent."));
 }
