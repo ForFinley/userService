@@ -34,9 +34,10 @@ module.exports.handler = async function (req, res) {
   }
   console.log(params);
   try {
-    const { stripeCustomerId } = req.user;
+    const { stripeCustomerId } = req.user; //MAYBE MOVE THIS TO BODY
     let result;
     let card;
+    let newCustomer = true;
 
     //New customer
     if (!stripeCustomerId) {
@@ -52,6 +53,7 @@ module.exports.handler = async function (req, res) {
       delete params.email;
       result = await stripe.customers.createSource(stripeCustomerId, params);
       card = result;
+      newCustomer = false;
     }
     console.log(result);
 
@@ -69,12 +71,13 @@ module.exports.handler = async function (req, res) {
       shippingAdddressPostalCode: req.body.postalCode,
       shippingAddressState: req.body.state
     };
+    if (newCustomer === false) delete changes.stripeCustomerId;
 
     try {
       //update the user in DB with relevant card info
       let updatedUser = await updateUserById(req.user._id, changes);
       console.log("updatedUser: ", updatedUser);
-      return res.send("Credit card added!");
+      return res.status(200).send("Credit card added!");
     }
     catch (err) {
       console.log('**ERROR** Couldn\'t update user in DB.**', err);

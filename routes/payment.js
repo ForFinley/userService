@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const expressJwt = require("express-jwt");
-const secret = require("../controllers/utils/keys/privateKey");
+const secret = require("../controllers/utils/keys/privateKey.js");
 const authenticate = expressJwt({ secret: secret.key });
-const addFullUser = require("../controllers/utils/addFullUser");
+const addFullUser = require("../controllers/utils/addFullUser.js");
 
-const adminUtil = require("../controllers/utils/adminUtil.js");
-const setBillingCard = require("../controllers/payment/setBillingCard");
-const deleteBillingCard = require("../controllers/payment/deleteBillingCard");
+const setBillingCard = require("../controllers/payment/setBillingCard.js");
+const deleteBillingCard = require("../controllers/payment/deleteBillingCard.js");
+const charge = require("../controllers/payment/charge.js");
+const getUserBillingHistory = require("../controllers/payment/getUserBillingHistory.js")
+
 
 /**
  * payment/setBillingCard
@@ -24,5 +26,34 @@ router.post("/setBillingCard", authenticate, addFullUser, setBillingCard.handler
  * Deletes a customer's card in stripe and DB (userModel)
  */
 router.get("/deleteBillingCard", authenticate, addFullUser, deleteBillingCard.handler);
+
+/**
+ * payment/charge
+ * Headers: authorization: Bearer <Token>
+ * Body: productId
+ * Takes in productId and charges user for single product.
+ * Creates and returns billing history record.
+ */
+router.post("/charge", authenticate, charge.handler);
+
+/**
+ * payment/userBillingHistory
+ * Headers: authorization: Bearer <Token>
+ * Querys all users billing history.
+ */
+router.get("/userBillingHistory", authenticate, getUserBillingHistory.handler);
+
+
+/**
+ * TEST ENDPOINT to get test products
+ * Uncomment bottom of mongoProduct.js to create product object in DB.
+ */
+let { queryAllProducts } = require("../controllers/utils/mongoProduct.js");
+router.get("/testProducts", authenticate,
+  async (req, res) => {
+    let result = await queryAllProducts();
+    res.status(200).send(result);
+  }
+);
 
 module.exports = router;

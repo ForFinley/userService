@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
   stripeBillingCardLast4: Number
 });
 
+//get method works similar to class
 userSchema.virtual("publicProperties").get(function () {
   return {
     email: this.email,

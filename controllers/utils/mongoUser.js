@@ -1,14 +1,6 @@
 const mongoose = require("mongoose");
 const mongoUser = require("../../models/users.js");
 
-mongoose.connect(
-  "mongodb://localhost:27017/local",
-  { useNewUrlParser: true }
-);
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.on("open", () => console.log("Connnected to MongoDB."));
-
 function queryAllUsers() {
   return new Promise((resolve, reject) => {
     mongoUser.find(function (err, collection) {
@@ -89,10 +81,10 @@ module.exports = {
 };
 
 queryAllUsers().then(d => {
-  console.log(d);
+  console.log("USERS: \n", d);
 });
 
-// mongoUser.deleteOne({ _id: "5c36b04ba9e3d43a68b404ea" }, (err, result) => {
+// mongoUser.deleteOne({ _id: "5c3a957ca8c6c22710a88a65" }, (err, result) => {
 //   if (err) return console.error(err);
 //   console.log(result);
 // });

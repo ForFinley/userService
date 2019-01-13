@@ -26,7 +26,7 @@ module.exports.handler = async function (req, res) {
       stripeCardId: ""
     };
     await updateUserById(req.user._id, blankBillingInfo);
-    return res.send("Card deleted!");
+    return res.status(200).send("Card deleted!");
   }
   catch (err) {
     console.log('**ERROR** A problem occurred while attempting to delete card.**', err);
