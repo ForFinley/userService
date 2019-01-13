@@ -1,16 +1,12 @@
-const mongoose = require('mongoose');
-const mongoUser = require('../../models/users.js');
-
-mongoose.connect("mongodb://localhost:27017/local", { useNewUrlParser: true });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.on('open', () => console.log("Connnected to MongoDB."));
-
+const mongoose = require("mongoose");
+const mongoUser = require("../../models/users.js");
 
 function queryAllUsers() {
   return new Promise((resolve, reject) => {
     mongoUser.find(function (err, collection) {
-      if (err) reject(err);
+      if (err) {
+        return reject(err);
+      }
       resolve(collection);
     });
   });
@@ -19,7 +15,9 @@ function queryAllUsers() {
 function queryUserByEmail(email) {
   return new Promise((resolve, reject) => {
     mongoUser.findOne({ email: email }, (err, data) => {
-      if (err) reject(err);
+      if (err) {
+        return reject(err);
+      }
       resolve(data);
     });
   });
@@ -28,7 +26,9 @@ function queryUserByEmail(email) {
 function queryUserById(id) {
   return new Promise((resolve, reject) => {
     mongoUser.findOne({ _id: id }, (err, data) => {
-      if (err) reject(err);
+      if (err) {
+        return reject(err);
+      }
       resolve(data);
     });
   });
@@ -38,7 +38,9 @@ function putUser(obj) {
   let user = new mongoUser(obj);
   return new Promise((resolve, reject) => {
     user.save(function (err, user) {
-      if (err) reject(err);
+      if (err) {
+        return reject(err);
+      }
       resolve({ message: "DATA PUT INTO DATABASE.", user: user });
     });
   });
@@ -46,9 +48,14 @@ function putUser(obj) {
 
 function updateUserByEmail(email, changes) {
   return new Promise((resolve, reject) => {
-    mongoUser.updateOne({ email: email }, { $set: changes }, function (err, result) {
-      if (err) reject(err);
-      else resolve(result);
+    mongoUser.updateOne({ email: email }, { $set: changes }, function (
+      err,
+      result
+    ) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(result);
     });
   });
 }
@@ -56,8 +63,10 @@ function updateUserByEmail(email, changes) {
 function updateUserById(id, changes) {
   return new Promise((resolve, reject) => {
     mongoUser.updateOne({ _id: id }, { $set: changes }, function (err, result) {
-      if (err) reject(err);
-      else resolve(result);
+      if (err) {
+        return reject(err);
+      }
+      resolve(result);
     });
   });
 }
@@ -69,18 +78,18 @@ module.exports = {
   putUser,
   updateUserByEmail,
   updateUserById
-}
+};
 
-queryAllUsers().then((d) => {
-  console.log(d);
+queryAllUsers().then(d => {
+  console.log("USERS: \n", d);
 });
 
-// mongoUser.deleteOne({ _id: "5c113eb8077dc823b0212a0f" }, (err, result) => {
+// mongoUser.deleteOne({ _id: "5c3a957ca8c6c22710a88a65" }, (err, result) => {
 //   if (err) return console.error(err);
 //   console.log(result);
 // });
 
-// mongoUser.updateOne({ _id: '5c12925fa9ca4d4acbc6b597' }, { $set: {role: "ADMIN"} }, function (err, result) {
+// mongoUser.updateOne({ _id: '5c36c78c19a9a73e3c3753ef' }, { $set: { stripeCustomerId: "" } }, function (err, result) { //{role: "ADMIN"}
 //   if (err) return console.error(err);
 //   console.log(result);
 // });
