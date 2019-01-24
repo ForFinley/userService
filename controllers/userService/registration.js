@@ -1,9 +1,10 @@
 const AWS = require('aws-sdk');
-const docClient = new AWS.DynamoDB.DocumentClient({ region: 'us-east-1' });
+const docClient = new AWS.DynamoDB.DocumentClient({ region: process.env.REGION });
 const httpUtil = require("../utils/httpUtil.js");
-const database = require("../utils/mongoUser.js");
 const cryptoUtil = require("../utils/crypto.js");
 const nodemailer = require("../utils/nodemailer.js");
+const uuidv1 = require('uuid/v1');
+const userTable = process.env.USER_TABLE;
 
 function validate(body, res) {
   if (!body.email) {
@@ -35,36 +36,39 @@ module.exports.handler = async function (req, res) {
   email = email.trim().toLowerCase();
 
   try {
-    let params = {
-      TableName: "users",
+
+    let user = await docClient.query({
+      TableName: userTable,
       IndexName: 'email-index',
       KeyConditionExpression: 'email = :email',
       ExpressionAttributeValues: {
         ':email': email
       },
       ReturnConsumedCapacity: 'TOTAL'
-    };
-    let user = await docClient.get(params).promise();
-    console.log(user);
-    // let user = await database.queryUserByEmail(email);
-    if (user.Item) {
+    }).promise();
+
+    if (user.Count > 0) {
       return res.status(400).send(httpUtil.createResponse(400, "ERROR - email in use."));
     }
     else {
+      // console.log("USER: ", user);
       let passwordResult = cryptoUtil.encryptPassword(password);
       let emailHash = cryptoUtil.hashEncrypt(email);
 
-      let user = {
-        email: email,
-        email: email,
-        password: passwordResult.encryptPass,
-        salt: passwordResult.salt,
-        emailVerified: false,
-        role: "PEASANT"
-      };
-      console.log("USER: ", user);
-      database.putUser(user);
+      await docClient.put({
+        TableName: userTable,
+        Item: {
+          userId: uuidv1(),
+          email: email,
+          password: passwordResult.encryptPass,
+          salt: passwordResult.salt,
+          emailVerified: false,
+          role: "PEASANT"
+        }
+      }).promise();
+
       nodemailer.sendEmailVerification(email, emailHash);
+
       return res.send(httpUtil.createResponse(200, "SUCCESS : User added."));
     }
   }

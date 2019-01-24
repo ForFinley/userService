@@ -20,9 +20,9 @@ module.exports.handler = function (req, res) {
   }
 
   let email = req.body.email;
-  let id = req.user._id;
+  let userId = req.user.userId;
 
-  let newEmailHash = cryptoUtil.hashEncrypt(id);
+  let newEmailHash = cryptoUtil.hashEncrypt(userId);
 
   nodemailer.changeEmail(email, newEmailHash);
   return res.send(httpUtil.createResponse(200, "SUCCESS : change email email sent."));
