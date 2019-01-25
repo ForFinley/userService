@@ -69,7 +69,7 @@ module.exports.handler = async function (req, res) {
 
       nodemailer.sendEmailVerification(email, emailHash);
 
-      return res.send(httpUtil.createResponse(200, "SUCCESS : User added."));
+      return res.status(200).send(httpUtil.createResponse(200, "SUCCESS : User added."));
     }
   }
   catch (e) {

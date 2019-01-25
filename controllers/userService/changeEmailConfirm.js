@@ -72,11 +72,11 @@ module.exports.handler = async function (req, res) {
         let emailHash = cryptoUtil.hashEncrypt(email);
         nodemailer.sendEmailVerification(email, emailHash);
 
-        res.send(httpUtil.createResponse(200, "SUCCESS : New email updated."));
+        res.status(200).send(httpUtil.createResponse(200, "SUCCESS : New email updated."));
       }
       else {
         console.log("**ERROR** emailVerified update failed.")
-        return res.send(httpUtil.createResponse(500, "ERROR : new email update failed."));
+        return res.status(500).send(httpUtil.createResponse(500, "ERROR : new email update failed."));
       }
     }
   }

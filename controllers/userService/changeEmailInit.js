@@ -25,5 +25,5 @@ module.exports.handler = function (req, res) {
   let newEmailHash = cryptoUtil.hashEncrypt(userId);
 
   nodemailer.changeEmail(email, newEmailHash);
-  return res.send(httpUtil.createResponse(200, "SUCCESS : change email email sent."));
+  return res.status(200).send(httpUtil.createResponse(200, "SUCCESS : change email email sent."));
 }

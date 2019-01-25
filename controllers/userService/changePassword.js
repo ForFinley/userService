@@ -85,7 +85,7 @@ module.exports.handler = async function (req, res) {
   }
   catch (e) {
     console.log('**ERROR** ', e);
-    return res.send(httpUtil.createResponse(500, "ERROR : Internal server error."));
+    return res.status(500).send(httpUtil.createResponse(500, "ERROR : Internal server error."));
   }
   if (idBool) {
     console.log("email does not exist.");

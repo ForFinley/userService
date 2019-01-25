@@ -63,11 +63,11 @@ module.exports.handler = async function (req, res) {
 
     //Checks to see if update worked
     if (updateEmailVerified.Attributes.emailVerified === true) {
-      return res.send(httpUtil.createResponse(200, "SUCCESS : Email verified."));
+      return res.status(200).send(httpUtil.createResponse(200, "SUCCESS : Email verified."));
     }
     else {
       console.log("**ERROR** Dynamo update failed.")
-      return res.send(httpUtil.createResponse(500, "ERROR : email verification failed."));
+      return res.status(500).send(httpUtil.createResponse(500, "ERROR : email verification failed."));
     }
   }
   catch (e) {

@@ -23,5 +23,5 @@ module.exports.handler = function (req, res) {
   let passwordResetHash = cryptoUtil.hashEncrypt(email);
 
   nodemailer.passwordReset(email, passwordResetHash);
-  return res.send(httpUtil.createResponse(200, "SUCCESS : Password reset email sent."));
+  return res.status(200).send(httpUtil.createResponse(200, "SUCCESS : Password reset email sent."));
 }
