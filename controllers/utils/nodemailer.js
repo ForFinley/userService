@@ -79,7 +79,7 @@ function changeEmail(email, hash) {
     }
   });
 
-  let url = "http://localhost:3000/passwordReset/" + hash;
+  let url = "http://localhost:3000/changeEmail/" + hash;
   let mailOptions = {
     from: '"Change Email" <ryqanbb@gmail.com>',
     to: email,

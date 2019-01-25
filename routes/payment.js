@@ -43,17 +43,4 @@ router.post("/charge", authenticate, charge.handler);
  */
 router.get("/userBillingHistory", authenticate, getUserBillingHistory.handler);
 
-
-/**
- * TEST ENDPOINT to get test products
- * Uncomment bottom of mongoProduct.js to create product object in DB.
- */
-let { queryAllProducts } = require("../controllers/utils/mongoProduct.js");
-router.get("/testProducts", authenticate,
-  async (req, res) => {
-    let result = await queryAllProducts();
-    res.status(200).send(result);
-  }
-);
-
 module.exports = router;

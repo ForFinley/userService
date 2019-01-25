@@ -4,7 +4,7 @@ module.exports.handler = (req, res) => {
   console.log("Starting function signIn...");
   console.log(req.user);
   let user = {
-    _id: req.user._id,
+    userId: req.user.userId,
     email: req.user.email,
   }
   const token = jwtUtil.generateToken(req.user);

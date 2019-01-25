@@ -1,7 +1,11 @@
+const AWS = require('aws-sdk');
+const docClient = new AWS.DynamoDB.DocumentClient({ region: process.env.REGION });
+const uuidv1 = require('uuid/v1');
 const stripe = require("./stripeInstance");
-const { queryUserById } = require("../utils/mongoUser");
-const { queryProductById } = require("../utils/mongoProduct");
-const { putBillingHistory } = require("../utils/mongoBillingHistory");
+const httpUtil = require('../utils/httpUtil.js');
+const userTable = process.env.USER_TABLE;
+const productTable = process.env.PRODUCT_TABLE;
+const billingHistoryTable = process.env.BILLING_HISTORY_TABLE;
 
 function validate(body, res) {
   if (!body.productId) {
@@ -20,56 +24,84 @@ module.exports.handler = async function (req, res) {
   }
   try {
     //Need to get these to run parallel
-    const user = await queryUserById(req.user._id);
-    const product = await queryProductById(req.body.productId);
+    let user = await docClient.get({
+      TableName: userTable,
+      Key: {
+        userId: req.user.userId
+      },
+      ReturnConsumedCapacity: 'TOTAL'
+    }).promise();
+
+    let product = await docClient.get({
+      TableName: productTable,
+      Key: {
+        productId: req.body.productId
+      },
+      ReturnConsumedCapacity: 'TOTAL'
+    }).promise();
 
     let chargeParams = {
-      amount: (product.price * 100),
-      currency: product.currency,
-      customer: user.stripeCustomerId,
+      amount: (product.Item.price * 100),
+      currency: product.Item.currency,
+      customer: user.Item.stripeCustomerId,
     }
     const chargeInfo = await stripe.charges.create(chargeParams);
-    // console.log("chargeInfo: ", chargeInfo);
-    let billingHistoryRecord = await setBillingHistory(user, product, chargeInfo);
-    console.log("HERE", billingHistoryRecord);
-    return res.status(200).send(billingHistoryRecord);
+
+    let billingHistoryRecord = await setBillingHistory(user.Item, product.Item, chargeInfo);
+
+    if (billingHistoryRecord) {
+      return res.status(200).send(httpUtil.createResponse(200, billingHistoryRecord.Item));
+    }
+    else throw "Adding billing record failed, user may have been charged.";
   }
   catch (e) {
     console.log("**ERROR** ", e);
-    if (e.raw.code === "missing") { return res.status(500).send("ERROR : Charge failed, no card on file."); }
-    return res.status(500).send("ERROR : Charge failed.");
+    if (e.raw && e.raw.code === "missing") { return res.status(500).send("ERROR : Charge failed, no card on file."); }
+    return res.status(500).send(httpUtil.createResponse(500, "ERROR :" + e));
   }
 };
 
 async function setBillingHistory(user, product, chargeInfo) {
   //Converts to string UTC date
   let transactionDate = new Date(chargeInfo.created * 1000).toISOString();
-
+  let billingHistoryId = uuidv1();
   let params = {
-    userId: user._id,
-    productId: product._id,
-    stripeChargeId: chargeInfo.id,
-    price: product.price,
-    currency: product.currency,
-    transactionDate: transactionDate,
-    paymentHandler: "STRIPE",
-    cardBrand: user.stripeBillingCardBrand,
-    cardLastFour: user.stripeBillingCardLast4,
-    cardExpiration: user.stripeBillingCardExpMonth + "/" + user.stripeBillingCardExpYear,
-    shippingAddressLine1: user.shippingAddressLine1,
-    shippingAddressCity: user.shippingAddressCity,
-    shippingAddressCountry: user.shippingAddressCountry,
-    shippingAddressLine2: user.shippingAddressLine2,
-    shippingAdddressPostalCode: user.shippingAdddressPostalCode,
-    shippingAddressState: user.shippingAddressState,
-    paymentChargeType: chargeInfo.object.toUpperCase()
+    Item: {
+      billingHistoryId: billingHistoryId,
+      userId: user.userId,
+      productId: product.productId,
+      stripeChargeId: chargeInfo.id,
+      price: product.price,
+      currency: product.currency,
+      transactionDate: transactionDate,
+      paymentHandler: "STRIPE",
+      cardBrand: user.stripeBillingCardBrand,
+      cardLastFour: user.stripeBillingCardLast4,
+      cardExpiration: user.stripeBillingCardExp,
+      shippingAddressLine1: user.shippingAddressLine1,
+      shippingAddressCity: user.shippingAddressCity,
+      shippingAddressCountry: user.shippingAddressCountry,
+      shippingAddressLine2: user.shippingAddressLine2,
+      shippingAdddressPostalCode: user.shippingAdddressPostalCode,
+      shippingAddressState: user.shippingAddressState,
+      paymentChargeType: chargeInfo.object.toUpperCase()
+    },
+    ReturnConsumedCapacity: "TOTAL",
+    TableName: billingHistoryTable
   }
   try {
-    // console.log(params);
-    return putBillingHistory(params);
+    await docClient.put(params).promise();
+    return await docClient.get({
+      TableName: billingHistoryTable,
+      Key: {
+        userId: user.userId,
+        billingHistoryId: billingHistoryId
+      },
+      ReturnConsumedCapacity: 'TOTAL'
+    }).promise();
   }
   catch (e) {
-    console.log("**ERROR** ", e);
+    console.log("**ERROR** With dynamo:", e);
     return;
   }
 };

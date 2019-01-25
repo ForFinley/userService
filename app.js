@@ -12,8 +12,6 @@ const passportFunctions = require("./controllers/utils/passport.js");
 const app = express();
 const PORT = 4000;
 
-const dbConnection = require("./controllers/utils/mongoConnection.js");
-
 const index = require("./routes/index.js");
 const userService = require("./routes/userService.js");
 const admin = require("./routes/admin.js");
