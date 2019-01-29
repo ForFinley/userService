@@ -53,6 +53,8 @@ router.get("/verifyEmail/:emailHash", verifyEmail.handler);
  * Headers: authorization: Bearer <Token>
  */
 router.get("/me", authenticate, addFullUser, function (req, res) {
+  delete req.user.password;
+  delete req.user.salt;
   res.status(200).json(req.user);
 });
 

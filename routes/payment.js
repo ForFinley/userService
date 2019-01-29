@@ -15,7 +15,7 @@ const getUserBillingHistory = require("../controllers/payment/getUserBillingHist
  * payment/setBillingCard
  * Headers: authorization: Bearer <Token>
  * Body: token, line1, city, country, line2, postalCode, state
- * Takes in source token created on frontend from stripe and shipping address of cardholder.
+ * Takes in source token created on frontend from stripe and billing address of cardholder.
  * Creates a card in stripe and creates a new customer or assigns it to customer if they already exist, writes info to DB (userModel)
  */
 router.post("/setBillingCard", authenticate, addFullUser, setBillingCard.handler);

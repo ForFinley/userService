@@ -10,7 +10,7 @@ module.exports.handler = async function (req, res) {
     let result = {
       Items: users
     }
-    return res.send(httpUtil.createResponse(200, result));
+    return res.status(200).send(httpUtil.createResponse(200, result));
   }
   catch (e) {
     console.log('**ERROR** ', e);

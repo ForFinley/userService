@@ -4,7 +4,7 @@ const userTable = process.env.USER_TABLE;
 
 
 //this middleware meant to go after 'authenticate' middleware
-//so req.user._id is already defined
+//so req.userId is already defined
 module.exports = async (req, res, next) => {
   console.log("Starting function addFullUser...");
   console.log(req.user);
