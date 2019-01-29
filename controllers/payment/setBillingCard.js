@@ -35,7 +35,7 @@ module.exports.handler = async function (req, res) {
 
     //New customer
     if (!stripeCustomerId) {
-
+      newAddress = true; //so address is added to dynamo
       let params = {
         email: req.user.email,
         source: req.body.token,
@@ -95,13 +95,13 @@ module.exports.handler = async function (req, res) {
     if (card.exp_month < 10) card.exp_month = '0' + card.exp_month;
 
     let updateExpression = 'set #stripeBillingCardBrand = :stripeBillingCardBrand, #stripeBillingCardExp = :stripeBillingCardExp';
-    updateExpression += ', #stripeBillingCardLast4 = :stripeBillingCardLast4';
+    updateExpression += ', #stripeBillingCardLast4 = :stripeBillingCardLast4, #stripeCardId = :stripeCardId';
 
-    if (newAddress === true) {
-      updateExpression += ', #stripeCardId = :stripeCardId, #billingAddressLine1 = :billingAddressLine1, #billingAddressCity = :billingAddressCity';
-      updateExpression += ', #billingAddressCountry = :billingAddressCountry, #billingAddressLine2 = :billingAddressLine2';
-      updateExpression += ', #billingAdddressPostalCode = :billingAdddressPostalCode, #billingAddressState = :billingAddressState';
-    }
+    // if (newAddress === true) {
+    updateExpression += ', #billingAddressLine1 = :billingAddressLine1, #billingAddressCity = :billingAddressCity';
+    updateExpression += ', #billingAddressCountry = :billingAddressCountry, #billingAddressLine2 = :billingAddressLine2';
+    updateExpression += ', #billingAdddressPostalCode = :billingAdddressPostalCode, #billingAddressState = :billingAddressState';
+    // }
 
     if (newCustomer === true) updateExpression += ', #stripeCustomerId = :stripeCustomerId'
 
@@ -126,7 +126,7 @@ module.exports.handler = async function (req, res) {
         ':billingAddressLine1': req.body.line1 || ' ',
         ':billingAddressCity': req.body.city || ' ',
         ':billingAddressCountry': req.body.country || ' ',
-        ':billingAddressLine2': req.body.country || ' ',
+        ':billingAddressLine2': req.body.line2 || ' ',
         ':billingAdddressPostalCode': req.body.postalCode || ' ',
         ':billingAddressState': req.body.state || ' '
       },
@@ -159,6 +159,7 @@ module.exports.handler = async function (req, res) {
     }
 
     try {
+      console.log(updateRequest)
       //update the user in DB with relevant card info
       let updatedUser = await docClient.update(updateRequest).promise();
       //Checks to see if update worked

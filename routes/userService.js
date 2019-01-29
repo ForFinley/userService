@@ -55,6 +55,7 @@ router.get("/verifyEmail/:emailHash", verifyEmail.handler);
 router.get("/me", authenticate, addFullUser, function (req, res) {
   delete req.user.password;
   delete req.user.salt;
+  delete req.user.stripeCustomerId;
   res.status(200).json(req.user);
 });
 
