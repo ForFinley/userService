@@ -14,6 +14,7 @@ const passwordResetInit = require("../controllers/userService/passwordResetInit.
 const passwordResetConfirm = require("../controllers/userService/passwordResetConfirm.js");
 const changeEmailInit = require("../controllers/userService/changeEmailInit.js");
 const changeEmailConfirm = require("../controllers/userService/changeEmailConfirm.js");
+const passportFunctions = require("../controllers/utils/passport.js");
 
 /**
  * /userService/registration
@@ -26,8 +27,12 @@ router.post("/registration", registration.handler);
  * /userService/signIn
  * Body: email, password
  * Returns Bearer authorization token
+ * 
+ * Google SignIn
+ * Headers: Authorization: google token (googleUser.getAuthResponse().id_token)
+ * Body: provider:google
  */
-router.post("/signIn", passport.initialize(), passport.authenticate("local", {
+router.post("/signIn", passportFunctions.provider, passport.initialize(), passport.authenticate("local", {
   session: false,
   scope: []
 }), signIn.handler);
