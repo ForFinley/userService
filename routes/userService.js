@@ -21,7 +21,7 @@ const passportFunctions = require("../controllers/utils/passport.js");
  * Body: email, password
  * Adds user to DB
  */
-router.post("/registration", registration.handler);
+router.post("/registration", passportFunctions.provider, registration.handler);
 
 /**
  * /userService/signIn

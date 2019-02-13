@@ -60,6 +60,10 @@ async function provider(req, res, next) {
         req.body.email = payload.email;
         req.body.password = password;
       }
+      else {
+        req.body.email = payload.email;
+        req.body.password = payload.sub;
+      }
 
     }
     catch (e) {
