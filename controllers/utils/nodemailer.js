@@ -1,14 +1,19 @@
 const nodemailer = require("nodemailer");
 
+const host = "smtp.gmail.com";
+const port = 465;
+const secure = true;
+const auth = {
+  user: "ryqanbb@gmail.com",
+  pass: "Ilovebeyblades!"
+}
+
 function sendEmailVerification(email, emailHash) {
   let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: "ryqanbb@gmail.com",
-      pass: "Ilovebeyblades!"
-    }
+    host,
+    port,
+    secure,
+    auth
   });
 
   // let url = "http://localhost:4000/verify/"+emailHash;
@@ -36,13 +41,10 @@ function sendEmailVerification(email, emailHash) {
 
 function passwordReset(email, hash) {
   let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: "ryqanbb@gmail.com",
-      pass: "Ilovebeyblades!"
-    }
+    host,
+    port,
+    secure,
+    auth
   });
 
   let url = "http://localhost:3000/passwordReset/" + hash;
@@ -70,13 +72,10 @@ function passwordReset(email, hash) {
 
 function changeEmail(email, hash) {
   let transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: "ryqanbb@gmail.com",
-      pass: "Ilovebeyblades!"
-    }
+    host,
+    port,
+    secure,
+    auth
   });
 
   let url = "http://localhost:3000/changeEmail/" + hash;
