@@ -47,9 +47,7 @@ module.exports.handler = async function(req, res) {
       role: "PEASANT"
     };
     putUser(putParams);
-
     sendEmailVerification(email, emailHash);
-
     return res.status(200).send({ userId, email });
   } catch (e) {
     console.log("**ERROR** ", e);

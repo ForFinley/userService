@@ -34,8 +34,6 @@ app.use("/userService", userService);
 app.use("/admin", admin);
 app.use("/payment", payment);
 
-let server = app.listen(PORT, () => {
+exports.server = app.listen(PORT, () => {
   console.log("server running at " + PORT);
 });
-
-module.exports = app;

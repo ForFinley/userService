@@ -6,7 +6,7 @@ const secure = true;
 const auth = {
   user: "ryqanbb@gmail.com",
   pass: "Ilovebeyblades!"
-}
+};
 
 function sendEmailVerification(email, emailHash) {
   let transporter = nodemailer.createTransport({
@@ -35,7 +35,7 @@ function sendEmailVerification(email, emailHash) {
     if (error) {
       return console.log(error);
     }
-    console.log("Message sent: %s", info.messageId);
+    // console.log("Message sent: %s", info.messageId);
   });
 }
 
@@ -65,10 +65,9 @@ function passwordReset(email, hash) {
     if (error) {
       return console.log(error);
     }
-    console.log("Message sent: %s", info.messageId);
+    // console.log("Message sent: %s", info.messageId);
   });
 }
-
 
 function changeEmail(email, hash) {
   let transporter = nodemailer.createTransport({
@@ -96,7 +95,7 @@ function changeEmail(email, hash) {
     if (error) {
       return console.log(error);
     }
-    console.log("Message sent: %s", info.messageId);
+    // console.log("Message sent: %s", info.messageId);
   });
 }
 
