@@ -1,8 +1,5 @@
-const AWS = require("aws-sdk");
-const docClient = new AWS.DynamoDB.DocumentClient({
-  region: process.env.REGION
-});
-const { USER_TABLE } = process.env;
+const { docClient } = require('../controllers/utils/dynamoSetup.js');
+const { USER_TABLE } = require('../env.js');
 
 exports.userInDynamo = async userId => {
   const params = {
@@ -10,15 +7,16 @@ exports.userInDynamo = async userId => {
     Key: { userId }
   };
   const result = await docClient.get(params).promise();
-  if (result.Item && result.Item.userId) return result.Item.userId;
+  if (result.Item && result.Item.userId) return true;
   return false;
 };
 
-exports.deleteUserInDynamo = async userId => {
+exports.getUser = async userId => {
   const params = {
     TableName: USER_TABLE,
     Key: { userId }
   };
-  console.log(params);
-  return docClient.delete(params).promise();
+  const result = await docClient.get(params).promise();
+  if (result.Item && result.Item.userId) return result.Item;
+  return false;
 };

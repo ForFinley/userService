@@ -9,7 +9,6 @@ if (process.env.NODE_ENV === 'TEST') {
     endpoint: new AWS.Endpoint('http://localhost:8000'),
     accessKeyId: 'accessKeyId',
     secretAccessKey: 'secretAccessKey'
-    // apiVersion: '2012-08-10'
   });
 }
 AWS.config.update(config);

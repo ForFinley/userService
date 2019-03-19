@@ -3,8 +3,6 @@ const { dynamodb, docClient } = require('../controllers/utils/dynamoSetup.js');
 const { USER_TABLE } = require('../env.js');
 const port = 8000;
 
-// dynamodbLocal.remove(() => { });
-
 exports.startDynamoLocal = () => {
   dynamodbLocal.install(() => {});
   dynamodbLocal.start({ port, inMemory: true });
@@ -33,8 +31,8 @@ exports.createTables = async () => {
       }
     ],
     ProvisionedThroughput: {
-      ReadCapacityUnits: 5,
-      WriteCapacityUnits: 5
+      ReadCapacityUnits: 10,
+      WriteCapacityUnits: 10
     },
     GlobalSecondaryIndexes: [
       {
@@ -49,8 +47,8 @@ exports.createTables = async () => {
           ProjectionType: 'ALL'
         },
         ProvisionedThroughput: {
-          ReadCapacityUnits: 5,
-          WriteCapacityUnits: 5
+          ReadCapacityUnits: 10,
+          WriteCapacityUnits: 10
         }
       }
     ],
@@ -67,160 +65,77 @@ exports.createTables = async () => {
 };
 
 exports.createRecords = async () => {
-  //For getWatchHistory test - Should get user watch history
-  const { getVideoHistory } = require('./getWatchHistory/fixtures.js');
   const {
-    deleteSingleVideo,
-    deleteMultipleVideos
-  } = require('./deleteWatchHistory/fixtures.js');
+    registerNewUserExistingEmail
+  } = require('./registration/fixtures.js');
+  const { signInUser } = require('./signIn/fixtures.js');
+  const { verifyEmail } = require('./verifyEmail/fixtures.js');
+  const { changePassword } = require('./changePassword/fixtures.js');
+  const { resetPasswordConfirm } = require('./passwordReset/fixtures.js');
 
-  const paramsEpisode = {
+  const registerNewUserExistingEmailParams = {
     TableName: USER_TABLE,
     Item: {
-      userId: getVideoHistory.pathParameters.userId,
-      sortKey: `EPISODE#${getVideoHistory.queryStringParameters.seriesId}#${
-        getVideoHistory.nockVideoId
-      }`,
-      videoId: getVideoHistory.nockVideoId,
-      seriesId: getVideoHistory.queryStringParameters.seriesId,
-      hide: false,
-      recordType: 'EPISODE',
-      updateDate: '2018-03-13T20:43:25.115Z',
-      watchedTime: 30,
-      watchedPercentage: 2,
-      completed: false
-    },
-    ReturnConsumedCapacity: 'TOTAL'
-  };
-  //For getWatchHistory test - Should get user series watch history
-  const paramsLatest = {
-    TableName: USER_TABLE,
-    Item: {
-      userId: getVideoHistory.pathParameters.userId,
-      sortKey: `LATEST_EPISODE#${
-        getVideoHistory.queryStringParameters.seriesId
-      }`,
-      videoId: getVideoHistory.nockVideoId,
-      seriesId: getVideoHistory.queryStringParameters.seriesId,
-      hide: false,
-      recordType: 'LATEST_EPISODE',
-      updateDate: '2018-03-13T20:43:25.115Z',
-      watchedTime: 30,
-      watchedPercentage: 2,
-      completed: false
-    },
-    ReturnConsumedCapacity: 'TOTAL'
+      userId: registerNewUserExistingEmail.userId,
+      email: registerNewUserExistingEmail.body.email,
+      password: registerNewUserExistingEmail.body.password
+    }
   };
 
-  const paramsDeleteEpisode = {
+  const signInUserRecord = {
     TableName: USER_TABLE,
     Item: {
-      userId: deleteSingleVideo.pathParameters.userId,
-      sortKey: `EPISODE#${deleteSingleVideo.queryStringParameters.seriesId}#${
-        deleteSingleVideo.queryStringParameters.videoIds
-      }`,
-      videoId: deleteSingleVideo.queryStringParameters.videoIds,
-      hide: false,
-      recordType: 'EPISODE',
-      updateDate: '2018-03-13T20:43:25.115Z',
-      watchedTime: 30,
-      watchedPercentage: 15,
-      completed: false
-    },
-    ReturnConsumedCapacity: 'TOTAL'
+      userId: signInUser.userId,
+      email: signInUser.body.email,
+      password: signInUser.encrytPassword,
+      salt: signInUser.salt
+    }
   };
 
-  const paramsDeleteAll1 = {
+  const verifyEmailParams = {
     TableName: USER_TABLE,
     Item: {
-      userId: deleteMultipleVideos.pathParameters.userId,
-      sortKey: `EPISODE#${
-        deleteMultipleVideos.queryStringParameters.seriesId
-      }#1`,
-      videoId: '1',
-      hide: false,
-      recordType: 'EPISODE',
-      updateDate: '2018-03-13T20:43:25.115Z',
-      watchedTime: 120,
-      watchedPercentage: 24,
-      completed: false
-    },
-    ReturnConsumedCapacity: 'TOTAL'
+      userId: verifyEmail.userId,
+      email: verifyEmail.email,
+      emailVerified: false
+    }
   };
 
-  const paramsDeleteAll2 = {
+  const changePasswordParams = {
     TableName: USER_TABLE,
     Item: {
-      userId: deleteMultipleVideos.pathParameters.userId,
-      sortKey: `EPISODE#${
-        deleteMultipleVideos.queryStringParameters.seriesId
-      }#2`,
-      videoId: '2',
-      hide: false,
-      recordType: 'EPISODE',
-      updateDate: '2018-03-13T20:43:25.115Z',
-      watchedTime: 660,
-      watchedPercentage: 93,
-      completed: false
-    },
-    ReturnConsumedCapacity: 'TOTAL'
+      userId: changePassword.user.userId,
+      password: changePassword.encryptPass,
+      salt: changePassword.salt
+    }
   };
 
-  const paramsDeleteAll3 = {
+  const resetPasswordConfirmParams = {
     TableName: USER_TABLE,
     Item: {
-      userId: deleteMultipleVideos.pathParameters.userId,
-      sortKey: `EPISODE#${
-        deleteMultipleVideos.queryStringParameters.seriesId
-      }#3`,
-      videoId: '3',
-      hide: false,
-      recordType: 'EPISODE',
-      updateDate: '2018-03-13T20:43:25.115Z',
-      watchedTime: 30,
-      watchedPercentage: 15,
-      completed: false
-    },
-    ReturnConsumedCapacity: 'TOTAL'
+      userId: resetPasswordConfirm.userId,
+      email: resetPasswordConfirm.email,
+      password: resetPasswordConfirm.oldPassword,
+      salt: resetPasswordConfirm.salt
+    }
   };
 
-  const paramsDeleteAllLatest = {
-    TableName: USER_TABLE,
-    Item: {
-      userId: deleteMultipleVideos.pathParameters.userId,
-      sortKey: `LATEST_EPISODE#${
-        deleteMultipleVideos.queryStringParameters.seriesId
-      }#3`,
-      videoId: '3',
-      hide: false,
-      recordType: 'EPISODE',
-      updateDate: '2018-03-13T20:43:25.115Z',
-      watchedTime: 30,
-      watchedPercentage: 15,
-      completed: false
-    },
-    ReturnConsumedCapacity: 'TOTAL'
-  };
-
-  let arr = [
-    docClient.put(paramsEpisode).promise(),
-    docClient.put(paramsLatest).promise(),
-    docClient.put(paramsDeleteEpisode).promise(),
-    docClient.put(paramsDeleteAll1).promise(),
-    docClient.put(paramsDeleteAll2).promise(),
-    docClient.put(paramsDeleteAll3).promise(),
-    docClient.put(paramsDeleteAllLatest).promise()
+  const arr = [
+    await docClient.put(registerNewUserExistingEmailParams).promise(),
+    await docClient.put(signInUserRecord).promise(),
+    await docClient.put(verifyEmailParams).promise(),
+    await docClient.put(changePasswordParams).promise(),
+    await docClient.put(resetPasswordConfirmParams).promise()
   ];
+
   await Promise.all(arr);
 
   console.log('TEST RECORDS CREATED');
 
-  // let t = await docClient.query({
-  //   TableName, KeyConditionExpression:
-  //     "userId = :userId",
-  //   ExpressionAttributeValues:
-  //     ":userId": getUserHistory.pathParameters.userId
-  //   }
-  // }).promise();
-  // console.log("HUR", t)
+  // let t = await docClient
+  //   .scan({
+  //     TableName: USER_TABLE
+  //   })
+  //   .promise();
+  // console.log('HUR', t);
 };

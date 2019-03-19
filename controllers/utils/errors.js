@@ -1,12 +1,3 @@
-class DeviceCountExceededError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = this.constructor.name;
-    this.statusCode = 401;
-    this.message = message;
-  }
-}
-
 class InvalidCredentialsError extends Error {
   constructor(message) {
     super(message);
@@ -51,16 +42,15 @@ const resolveErrorSendResponse = (e, res) => {
   } else {
     console.log(e);
     res.status(500).send({
-      message: "Internal server Error"
+      message: 'Internal Server Error'
     });
   }
 };
 
 module.exports = {
-  DeviceCountExceededError,
   InvalidCredentialsError,
   ResourceExistsError,
   ValidationError,
   ResourceNotFoundError,
   resolveErrorSendResponse
-}
+};
