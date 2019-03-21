@@ -34,3 +34,17 @@ exports.authenticate = async (req, res, next) => {
     resolveErrorSendResponse(new InvalidCredentialsError('Unauthorized'), res);
   }
 };
+
+exports.auth = async authorization => {
+  try {
+    const token = authorization;
+    const decodeToken = await jwt.verify(token, key);
+    return {
+      userId: decodeToken.userId,
+      email: decodeToken.email,
+      role: decodeToken.role
+    };
+  } catch (e) {
+    return false;
+  }
+};

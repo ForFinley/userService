@@ -33,7 +33,7 @@ exports.passwordResetTests = () => {
       .send(resetPasswordInitBadEmail.body)
       .end(async (err, res) => {
         expect(res).to.have.status(400);
-        const toBe = 'Email not sent';
+        const toBe = 'Verification email not sent';
         expect(res.body.message).to.equal(toBe);
         done();
       });

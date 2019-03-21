@@ -8,7 +8,7 @@ const auth = {
   pass: 'Ilovebeyblades!'
 };
 
-function sendEmailVerification(email, emailHash) {
+exports.sendEmailVerification = async (email, emailHash) => {
   let transporter = nodemailer.createTransport({
     host,
     port,
@@ -31,15 +31,14 @@ function sendEmailVerification(email, emailHash) {
       '</a>'
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return console.log(error);
-    }
-    // console.log("Message sent: %s", info.messageId);
-  });
-}
+  try {
+    return await transporter.sendMail(mailOptions);
+  } catch (e) {
+    return false;
+  }
+};
 
-const passwordReset = async (email, hash) => {
+exports.sendPasswordReset = async (email, hash) => {
   let transporter = nodemailer.createTransport({
     host,
     port,
@@ -66,7 +65,7 @@ const passwordReset = async (email, hash) => {
   }
 };
 
-function changeEmail(email, hash) {
+exports.sendChangeEmail = async (email, hash) => {
   let transporter = nodemailer.createTransport({
     host,
     port,
@@ -88,16 +87,9 @@ function changeEmail(email, hash) {
       '</a>'
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return console.log(error);
-    }
-    // console.log("Message sent: %s", info.messageId);
-  });
-}
-
-module.exports = {
-  sendEmailVerification,
-  passwordReset,
-  changeEmail
+  try {
+    return await transporter.sendMail(mailOptions);
+  } catch (e) {
+    return false;
+  }
 };

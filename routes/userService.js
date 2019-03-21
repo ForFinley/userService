@@ -10,6 +10,7 @@ const verifyEmail = require('../controllers/userService/verifyEmail.js');
 const passwordReset = require('../controllers/userService/passwordReset.js');
 const changeEmailInit = require('../controllers/userService/changeEmailInit.js');
 const changeEmailConfirm = require('../controllers/userService/changeEmailConfirm.js');
+const changeEmail = require('../controllers/userService/changeEmail.js');
 
 /**
  * /userService/registration
@@ -86,5 +87,8 @@ router.post('/changeEmailInit', authenticate, changeEmailInit.handler);
  * Changes email.
  */
 router.post('/changeEmailConfirm', changeEmailConfirm.handler);
+
+router.post('/changeEmail/:test', changeEmail.handler);
+router.post('/changeEmail', changeEmail.handler);
 
 module.exports = router;

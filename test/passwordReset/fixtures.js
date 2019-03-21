@@ -7,7 +7,7 @@ exports.resetPasswordInit = {
   url,
   headers: {},
   body: {
-    email: 'ryqan33@gmail.com'
+    email: 'ryqan@gmail.com'
   }
 };
 

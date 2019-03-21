@@ -77,3 +77,5 @@ exports.updatePassword = async (userId, passwordResult) => {
   };
   return docClient.update(params).promise();
 };
+
+exports.updateEmail = async (userId, email) => {};

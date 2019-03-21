@@ -11,6 +11,7 @@ const {
   changePasswordTests
 } = require('./changePassword/changePassword.test.js');
 const { passwordResetTests } = require('./passwordReset/passwordReset.test.js');
+const { changeEmailTests } = require('./changeEmail/changeEmail.test.js');
 
 describe('** All Integrated Tests **', () => {
   before(async () => {
@@ -39,5 +40,9 @@ describe('** All Integrated Tests **', () => {
 
   describe('Password Reset', () => {
     passwordResetTests();
+  });
+
+  describe('Change Email', () => {
+    changeEmailTests();
   });
 });
