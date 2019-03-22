@@ -1,17 +1,17 @@
-const { hashEncrypt, hashDecrypt } = require('../utils/crypto.js');
+const { hashEncrypt, hashDecrypt } = require('./utils/crypto.js');
 const {
   sendChangeEmail,
   sendEmailVerification
-} = require('../utils/nodemailer.js');
-const { auth } = require('../utils/jwt.js');
-const { queryUserByEmail, updateEmail } = require('../utils/database.js');
+} = require('./utils/nodemailer.js');
+const { auth } = require('./utils/jwt.js');
+const { queryUserByEmail, updateEmail } = require('./utils/database.js');
 
 const {
   ValidationError,
   InvalidCredentialsError,
   ResourceExistsError,
   resolveErrorSendResponse
-} = require('../utils/errors.js');
+} = require('./utils/errors.js');
 
 const getRequestMode = body => {
   let requestMode;

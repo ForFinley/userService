@@ -1,9 +1,9 @@
-const { queryUserByEmail, userEmailVerified } = require('../utils/database.js');
-const cryptoUtil = require('../utils/crypto.js');
+const { queryUserByEmail, userEmailVerified } = require('./utils/database.js');
+const cryptoUtil = require('./utils/crypto.js');
 const {
   ValidationError,
   resolveErrorSendResponse
-} = require('../utils/errors.js');
+} = require('./utils/errors.js');
 
 function validate(params) {
   if (!params.emailHash || params.emailHash === 'undefined') {

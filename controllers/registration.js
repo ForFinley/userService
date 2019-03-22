@@ -1,12 +1,12 @@
 const uuidv1 = require('uuid/v1');
-const { encryptPassword, hashEncrypt } = require('../utils/crypto.js');
-const { sendEmailVerification } = require('../utils/nodemailer.js');
-const { queryUserByEmail, putUser } = require('../utils/database.js');
+const { encryptPassword, hashEncrypt } = require('./utils/crypto.js');
+const { sendEmailVerification } = require('./utils/nodemailer.js');
+const { queryUserByEmail, putUser } = require('./utils/database.js');
 const {
   ValidationError,
   ResourceExistsError,
   resolveErrorSendResponse
-} = require('../utils/errors.js');
+} = require('./utils/errors.js');
 
 const validate = body => {
   if (!body.email) {

@@ -2,13 +2,13 @@ const {
   hashEncrypt,
   hashDecrypt,
   encryptPassword
-} = require('../utils/crypto.js');
-const { sendPasswordReset } = require('../utils/nodemailer.js');
-const { queryUserByEmail, updatePassword } = require('../utils/database.js');
+} = require('./utils/crypto.js');
+const { sendPasswordReset } = require('./utils/nodemailer.js');
+const { queryUserByEmail, updatePassword } = require('./utils/database.js');
 const {
   ValidationError,
   resolveErrorSendResponse
-} = require('../utils/errors.js');
+} = require('./utils/errors.js');
 
 const getRequestMode = body => {
   let requestMode;

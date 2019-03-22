@@ -1,11 +1,11 @@
-const jwtUtil = require('../utils/jwt.js');
-const { queryUserByEmail } = require('../utils/database.js');
-const { checkPassword } = require('../utils/crypto.js');
+const jwtUtil = require('./utils/jwt.js');
+const { queryUserByEmail } = require('./utils/database.js');
+const { checkPassword } = require('./utils/crypto.js');
 const {
   ValidationError,
   InvalidCredentialsError,
   resolveErrorSendResponse
-} = require('../utils/errors.js');
+} = require('./utils/errors.js');
 
 const validate = body => {
   if (!body.email) {

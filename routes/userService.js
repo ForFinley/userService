@@ -3,12 +3,12 @@ const router = express.Router();
 const { authenticate } = require('../controllers/utils/jwt.js');
 const addFullUser = require('../controllers/utils/addFullUser.js');
 
-const registration = require('../controllers/userService/registration.js');
-const signIn = require('../controllers/userService/signIn.js');
-const changePassword = require('../controllers/userService/changePassword.js');
-const verifyEmail = require('../controllers/userService/verifyEmail.js');
-const passwordReset = require('../controllers/userService/passwordReset.js');
-const changeEmail = require('../controllers/userService/changeEmail.js');
+const registration = require('../controllers/registration.js');
+const signIn = require('../controllers/signIn.js');
+const changePassword = require('../controllers/changePassword.js');
+const verifyEmail = require('../controllers/verifyEmail.js');
+const passwordReset = require('../controllers/passwordReset.js');
+const changeEmail = require('../controllers/changeEmail.js');
 
 /**
  * /userService/registration

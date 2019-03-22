@@ -1,10 +1,10 @@
-const { checkPassword, encryptPassword } = require('../utils/crypto.js');
-const { getUser, updatePassword } = require('../utils/database.js');
+const { checkPassword, encryptPassword } = require('./utils/crypto.js');
+const { getUser, updatePassword } = require('./utils/database.js');
 const {
   ValidationError,
   InvalidCredentialsError,
   resolveErrorSendResponse
-} = require('../utils/errors.js');
+} = require('./utils/errors.js');
 
 const validate = body => {
   if (!body.password) {
