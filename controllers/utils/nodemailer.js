@@ -9,29 +9,27 @@ const auth = {
 };
 
 exports.sendEmailVerification = async (email, emailHash) => {
-  let transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure,
-    auth
-  });
-
-  // let url = "http://localhost:4000/verify/"+emailHash;
-  let url = 'http://localhost:3000/verify/' + emailHash;
-  let mailOptions = {
-    from: '"Verify Email" <ryqanbb@gmail.com>',
-    to: email,
-    subject: 'Email verification',
-    // text: 'Hello world?',
-    html:
-      '<p>Click link to verify email address.</p> <a href=' +
-      url +
-      '>' +
-      url +
-      '</a>'
-  };
-
   try {
+    const transporter = nodemailer.createTransport({
+      host,
+      port,
+      secure,
+      auth
+    });
+
+    const url = 'http://localhost:3000/verify/' + emailHash;
+    const mailOptions = {
+      from: '"Verify Email" <ryqanbb@gmail.com>',
+      to: email,
+      subject: 'Email verification',
+      // text: 'Hello world?',
+      html:
+        '<p>Click link to verify email address.</p> <a href=' +
+        url +
+        '>' +
+        url +
+        '</a>'
+    };
     return await transporter.sendMail(mailOptions);
   } catch (e) {
     return false;
@@ -39,26 +37,26 @@ exports.sendEmailVerification = async (email, emailHash) => {
 };
 
 exports.sendPasswordReset = async (email, hash) => {
-  let transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure,
-    auth
-  });
-
-  let url = 'http://localhost:3000/passwordReset/' + hash;
-  let mailOptions = {
-    from: '"Password Reset" <ryqanbb@gmail.com>',
-    to: email,
-    subject: 'Password Reset',
-    html:
-      '<p>Click link to reset your password.</p> <a href=' +
-      url +
-      '>' +
-      url +
-      '</a>'
-  };
   try {
+    const transporter = nodemailer.createTransport({
+      host,
+      port,
+      secure,
+      auth
+    });
+
+    const url = 'http://localhost:3000/passwordReset/' + hash;
+    const mailOptions = {
+      from: '"Password Reset" <ryqanbb@gmail.com>',
+      to: email,
+      subject: 'Password Reset',
+      html:
+        '<p>Click link to reset your password.</p> <a href=' +
+        url +
+        '>' +
+        url +
+        '</a>'
+    };
     return await transporter.sendMail(mailOptions);
   } catch (e) {
     return false;
@@ -66,28 +64,27 @@ exports.sendPasswordReset = async (email, hash) => {
 };
 
 exports.sendChangeEmail = async (email, hash) => {
-  let transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure,
-    auth
-  });
-
-  let url = 'http://localhost:3000/changeEmail/' + hash;
-  let mailOptions = {
-    from: '"Change Email" <ryqanbb@gmail.com>',
-    to: email,
-    subject: 'Change Email',
-    // text: 'Hello world?',
-    html:
-      '<p>Click link to change your email.</p> <a href=' +
-      url +
-      '>' +
-      url +
-      '</a>'
-  };
-
   try {
+    const transporter = nodemailer.createTransport({
+      host,
+      port,
+      secure,
+      auth
+    });
+
+    const url = 'http://localhost:3000/changeEmail/' + hash;
+    const mailOptions = {
+      from: '"Change Email" <ryqanbb@gmail.com>',
+      to: email,
+      subject: 'Change Email',
+      // text: 'Hello world?',
+      html:
+        '<p>Click link to change your email.</p> <a href=' +
+        url +
+        '>' +
+        url +
+        '</a>'
+    };
     return await transporter.sendMail(mailOptions);
   } catch (e) {
     return false;

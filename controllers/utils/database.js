@@ -78,4 +78,23 @@ exports.updatePassword = async (userId, passwordResult) => {
   return docClient.update(params).promise();
 };
 
-exports.updateEmail = async (userId, email) => {};
+exports.updateEmail = async (userId, email) => {
+  const params = {
+    TableName: USER_TABLE,
+    Key: {
+      userId: userId
+    },
+    UpdateExpression: 'set #email = :email, #emailVerified = :emailVerified',
+    ExpressionAttributeNames: {
+      '#email': 'email',
+      '#emailVerified': 'emailVerified'
+    },
+    ExpressionAttributeValues: {
+      ':email': email,
+      ':emailVerified': false
+    },
+    ReturnConsumedCapacity: 'TOTAL',
+    ReturnValues: 'UPDATED_NEW'
+  };
+  return docClient.update(params).promise();
+};

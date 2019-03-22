@@ -8,8 +8,6 @@ const signIn = require('../controllers/userService/signIn.js');
 const changePassword = require('../controllers/userService/changePassword.js');
 const verifyEmail = require('../controllers/userService/verifyEmail.js');
 const passwordReset = require('../controllers/userService/passwordReset.js');
-const changeEmailInit = require('../controllers/userService/changeEmailInit.js');
-const changeEmailConfirm = require('../controllers/userService/changeEmailConfirm.js');
 const changeEmail = require('../controllers/userService/changeEmail.js');
 
 /**
@@ -78,17 +76,12 @@ router.post('/passwordReset', passwordReset.handler);
  * Body: email
  * Sends change email email.
  */
-router.post('/changeEmailInit', authenticate, changeEmailInit.handler);
-
 /**
  * userService/changeEmailConfirm
  * Headers: content-type: application/json
  * Body: changeEmailHash, email(new email)
  * Changes email.
  */
-router.post('/changeEmailConfirm', changeEmailConfirm.handler);
-
-router.post('/changeEmail/:test', changeEmail.handler);
 router.post('/changeEmail', changeEmail.handler);
 
 module.exports = router;

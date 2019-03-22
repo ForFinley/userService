@@ -41,7 +41,7 @@ module.exports.handler = async function(req, res) {
     };
     putUser(putParams);
     const mailerResult = await sendEmailVerification(email, emailHash);
-    // if (!mailerResult) throw new ValidationError('Email not sent'); MAYBE ADD THIS
+    if (!mailerResult) console.log('ERROR:: Email Not Sent.');
     return res.status(200).send({ userId, email });
   } catch (e) {
     resolveErrorSendResponse(e, res);

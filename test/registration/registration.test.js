@@ -3,7 +3,7 @@ const chai = require('chai');
 const chaihttp = require('chai-http');
 const { it } = require('mocha');
 const fixtures = require('./fixtures.js');
-const { userInDynamo } = require('../helpers.js');
+const { userInDynamo } = require('../dynamodbLocal.js');
 
 chai.use(chaihttp);
 const { expect } = chai;

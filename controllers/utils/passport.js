@@ -3,7 +3,7 @@ const httpUtil = require('../utils/httpUtil.js');
 // const { OAuth2Client } = require('google-auth-library');
 const { GOOGLE_CLIENT_ID } = require('../../env.js');
 
-const provider = async (req, res, next) => {
+exports.provider = async (req, res, next) => {
   const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 
   if (req.body.provider === 'google') {
@@ -43,8 +43,4 @@ const provider = async (req, res, next) => {
     }
   }
   next();
-};
-
-module.exports = {
-  provider
 };

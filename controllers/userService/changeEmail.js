@@ -4,7 +4,7 @@ const {
   sendEmailVerification
 } = require('../utils/nodemailer.js');
 const { auth } = require('../utils/jwt.js');
-const { queryUserByEmail } = require('../utils/database.js');
+const { queryUserByEmail, updateEmail } = require('../utils/database.js');
 
 const {
   ValidationError,
@@ -32,54 +32,13 @@ module.exports.handler = async (req, res) => {
     if (getRequestMode(req.body) === 'CHANGE_EMAIL_CONFIRM') {
       const email = req.body.email.trim().toLowerCase();
       const userId = hashDecrypt(req.body.changeEmailHash);
-
       const user = await queryUserByEmail(email);
-      if (user.Count > 0) throw new ResourceExistsError('Email already in use');
+      if (user) throw new ResourceExistsError('Email already in use');
 
-      let result = await docClient
-        .update({
-          TableName: userTable,
-          Key: {
-            userId: userId
-          },
-          UpdateExpression:
-            'set #email = :email, #emailVerified = :emailVerified',
-          ExpressionAttributeNames: {
-            '#email': 'email',
-            '#emailVerified': 'emailVerified'
-          },
-          ExpressionAttributeValues: {
-            ':email': email,
-            ':emailVerified': false
-          },
-          ReturnConsumedCapacity: 'TOTAL',
-          ReturnValues: 'UPDATED_NEW'
-        })
-        .promise();
-      console.log(result);
-
-      //Checks to see if update worked
-      if (
-        result.Attributes.email === email &&
-        result.Attributes.emailVerified === false
-      ) {
-        let emailHash = cryptoUtil.hashEncrypt(email);
-        const mailerResult = await sendEmailVerification(email, emailHash);
-        if (!mailerResult)
-          throw new ValidationError('Verification email not sent');
-
-        res
-          .status(200)
-          .send(httpUtil.createResponse(200, 'SUCCESS : New email updated.'));
-      } else {
-        console.log('**ERROR** emailVerified update failed.');
-        return res
-          .status(500)
-          .send(
-            httpUtil.createResponse(500, 'ERROR : new email update failed.')
-          );
-      }
-
+      await updateEmail(userId, email);
+      const emailHash = hashEncrypt(email);
+      const mailerResult = await sendEmailVerification(email, emailHash);
+      if (!mailerResult) console.log('ERROR:: Email Not Sent.');
       return res.status(200).send({ message: 'Change email complete' });
     }
     //Change Email Init

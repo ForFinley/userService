@@ -72,6 +72,10 @@ exports.createRecords = async () => {
   const { verifyEmail } = require('./verifyEmail/fixtures.js');
   const { changePassword } = require('./changePassword/fixtures.js');
   const { resetPasswordConfirm } = require('./passwordReset/fixtures.js');
+  const {
+    changeEmailRecord,
+    changeEmailInUseRecord
+  } = require('./changeEmail/fixtures.js');
 
   const registerNewUserExistingEmailParams = {
     TableName: USER_TABLE,
@@ -120,16 +124,31 @@ exports.createRecords = async () => {
     }
   };
 
-  const arr = [
-    await docClient.put(registerNewUserExistingEmailParams).promise(),
-    await docClient.put(signInUserRecord).promise(),
-    await docClient.put(verifyEmailParams).promise(),
-    await docClient.put(changePasswordParams).promise(),
-    await docClient.put(resetPasswordConfirmParams).promise()
+  const changeEmailParams = {
+    TableName: USER_TABLE,
+    Item: {
+      userId: changeEmailRecord.userId,
+      email: changeEmailRecord.email
+    }
+  };
+  const changeEmailInUseParams = {
+    TableName: USER_TABLE,
+    Item: {
+      userId: changeEmailInUseRecord.userId,
+      email: changeEmailInUseRecord.email
+    }
+  };
+
+  const fixtureArray = [
+    registerNewUserExistingEmailParams,
+    signInUserRecord,
+    verifyEmailParams,
+    changePasswordParams,
+    resetPasswordConfirmParams,
+    changeEmailParams,
+    changeEmailInUseParams
   ];
-
-  await Promise.all(arr);
-
+  await Promise.all(fixtureArray.map(param => docClient.put(param).promise()));
   console.log('TEST RECORDS CREATED');
 
   // let t = await docClient
@@ -138,4 +157,24 @@ exports.createRecords = async () => {
   //   })
   //   .promise();
   // console.log('HUR', t);
+};
+
+exports.userInDynamo = async userId => {
+  const params = {
+    TableName: USER_TABLE,
+    Key: { userId }
+  };
+  const result = await docClient.get(params).promise();
+  if (result.Item && result.Item.userId) return true;
+  return false;
+};
+
+exports.getUser = async userId => {
+  const params = {
+    TableName: USER_TABLE,
+    Key: { userId }
+  };
+  const result = await docClient.get(params).promise();
+  if (result.Item && result.Item.userId) return result.Item;
+  return false;
 };

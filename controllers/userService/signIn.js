@@ -1,6 +1,6 @@
 const jwtUtil = require('../utils/jwt.js');
 const { queryUserByEmail } = require('../utils/database.js');
-const cryptoUtil = require('../utils/crypto.js');
+const { checkPassword } = require('../utils/crypto.js');
 const {
   ValidationError,
   InvalidCredentialsError,
@@ -21,7 +21,7 @@ module.exports.handler = async (req, res) => {
     validate(req.body);
     const email = req.body.email.trim().toLowerCase();
     const user = await queryUserByEmail(email);
-    const passwordBool = cryptoUtil.checkPassword(
+    const passwordBool = checkPassword(
       req.body.password,
       user.password,
       user.salt
