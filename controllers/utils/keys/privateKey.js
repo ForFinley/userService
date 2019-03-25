@@ -1,3 +1,3 @@
-const SECRET = 'server secret';
-
-exports.key = SECRET;
+exports.key = 'server secret';
+exports.encryptPasswordKey = '!cipher&%#$';
+exports.encryptKey = '!cipher&%#$';

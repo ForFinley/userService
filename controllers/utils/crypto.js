@@ -1,39 +1,42 @@
 const crypto = require('crypto');
-var encryptKey = "!cipher&%#$";
+const { encryptKey, encryptPasswordKey } = require('./keys/privateKey.js');
+const { ValidationError } = require('./errors.js');
 
-function encryptPassword(password) {
-    let cipher = crypto.createCipher('aes-256-ecb', encryptKey);
-    let salt = crypto.randomBytes(3).toString('hex');
-    let encryptPassword = cipher.update(password + salt,'utf8', 'hex') + cipher.final('hex');
-    let result = {
-        encryptPass: encryptPassword,
-        salt: salt
-    }
-    return result;
+exports.encryptPassword = password => {
+  const cipher = crypto.createCipher('aes-256-ecb', encryptPasswordKey);
+  const salt = crypto.randomBytes(3).toString('hex');
+  const encryptPassword =
+    cipher.update(password + salt, 'utf8', 'hex') + cipher.final('hex');
+  return {
+    encryptPass: encryptPassword,
+    salt: salt
+  };
 };
 
-function checkPassword(password, encryptedDBPassword, salt){
-    let cipher = crypto.createCipher('aes-256-ecb', encryptKey);
-    let encryptPassword = cipher.update(password + salt,'utf8', 'hex') + cipher.final('hex');
-    
-    if(encryptPassword === encryptedDBPassword) return true;
-    return false;
-}
+exports.checkPassword = (password, encryptedDBPassword, salt) => {
+  try {
+    const cipher = crypto.createCipher('aes-256-ecb', encryptPasswordKey);
+    const encryptPassword =
+      cipher.update(password + salt, 'utf8', 'hex') + cipher.final('hex');
 
-function hashEncrypt(hash){
-    let cipher = crypto.createCipher('aes-256-ecb', encryptKey);
-    return cipher.update(hash,'utf8', 'hex') + cipher.final('hex');
-}
+    if (encryptPassword === encryptedDBPassword) return true;
+    return false;
+  } catch (e) {
+    return false;
+  }
+};
+
+exports.hashEncrypt = hash => {
+  const cipher = crypto.createCipher('aes-256-ecb', encryptKey);
+  return cipher.update(hash, 'utf8', 'hex') + cipher.final('hex');
+};
 
 //This can also be used to decrypt password
-function hashDecrypt(hash) {
-    var cipher = crypto.createDecipher('aes-256-ecb', encryptKey);
+exports.hashDecrypt = hash => {
+  try {
+    const cipher = crypto.createDecipher('aes-256-ecb', encryptKey);
     return cipher.update(hash, 'hex', 'utf8') + cipher.final('utf8');
-};
-
-module.exports = {
-    encryptPassword,
-    checkPassword,
-    hashEncrypt,
-    hashDecrypt
+  } catch (e) {
+    throw new ValidationError('hash invalid');
+  }
 };
