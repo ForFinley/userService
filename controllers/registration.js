@@ -37,6 +37,7 @@ module.exports.handler = async function(req, res) {
       password: passwordResult.encryptPass,
       salt: passwordResult.salt,
       emailVerified: false,
+      provider: 'this_user_service',
       role: 'PEASANT'
     };
     putUser(putParams);

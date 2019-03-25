@@ -45,6 +45,13 @@ exports.changeEmailConfirm = {
   userId
 };
 
+exports.changeEmailConfirmBadHash = {
+  url,
+  headers: {},
+  body: { email: 'NEW_NEW_NEW_Email@test.com', changeEmailHash: 'BAD_HASH' },
+  userId
+};
+
 exports.changeEmailInUse = {
   url,
   headers: {},

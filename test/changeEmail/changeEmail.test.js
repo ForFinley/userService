@@ -41,6 +41,21 @@ exports.changeEmailTests = () => {
       });
   });
 
+  it('Should return 400 for invalid emailHash', done => {
+    const { changeEmailConfirmBadHash } = fixtures;
+    chai
+      .request(server)
+      .post(changeEmailConfirmBadHash.url)
+      .set(changeEmailConfirmBadHash.headers)
+      .send(changeEmailConfirmBadHash.body)
+      .end(async (err, res) => {
+        expect(res).to.have.status(400);
+        const toBe = 'hash invalid';
+        expect(res.body.message).to.equal(toBe);
+        done();
+      });
+  });
+
   it('Should return 401 for unauthorized', done => {
     const { changeEmailUnauthorized } = fixtures;
     chai

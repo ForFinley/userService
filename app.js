@@ -4,11 +4,9 @@ const helmet = require('helmet');
 // const rateLimit = require('express-rate-limit');
 
 const app = express();
-const PORT = 4000;
+const PORT = 3000;
 
-const index = require('./routes/index.js');
 const userService = require('./routes/userService.js');
-const admin = require('./routes/admin.js');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -20,9 +18,7 @@ app.use(helmet());
 // });
 // app.use(limiter); //  apply to all requests
 
-app.use('/', index);
 app.use('/userService', userService);
-app.use('/admin', admin);
 
 exports.server = app.listen(PORT, () => {
   console.log('server running at ' + PORT);

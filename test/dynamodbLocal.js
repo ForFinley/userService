@@ -68,7 +68,10 @@ exports.createRecords = async () => {
   const {
     registerNewUserExistingEmail
   } = require('./registration/fixtures.js');
-  const { signInUser } = require('./signIn/fixtures.js');
+  const {
+    signInUser,
+    signInExistingUserGoogle
+  } = require('./signIn/fixtures.js');
   const { verifyEmail } = require('./verifyEmail/fixtures.js');
   const { changePassword } = require('./changePassword/fixtures.js');
   const { resetPasswordConfirm } = require('./passwordReset/fixtures.js');
@@ -93,6 +96,15 @@ exports.createRecords = async () => {
       email: signInUser.body.email,
       password: signInUser.encrytPassword,
       salt: signInUser.salt
+    }
+  };
+
+  const signInUserGoogleRecord = {
+    TableName: USER_TABLE,
+    Item: {
+      userId: signInExistingUserGoogle.userId,
+      email: signInExistingUserGoogle.googleResponseExistingUser.email,
+      provider: 'google'
     }
   };
 
@@ -131,6 +143,7 @@ exports.createRecords = async () => {
       email: changeEmailRecord.email
     }
   };
+
   const changeEmailInUseParams = {
     TableName: USER_TABLE,
     Item: {
@@ -142,6 +155,7 @@ exports.createRecords = async () => {
   const fixtureArray = [
     registerNewUserExistingEmailParams,
     signInUserRecord,
+    signInUserGoogleRecord,
     verifyEmailParams,
     changePasswordParams,
     resetPasswordConfirmParams,
