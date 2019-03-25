@@ -16,7 +16,7 @@ const { profileTests } = require('./profile/profile.test.js');
 
 describe('** All Integrated Tests **', () => {
   before(async () => {
-    startDynamoLocal();
+    await startDynamoLocal();
     await createTables();
     await createRecords();
   });

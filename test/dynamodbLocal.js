@@ -3,7 +3,7 @@ const { dynamodb, docClient } = require('../controllers/utils/dynamoSetup.js');
 const { USER_TABLE } = require('../env.js');
 const port = 8000;
 
-exports.startDynamoLocal = () => {
+exports.startDynamoLocal = async () => {
   dynamodbLocal.install(() => {});
   dynamodbLocal.start({ port, inMemory: true });
 };
