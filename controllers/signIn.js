@@ -1,4 +1,4 @@
-const jwtUtil = require('./utils/jwt.js');
+const { generateToken } = require('./utils/jwt.js');
 const rp = require('request-promise');
 const uuidv1 = require('uuid/v1');
 const { queryUserByEmail, putUser } = require('./utils/database.js');
@@ -24,7 +24,7 @@ module.exports.handler = async (req, res) => {
     if (requestMode === 'THIS_USER_SERVICE') user = await thisUserService(req);
     else if (requestMode === 'OUTSIDE_PROVIDER') user = await provider(req);
 
-    const token = jwtUtil.generateToken(user);
+    const token = generateToken(user);
     res.status(200).send({
       user: {
         userId: user.userId,

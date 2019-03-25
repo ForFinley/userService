@@ -13,10 +13,10 @@ if (process.env.NODE_ENV === 'TEST') {
 }
 AWS.config.update(config);
 
-const docClient = new AWS.DynamoDB.DocumentClient(config);
+const docClient = new AWS.DynamoDB.DocumentClient({ convertEmptyValues: true });
 
 // Used for creating and listing tables
-const dynamodb = new AWS.DynamoDB(config);
+const dynamodb = new AWS.DynamoDB();
 
 module.exports = {
   AWS,

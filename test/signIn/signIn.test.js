@@ -119,4 +119,22 @@ exports.signInTests = () => {
         done();
       });
   });
+
+  it('Should return 401 existing Facebook user trying to sign in with google account', done => {
+    const { signInExistingFBUserWithGoogle } = fixtures;
+    nock(GOOGLE_DECRYPT_API)
+      .get(signInExistingFBUserWithGoogle.mockGoogleUrl)
+      .reply(200, signInExistingFBUserWithGoogle.googleResponseExistingUser);
+    chai
+      .request(server)
+      .post(signInExistingFBUserWithGoogle.url)
+      .set(signInExistingFBUserWithGoogle.headers)
+      .send(signInExistingFBUserWithGoogle.body)
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        const toBe = 'Email already in use with facebook';
+        expect(res.body.message).to.equal(toBe);
+        done();
+      });
+  });
 };

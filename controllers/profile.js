@@ -6,15 +6,18 @@ const {
 
 module.exports.handler = async (req, res, next) => {
   try {
-    if (!req.user.userId) throw new ValidationError('MISSING_AUTH_TOKEN');
-    const user = getUser(req.user.userId);
+    const user = await getUser(req.user.userId);
+    if (!user) throw new ValidationError('user not found'); //ths should be impossible
 
-    return {
+    const payload = {
       userId: user.userId,
       email: user.email,
       emailVerified: user.emailVerified,
-      role: user.role
+      role: user.role,
+      billingAddress: user.billingAddress,
+      creditCard: user.creditCard
     };
+    return res.status(200).send(payload);
   } catch (e) {
     resolveErrorSendResponse(e, res);
   }

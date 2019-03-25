@@ -70,7 +70,8 @@ exports.createRecords = async () => {
   } = require('./registration/fixtures.js');
   const {
     signInUser,
-    signInExistingUserGoogle
+    signInExistingUserGoogle,
+    signInExistingFBUserWithGoogle
   } = require('./signIn/fixtures.js');
   const { verifyEmail } = require('./verifyEmail/fixtures.js');
   const { changePassword } = require('./changePassword/fixtures.js');
@@ -79,6 +80,7 @@ exports.createRecords = async () => {
     changeEmailRecord,
     changeEmailInUseRecord
   } = require('./changeEmail/fixtures.js');
+  const { profileRecord } = require('./profile/fixtures.js');
 
   const registerNewUserExistingEmailParams = {
     TableName: USER_TABLE,
@@ -105,6 +107,15 @@ exports.createRecords = async () => {
       userId: signInExistingUserGoogle.userId,
       email: signInExistingUserGoogle.googleResponseExistingUser.email,
       provider: 'google'
+    }
+  };
+
+  const signInUserFBUSerWithGoogleRecord = {
+    TableName: USER_TABLE,
+    Item: {
+      userId: signInExistingFBUserWithGoogle.userId,
+      email: signInExistingFBUserWithGoogle.googleResponseExistingUser.email,
+      provider: 'facebook'
     }
   };
 
@@ -152,15 +163,28 @@ exports.createRecords = async () => {
     }
   };
 
+  const profileParams = {
+    TableName: USER_TABLE,
+    Item: {
+      userId: profileRecord.userId,
+      email: profileRecord.email,
+      billingAddress: profileRecord.billingAddress,
+      creditCard: profileRecord.creditCard,
+      emailVerified: 'false'
+    }
+  };
+
   const fixtureArray = [
     registerNewUserExistingEmailParams,
     signInUserRecord,
     signInUserGoogleRecord,
+    signInUserFBUSerWithGoogleRecord,
     verifyEmailParams,
     changePasswordParams,
     resetPasswordConfirmParams,
     changeEmailParams,
-    changeEmailInUseParams
+    changeEmailInUseParams,
+    profileParams
   ];
   await Promise.all(fixtureArray.map(param => docClient.put(param).promise()));
   console.log('TEST RECORDS CREATED');

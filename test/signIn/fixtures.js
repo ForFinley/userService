@@ -89,6 +89,17 @@ exports.signInExistingUserGoogle = {
   }
 };
 
+exports.signInExistingFBUserWithGoogle = {
+  url,
+  userId: 's1ef399t-3c48-4683-b1cd-38f38wf9s99',
+  mockGoogleUrl,
+  googleResponseExistingUser: { email: 'usersignedinwithfacebook@test.com' },
+  headers: { authorization: googleToken },
+  body: {
+    provider: 'google'
+  }
+};
+
 exports.signInUserNoEmail = {
   url,
   userId,
