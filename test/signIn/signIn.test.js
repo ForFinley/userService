@@ -5,7 +5,7 @@ const nock = require('nock');
 const { it } = require('mocha');
 const fixtures = require('./fixtures.js');
 const jwt = require('jsonwebtoken');
-const { key } = require('../../controllers/utils/keys/privateKey');
+const { accessKey } = require('../../controllers/utils/keys/privateKey');
 
 const { GOOGLE_DECRYPT_API } = require('../../env.js');
 
@@ -23,7 +23,7 @@ exports.signInTests = () => {
       .end(async (err, res) => {
         expect(res).to.have.status(200);
         expect(res.body).to.have.all.keys('user', 'token');
-        const decodedToken = jwt.verify(res.body.token, key);
+        const decodedToken = jwt.verify(res.body.token, accessKey);
         expect(signInUser.userId).to.equal(decodedToken.userId);
         expect(res.body.user.userId).to.equal(decodedToken.userId);
         expect(signInUser.body.email).to.equal(decodedToken.email);

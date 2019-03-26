@@ -9,6 +9,7 @@ const verifyEmail = require('../controllers/verifyEmail.js');
 const profile = require('../controllers/profile.js');
 const passwordReset = require('../controllers/passwordReset.js');
 const changeEmail = require('../controllers/changeEmail.js');
+const refresh = require('../controllers/refresh.js');
 
 /**
  * /userService/registration
@@ -45,7 +46,7 @@ router.get('/verifyEmail/:emailHash', verifyEmail.handler);
 
 /**
  * userService/profile
- * Headers: authorization: <Token>
+ * Headers: content-type: application/json, authorization: <Token>
  * Returns all user info needed
  */
 router.get('/profile', authenticate, profile.handler);
@@ -78,5 +79,12 @@ router.post('/passwordReset', passwordReset.handler);
  * Changes email.
  */
 router.post('/changeEmail', changeEmail.handler);
+
+/**
+ * userService/refresh
+ * Headers: content-type: application/json, authorization: <Token>
+ * refreshes refresh and access token
+ */
+router.get('/refresh', refresh.handler);
 
 module.exports = router;

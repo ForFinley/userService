@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { encryptKey, encryptPasswordKey } = require('./keys/privateKey.js');
+const { encryptKey, encryptPasswordKey } = require('./keys/privateKeys.js');
 const { ValidationError } = require('./errors.js');
 
 exports.encryptPassword = password => {
