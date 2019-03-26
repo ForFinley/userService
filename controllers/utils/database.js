@@ -1,5 +1,5 @@
 const { docClient } = require('./dynamoSetup.js');
-const { USER_TABLE } = require('../../env.js');
+const { USER_TABLE, REFRESH_TABLE } = require('../../env.js');
 
 exports.queryUserByEmail = async email => {
   const params = {
@@ -63,14 +63,17 @@ exports.updatePassword = async (userId, passwordResult) => {
     Key: {
       userId: userId
     },
-    UpdateExpression: 'set #password = :password, #salt = :salt',
+    UpdateExpression:
+      'set #password = :password, #salt = :salt, #updateDate = :updateDate',
     ExpressionAttributeNames: {
       '#password': 'password',
-      '#salt': 'salt'
+      '#salt': 'salt',
+      '#updateDate': 'updateDate'
     },
     ExpressionAttributeValues: {
       ':password': passwordResult.encryptPass,
-      ':salt': passwordResult.salt
+      ':salt': passwordResult.salt,
+      ':updateDate': new Date().toISOString()
     },
     ReturnConsumedCapacity: 'TOTAL',
     ReturnValues: 'UPDATED_NEW'
@@ -84,17 +87,42 @@ exports.updateEmail = async (userId, email) => {
     Key: {
       userId: userId
     },
-    UpdateExpression: 'set #email = :email, #emailVerified = :emailVerified',
+    UpdateExpression:
+      'set #email = :email, #emailVerified = :emailVerified, #updateDate = :updateDate',
     ExpressionAttributeNames: {
       '#email': 'email',
-      '#emailVerified': 'emailVerified'
+      '#emailVerified': 'emailVerified',
+      '#updateDate': 'updateDate'
     },
     ExpressionAttributeValues: {
       ':email': email,
-      ':emailVerified': false
+      ':emailVerified': false,
+      ':updateDate': new Date().toISOString()
     },
     ReturnConsumedCapacity: 'TOTAL',
     ReturnValues: 'UPDATED_NEW'
   };
   return docClient.update(params).promise();
+};
+
+exports.putRefresh = async Item => {
+  const params = {
+    TableName: REFRESH_TABLE,
+    Item
+  };
+  return docClient.put(params).promise();
+};
+
+exports.getRefresh = async (refreshToken, userId) => {
+  const params = {
+    TableName: REFRESH_TABLE,
+    Key: {
+      refreshToken,
+      userId
+    },
+    ReturnConsumedCapacity: 'TOTAL'
+  };
+  const token = await docClient.get(params).promise();
+  if (token.Item) return token.Item;
+  return false;
 };

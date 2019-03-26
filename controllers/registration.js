@@ -31,6 +31,7 @@ module.exports.handler = async function(req, res) {
     const passwordResult = encryptPassword(password);
     const emailHash = hashEncrypt(email);
     const userId = uuidv1();
+    const currentDate = new Date().toISOString();
     const putParams = {
       userId,
       email,
@@ -38,7 +39,9 @@ module.exports.handler = async function(req, res) {
       salt: passwordResult.salt,
       emailVerified: false,
       provider: 'this_user_service',
-      role: 'PEASANT'
+      role: 'PEASANT',
+      addedDate: currentDate,
+      updatedDate: currentDate
     };
     putUser(putParams);
     const mailerResult = await sendEmailVerification(email, emailHash);

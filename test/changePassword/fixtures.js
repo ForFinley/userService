@@ -2,9 +2,8 @@ const url = '/userService/changePassword';
 const userId = 'f759aa6e-3dec-4d94-bc4c-a380014f7515';
 const password = 'test';
 const newPassword = 'newPasswordTest';
-//jwt just has userId
 const jwt =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmNzU5YWE2ZS0zZGVjLTRkOTQtYmM0Yy1hMzgwMDE0Zjc1MTUiLCJpYXQiOjE1NTI3MTI0Nzd9.wgIsEwTVT-_lxcool6itJg16jaOiEPFbhkwgRjvhYck';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmNzU5YWE2ZS0zZGVjLTRkOTQtYmM0Yy1hMzgwMDE0Zjc1MTUiLCJlbWFpbCI6InRlc3RjaGFuZ2VlbWFpbEB0ZXN0LmNvbSIsInJvbGUiOiJQRUFTQU5UIiwiaWF0IjoxNTUzNjIxMDc2LCJleHAiOjE1NTM3NDU0OTJ9.Odg13uDs1YnvaWREPb67ywJRoSqF7iE_m9MGKuShxfo';
 
 exports.changePassword = {
   url,

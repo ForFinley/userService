@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "nodemon": "nodemon app.js",
-    "testWindows": "set NODE_ENV=TEST&& nyc mocha ./test/runner.js --timeout 60000 --exit",
-    "testMac": "NODE_ENV=TEST nyc mocha ./test/runner.js --timeout 60000 --exit"
+    "testWindows": "set NODE_ENV=TEST&& nyc mocha ./test/runner.js --timeout 30000 --exit",
+    "testMac": "NODE_ENV=TEST nyc mocha ./test/runner.js --timeout 30000 --exit"
   },
   "prettier": {
     "singleQuote": true,

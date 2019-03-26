@@ -5,7 +5,7 @@ const nock = require('nock');
 const { it } = require('mocha');
 const fixtures = require('./fixtures.js');
 const jwt = require('jsonwebtoken');
-const { accessKey } = require('../../controllers/utils/keys/privateKey');
+const { accessKey } = require('../../controllers/utils/keys/privateKeys.js');
 
 const { GOOGLE_DECRYPT_API } = require('../../env.js');
 
@@ -22,8 +22,12 @@ exports.signInTests = () => {
       .send(signInUser.body)
       .end(async (err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body).to.have.all.keys('user', 'token');
-        const decodedToken = jwt.verify(res.body.token, accessKey);
+        expect(res.body).to.have.all.keys(
+          'user',
+          'authorizationToken',
+          'refreshToken'
+        );
+        const decodedToken = jwt.verify(res.body.authorizationToken, accessKey);
         expect(signInUser.userId).to.equal(decodedToken.userId);
         expect(res.body.user.userId).to.equal(decodedToken.userId);
         expect(signInUser.body.email).to.equal(decodedToken.email);
@@ -88,8 +92,12 @@ exports.signInTests = () => {
       .send(signInNewUserGoogle.body)
       .end(async (err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body).to.have.all.keys('user', 'token');
-        const decodedToken = jwt.verify(res.body.token, key);
+        expect(res.body).to.have.all.keys(
+          'user',
+          'authorizationToken',
+          'refreshToken'
+        );
+        const decodedToken = jwt.verify(res.body.authorizationToken, accessKey);
         expect(signInNewUserGoogle.googleResponseNewUser.email).to.equal(
           decodedToken.email
         );
@@ -110,8 +118,12 @@ exports.signInTests = () => {
       .send(signInExistingUserGoogle.body)
       .end(async (err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body).to.have.all.keys('user', 'token');
-        const decodedToken = jwt.verify(res.body.token, key);
+        expect(res.body).to.have.all.keys(
+          'user',
+          'authorizationToken',
+          'refreshToken'
+        );
+        const decodedToken = jwt.verify(res.body.authorizationToken, accessKey);
         expect(
           signInExistingUserGoogle.googleResponseExistingUser.email
         ).to.equal(decodedToken.email);

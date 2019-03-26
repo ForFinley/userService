@@ -1,7 +1,11 @@
-const { generateToken } = require('./utils/jwt.js');
+const { generateToken, generateRefreshToken } = require('./utils/jwt.js');
 const rp = require('request-promise');
 const uuidv1 = require('uuid/v1');
-const { queryUserByEmail, putUser } = require('./utils/database.js');
+const {
+  queryUserByEmail,
+  putUser,
+  putRefresh
+} = require('./utils/database.js');
 const { checkPassword, hashEncrypt } = require('./utils/crypto.js');
 const { sendEmailVerification } = require('./utils/nodemailer.js');
 const {
@@ -24,13 +28,23 @@ module.exports.handler = async (req, res) => {
     if (requestMode === 'THIS_USER_SERVICE') user = await thisUserService(req);
     else if (requestMode === 'OUTSIDE_PROVIDER') user = await provider(req);
 
-    const token = generateToken(user);
+    const authorizationToken = generateToken(user);
+    const refreshToken = generateRefreshToken(user);
+    const refreshParams = {
+      refreshToken,
+      userId: user.userId,
+      userAgent: req.headers['user-agent'],
+      addedDate: new Date().toISOString()
+    };
+    putRefresh(refreshParams);
+
     res.status(200).send({
       user: {
         userId: user.userId,
         email: user.email
       },
-      token: token
+      authorizationToken,
+      refreshToken
     });
   } catch (e) {
     resolveErrorSendResponse(e, res);
@@ -58,12 +72,15 @@ const provider = async req => {
     const user = await queryUserByEmail(email);
     if (user && user.provider === 'google') return user;
     if (!user) {
+      const currentDate = new Date().toISOString();
       const putParams = {
         userId: uuidv1(),
         email,
         emailVerified: false,
         provider: 'google',
-        role: 'PEASANT'
+        role: 'PEASANT',
+        addedDate: currentDate,
+        updatedDate: currentDate
       };
       putUser(putParams);
       const emailHash = hashEncrypt(email);

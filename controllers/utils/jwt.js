@@ -33,10 +33,23 @@ exports.generateRefreshToken = user => {
   );
 };
 
+exports.authenticateRefresh = async authorization => {
+  try {
+    const token = authorization;
+    const decodeToken = await jwt.verify(token, refreshKey);
+    return {
+      userId: decodeToken.userId
+    };
+  } catch (e) {
+    return false;
+  }
+};
+
 exports.authenticate = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    const decodeToken = await jwt.verify(token, key);
+    const decodeToken = await jwt.verify(token, accessKey);
+
     req.user = {
       userId: decodeToken.userId,
       email: decodeToken.email,
@@ -51,7 +64,7 @@ exports.authenticate = async (req, res, next) => {
 exports.auth = async authorization => {
   try {
     const token = authorization;
-    const decodeToken = await jwt.verify(token, key);
+    const decodeToken = await jwt.verify(token, accessKey);
     return {
       userId: decodeToken.userId,
       email: decodeToken.email,
