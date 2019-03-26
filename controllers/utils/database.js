@@ -113,12 +113,11 @@ exports.putRefresh = async Item => {
   return docClient.put(params).promise();
 };
 
-exports.getRefresh = async (refreshToken, userId) => {
+exports.getRefresh = async refreshToken => {
   const params = {
     TableName: REFRESH_TABLE,
     Key: {
-      refreshToken,
-      userId
+      refreshToken
     },
     ReturnConsumedCapacity: 'TOTAL'
   };

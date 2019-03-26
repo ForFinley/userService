@@ -1,6 +1,6 @@
 const dynamodbLocal = require('dynamodb-localhost');
 const { dynamodb, docClient } = require('../controllers/utils/dynamoSetup.js');
-const { USER_TABLE } = require('../env.js');
+const { USER_TABLE, REFRESH_TABLE } = require('../env.js');
 const port = 8000;
 
 exports.startDynamoLocal = async () => {
@@ -13,7 +13,7 @@ exports.stopDynamoLocal = () => {
 };
 
 exports.createTables = async () => {
-  const params = {
+  const paramsUserTable = {
     AttributeDefinitions: [
       {
         AttributeName: 'userId',
@@ -55,8 +55,29 @@ exports.createTables = async () => {
     TableName: USER_TABLE
   };
 
+  const paramsRefreshTable = {
+    AttributeDefinitions: [
+      {
+        AttributeName: 'refreshToken',
+        AttributeType: 'S'
+      }
+    ],
+    KeySchema: [
+      {
+        AttributeName: 'refreshToken',
+        KeyType: 'HASH'
+      }
+    ],
+    ProvisionedThroughput: {
+      ReadCapacityUnits: 10,
+      WriteCapacityUnits: 10
+    },
+    TableName: REFRESH_TABLE
+  };
+
   try {
-    await dynamodb.createTable(params).promise();
+    await dynamodb.createTable(paramsUserTable).promise();
+    await dynamodb.createTable(paramsRefreshTable).promise();
     const tables = await dynamodb.listTables({}).promise();
     console.log('TABLE CREATED:', tables);
   } catch (e) {
@@ -81,6 +102,7 @@ exports.createRecords = async () => {
     changeEmailInUseRecord
   } = require('./changeEmail/fixtures.js');
   const { profileRecord } = require('./profile/fixtures.js');
+  const { refreshRecord } = require('./refresh/fixtures.js');
 
   const registerNewUserExistingEmailParams = {
     TableName: USER_TABLE,
@@ -174,6 +196,25 @@ exports.createRecords = async () => {
     }
   };
 
+  const refreshParams = {
+    TableName: REFRESH_TABLE,
+    Item: {
+      refreshToken: refreshRecord.refreshToken,
+      userId: refreshRecord.userId,
+      userAgent: refreshRecord.userAgent,
+      addedDate: new Date().toISOString()
+    }
+  };
+
+  const refreshUserParams = {
+    TableName: USER_TABLE,
+    Item: {
+      userId: refreshRecord.userId,
+      email: refreshRecord.email,
+      role: refreshRecord.role
+    }
+  };
+
   const fixtureArray = [
     registerNewUserExistingEmailParams,
     signInUserRecord,
@@ -184,7 +225,9 @@ exports.createRecords = async () => {
     resetPasswordConfirmParams,
     changeEmailParams,
     changeEmailInUseParams,
-    profileParams
+    profileParams,
+    refreshParams,
+    refreshUserParams
   ];
   await Promise.all(fixtureArray.map(param => docClient.put(param).promise()));
   console.log('TEST RECORDS CREATED');
