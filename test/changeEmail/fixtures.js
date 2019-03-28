@@ -1,7 +1,7 @@
 const url = '/userService/changeEmail';
 const userId = '375d7ab0-8af2-4092-b8d2-4ef0bec0159d';
 const authorization =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIzNzVkN2FiMC04YWYyLTQwOTItYjhkMi00ZWYwYmVjMDE1OWQiLCJlbWFpbCI6Im9nZW1haWxAdGVzdC5jb20iLCJyb2xlIjoiUEVBU0FOVCIsImlhdCI6MTU1MzYyMDcyMCwiZXhwIjoxNTUzNzQ1MTM2fQ.UmgIAYmwZp6K_PhUpmcdF_rzOw3BD4Uie8lCghdeK3k';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIzNzVkN2FiMC04YWYyLTQwOTItYjhkMi00ZWYwYmVjMDE1OWQiLCJlbWFpbCI6Im9nZW1haWxAdGVzdC5jb20iLCJyb2xlIjoiUEVBU0FOVCIsImlhdCI6MTU1MzgxMDQ3MX0.MjgfGPrGQ_iisD3WOiAFwUx4Ndi59T7p2bpMF7_Hoq0';
 const email = 'ogemail@test.com';
 const newEmail = 'newemail@test.com';
 const changeEmailHash =

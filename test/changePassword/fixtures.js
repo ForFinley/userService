@@ -3,7 +3,7 @@ const userId = 'f759aa6e-3dec-4d94-bc4c-a380014f7515';
 const password = 'test';
 const newPassword = 'newPasswordTest';
 const jwt =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmNzU5YWE2ZS0zZGVjLTRkOTQtYmM0Yy1hMzgwMDE0Zjc1MTUiLCJlbWFpbCI6InRlc3RjaGFuZ2VlbWFpbEB0ZXN0LmNvbSIsInJvbGUiOiJQRUFTQU5UIiwiaWF0IjoxNTUzNjIxMDc2LCJleHAiOjE1NTM3NDU0OTJ9.Odg13uDs1YnvaWREPb67ywJRoSqF7iE_m9MGKuShxfo';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmNzU5YWE2ZS0zZGVjLTRkOTQtYmM0Yy1hMzgwMDE0Zjc1MTUiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJyb2xlIjoiUEVBU0FOVCIsImlhdCI6MTU1MzgxMDM0N30.iC5Tl3Uh2zsMAGFQJfXsiSK-w8yKkaoC3_CVX0lyS1g';
 
 exports.changePassword = {
   url,

@@ -2,7 +2,7 @@ const url = '/userService/profile';
 const userId = 'c7ab0565-832e-4c22-9518-c2f3a038572e';
 const email = 'profileemail@test.com';
 const authorization =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjN2FiMDU2NS04MzJlLTRjMjItOTUxOC1jMmYzYTAzODU3MmUiLCJlbWFpbCI6InByb2ZpbGVlbWFpbEB0ZXN0LmNvbSIsInJvbGUiOiJQRUFTQU5UIiwiaWF0IjoxNTUzNjIwNzgxLCJleHAiOjE1NTM3NDUxOTd9.NsVe12F8fkYLntqXp_Z8W-PlBxoFQrZ-4KLp_fn2_v4';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjN2FiMDU2NS04MzJlLTRjMjItOTUxOC1jMmYzYTAzODU3MmUiLCJlbWFpbCI6InByb2ZpbGVlbWFpbEB0ZXN0LmNvbSIsInJvbGUiOiJQRUFTQU5UIiwiaWF0IjoxNTUzODEwNjIxfQ.KJEaub6Tl4ZGRQVNyGTU2DqBYRVwaJ4RDWZQjMhL43E';
 const billingAddress = {
   line1: '34 test street',
   line2: '',

@@ -74,3 +74,14 @@ exports.auth = async authorization => {
     return false;
   }
 };
+
+// console.log(
+//   jwt.sign(
+//     {
+//       userId: 'c7ab0565-832e-4c22-9518-c2f3a038572e',
+//       email: 'profileemail@test.com',
+//       role: 'PEASANT'
+//     },
+//     accessKey
+//   )
+// );
