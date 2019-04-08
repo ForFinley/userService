@@ -15,6 +15,10 @@ const { changeEmailTests } = require('./changeEmail/changeEmail.test.js');
 const { profileTests } = require('./profile/profile.test.js');
 const { refreshTests } = require('./refresh/refresh.test.js');
 
+// const sinon = require('sinon');
+// const nodemailer = require('nodemailer/lib/mailer');
+// sinon.stub(nodemailer.prototype, 'sendMail').returns(true);
+
 describe('** All Integrated Tests **', () => {
   before(async () => {
     await startDynamoLocal();

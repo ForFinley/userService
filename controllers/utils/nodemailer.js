@@ -8,15 +8,15 @@ const auth = {
   pass: 'Ilovebeyblades!'
 };
 
+const transporter = nodemailer.createTransport({
+  host,
+  port,
+  secure,
+  auth
+});
+
 exports.sendEmailVerification = async (email, emailHash) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure,
-      auth
-    });
-
     const url = 'http://localhost:3000/verify/' + emailHash;
     const mailOptions = {
       from: '"Verify Email" <ryqanbb@gmail.com>',
@@ -38,13 +38,6 @@ exports.sendEmailVerification = async (email, emailHash) => {
 
 exports.sendPasswordReset = async (email, hash) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure,
-      auth
-    });
-
     const url = 'http://localhost:3000/passwordReset/' + hash;
     const mailOptions = {
       from: '"Password Reset" <ryqanbb@gmail.com>',
@@ -65,13 +58,6 @@ exports.sendPasswordReset = async (email, hash) => {
 
 exports.sendChangeEmail = async (email, hash) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure,
-      auth
-    });
-
     const url = 'http://localhost:3000/changeEmail/' + hash;
     const mailOptions = {
       from: '"Change Email" <ryqanbb@gmail.com>',
