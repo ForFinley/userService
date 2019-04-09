@@ -2,31 +2,32 @@ const uuidv1 = require('uuid/v1');
 const { encryptPassword, hashEncrypt } = require('./utils/crypto.js');
 const { sendEmailVerification } = require('./utils/nodemailer.js');
 const { queryUserByEmail, putUser } = require('./utils/database.js');
-const {
-  ValidationError,
-  ResourceExistsError,
-  resolveErrorSendResponse
-} = require('./utils/errors.js');
+const { resolveErrorSendResponse } = require('./utils/errors.js');
+const { validate } = require('./utils/common.js');
 
-const validate = body => {
-  if (!body.email) {
-    throw new ValidationError('Missing required parameter: email');
+const model = [
+  {
+    param: 'body',
+    field: 'email',
+    required: true
+  },
+  {
+    param: 'body',
+    field: 'password',
+    required: true
   }
-  if (!body.password) {
-    throw new ValidationError('Missing required parameter: password');
-  }
-};
+];
 
 module.exports.handler = async function(req, res) {
   try {
-    validate(req.body);
-
+    if (!validate(req, res, model)) return;
     const email = req.body.email.trim().toLowerCase();
     const password = req.body.password;
 
     const user = await queryUserByEmail(email);
     if (user && user.email)
-      throw new ResourceExistsError('Email already in use');
+      res.status(409).send({ message: 'Email already in use' });
+    // throw new ResourceExistsError('Email already in use');
 
     const passwordResult = encryptPassword(password);
     const emailHash = hashEncrypt(email);

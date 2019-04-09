@@ -49,7 +49,7 @@ exports.registrationTests = () => {
       .send(registerNewUserNoEmail.body)
       .end((err, res) => {
         expect(res).to.have.status(400);
-        const toBe = 'Missing required parameter: email';
+        const toBe = 'MISSING_EMAIL';
         expect(res.body.message).to.equal(toBe);
         done();
       });
@@ -64,7 +64,7 @@ exports.registrationTests = () => {
       .send(registerNewUserNoPassword.body)
       .end((err, res) => {
         expect(res).to.have.status(400);
-        const toBe = 'Missing required parameter: password';
+        const toBe = 'MISSING_PASSWORD';
         expect(res.body.message).to.equal(toBe);
         done();
       });
