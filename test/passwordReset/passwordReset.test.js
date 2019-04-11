@@ -8,7 +8,7 @@ const { getUser } = require('../dynamodbLocal.js');
 chai.use(chaihttp);
 const { expect } = chai;
 
-exports.passwordResetTests = () => {
+exports.passwordResetTests = (sandbox, nodemailer) => {
   it('Should init reset password', done => {
     const { resetPasswordInit } = fixtures;
     chai
@@ -25,6 +25,8 @@ exports.passwordResetTests = () => {
   });
 
   it('Should return 400 for email not sent', done => {
+    sandbox.restore();
+    sandbox.stub(nodemailer.prototype, 'sendMail').returns(false);
     const { resetPasswordInitBadEmail } = fixtures;
     chai
       .request(server)
@@ -35,6 +37,9 @@ exports.passwordResetTests = () => {
         expect(res).to.have.status(400);
         const toBe = 'Verification email not sent';
         expect(res.body.message).to.equal(toBe);
+        //Restores nodemailer to return true
+        sandbox.restore();
+        sandbox.stub(nodemailer.prototype, 'sendMail').returns(true);
         done();
       });
   });

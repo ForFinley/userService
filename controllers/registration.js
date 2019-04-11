@@ -2,8 +2,12 @@ const uuidv1 = require('uuid/v1');
 const { encryptPassword, hashEncrypt } = require('./utils/crypto.js');
 const { sendEmailVerification } = require('./utils/nodemailer.js');
 const { queryUserByEmail, putUser } = require('./utils/database.js');
-const { resolveErrorSendResponse } = require('./utils/errors.js');
-const { validate } = require('./utils/common.js');
+const {
+  ResourceExistsError,
+  resolveErrorSendResponse
+} = require('./utils/errors.js');
+
+const { validate } = require('./utils/validate.js');
 
 const model = [
   {
@@ -20,14 +24,13 @@ const model = [
 
 module.exports.handler = async function(req, res) {
   try {
-    if (!validate(req, res, model)) return;
+    // if (!validate(req, res, model)) return;
     const email = req.body.email.trim().toLowerCase();
     const password = req.body.password;
 
     const user = await queryUserByEmail(email);
     if (user && user.email)
-      res.status(409).send({ message: 'Email already in use' });
-    // throw new ResourceExistsError('Email already in use');
+      throw new ResourceExistsError('Email already in use');
 
     const passwordResult = encryptPassword(password);
     const emailHash = hashEncrypt(email);

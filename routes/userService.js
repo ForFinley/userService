@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { authenticate } = require('../controllers/utils/jwt.js');
+const { validate } = require('../controllers/utils/validate.js');
 
 const registration = require('../controllers/registration.js');
 const signIn = require('../controllers/signIn.js');
@@ -11,12 +12,16 @@ const passwordReset = require('../controllers/passwordReset.js');
 const changeEmail = require('../controllers/changeEmail.js');
 const refresh = require('../controllers/refresh.js');
 
+const {
+  registrationModel
+} = require('../controllers/utils/validationModels/registration.validate.js');
+
 /**
  * /userService/registration
  * Body: email, password
  * Adds user to DB
  */
-router.post('/registration', registration.handler);
+router.post('/registration', validate(registrationModel), registration.handler);
 
 /**
  * /userService/signIn
