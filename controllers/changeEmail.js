@@ -22,7 +22,7 @@ const getRequestMode = body => {
     (body.email && !body.changeEmailHash) ||
     (body.changeEmailHash && !body.email)
   ) {
-    throw new ValidationError('Missing required parameters');
+    throw new ValidationError('MISSING_REQUIRED_PARAMETERS');
   }
   return;
 };
@@ -33,21 +33,21 @@ module.exports.handler = async (req, res) => {
       const email = req.body.email.trim().toLowerCase();
       const userId = hashDecrypt(req.body.changeEmailHash);
       const user = await queryUserByEmail(email);
-      if (user) throw new ResourceExistsError('Email already in use');
+      if (user) throw new ResourceExistsError('email already in use');
 
       await updateEmail(userId, email);
       const emailHash = hashEncrypt(email);
       const mailerResult = await sendEmailVerification(email, emailHash);
       if (!mailerResult) console.log('ERROR:: Email Not Sent.');
-      return res.status(200).send({ message: 'Change email complete' });
+      return res.status(200).send({ message: 'Change email complete!' });
     }
     //Change Email Init
     req.user = await auth(req.headers.authorization);
-    if (!req.user) throw new InvalidCredentialsError('Unauthorized');
+    if (!req.user) throw new InvalidCredentialsError('unauthorized');
     const newEmailHash = hashEncrypt(req.user.userId);
     const mailerResult = await sendChangeEmail(req.user.email, newEmailHash);
-    if (!mailerResult) throw new ValidationError('Change email not sent');
-    return res.status(200).send({ message: 'Change email sent' });
+    if (!mailerResult) throw new ValidationError('change email not sent');
+    return res.status(200).send({ message: 'Change email sent!' });
   } catch (e) {
     resolveErrorSendResponse(e, res);
   }

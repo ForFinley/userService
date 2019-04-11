@@ -18,7 +18,7 @@ exports.passwordResetTests = (sandbox, nodemailer) => {
       .send(resetPasswordInit.body)
       .end(async (err, res) => {
         expect(res).to.have.status(200);
-        const toBe = 'Password reset email sent';
+        const toBe = 'Password reset email sent!';
         expect(res.body.message).to.equal(toBe);
         done();
       });
@@ -35,7 +35,7 @@ exports.passwordResetTests = (sandbox, nodemailer) => {
       .send(resetPasswordInitBadEmail.body)
       .end(async (err, res) => {
         expect(res).to.have.status(400);
-        const toBe = 'Verification email not sent';
+        const toBe = 'verification email not sent';
         expect(res.body.message).to.equal(toBe);
         //Restores nodemailer to return true
         sandbox.restore();
@@ -71,7 +71,7 @@ exports.passwordResetTests = (sandbox, nodemailer) => {
       .send(resetPasswordNoRequestMode.body)
       .end(async (err, res) => {
         expect(res).to.have.status(400);
-        const toBe = 'Missing required parameters';
+        const toBe = 'MISSING_REQUIRED_PARAMETERS';
         expect(res.body.message).to.equal(toBe);
         done();
       });

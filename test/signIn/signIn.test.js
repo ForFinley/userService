@@ -74,7 +74,7 @@ exports.signInTests = () => {
       .send(signInUserInvalidCreds.body)
       .end((err, res) => {
         expect(res).to.have.status(401);
-        const toBe = 'Email or password incorrect';
+        const toBe = 'email or password incorrect';
         expect(res.body.message).to.equal(toBe);
         done();
       });
@@ -144,7 +144,7 @@ exports.signInTests = () => {
       .send(signInExistingFBUserWithGoogle.body)
       .end((err, res) => {
         expect(res).to.have.status(401);
-        const toBe = 'Email already in use with facebook';
+        const toBe = 'email already in use with facebook';
         expect(res.body.message).to.equal(toBe);
         done();
       });

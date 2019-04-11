@@ -19,7 +19,7 @@ const getRequestMode = body => {
     requestMode = 'PASSWORD_RESET_CONFIRM';
     return requestMode;
   }
-  throw new ValidationError('Missing required parameters');
+  throw new ValidationError('MISSING_REQUIRED_PARAMETERS');
 };
 
 module.exports.handler = async (req, res) => {
@@ -30,8 +30,8 @@ module.exports.handler = async (req, res) => {
       const passwordResetHash = hashEncrypt(email);
       const mailerResult = await sendPasswordReset(email, passwordResetHash);
       if (!mailerResult)
-        throw new ValidationError('Verification email not sent');
-      return res.status(200).send({ message: 'Password reset email sent' });
+        throw new ValidationError('verification email not sent');
+      return res.status(200).send({ message: 'Password reset email sent!' });
     } else if (requestMode === 'PASSWORD_RESET_CONFIRM') {
       const email = hashDecrypt(req.body.passwordResetHash);
       const passwordResult = encryptPassword(req.body.password);

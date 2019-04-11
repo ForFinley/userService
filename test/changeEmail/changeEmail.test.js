@@ -18,7 +18,7 @@ exports.changeEmailTests = () => {
       .send(changeEmailInit.body)
       .end(async (err, res) => {
         expect(res).to.have.status(200);
-        const toBe = 'Change email sent';
+        const toBe = 'Change email sent!';
         expect(res.body.message).to.equal(toBe);
         done();
       });
@@ -33,7 +33,7 @@ exports.changeEmailTests = () => {
       .send(changeEmailConfirm.body)
       .end(async (err, res) => {
         expect(res).to.have.status(200);
-        const toBe = 'Change email complete';
+        const toBe = 'Change email complete!';
         expect(res.body.message).to.equal(toBe);
         const user = await getUser(changeEmailConfirm.userId);
         expect(changeEmailConfirm.body.email).to.equal(user.email);
@@ -65,7 +65,7 @@ exports.changeEmailTests = () => {
       .send(changeEmailUnauthorized.body)
       .end(async (err, res) => {
         expect(res).to.have.status(401);
-        const toBe = 'Unauthorized';
+        const toBe = 'unauthorized';
         expect(res.body.message).to.equal(toBe);
         done();
       });
@@ -80,7 +80,7 @@ exports.changeEmailTests = () => {
       .send(changeEmailInvalidParams.body)
       .end(async (err, res) => {
         expect(res).to.have.status(400);
-        const toBe = 'Missing required parameters';
+        const toBe = 'MISSING_REQUIRED_PARAMETERS';
         expect(res.body.message).to.equal(toBe);
         done();
       });
@@ -95,7 +95,7 @@ exports.changeEmailTests = () => {
       .send(changeEmailInUse.body)
       .end(async (err, res) => {
         expect(res).to.have.status(409);
-        const toBe = 'Email already in use';
+        const toBe = 'email already in use';
         expect(res.body.message).to.equal(toBe);
         done();
       });

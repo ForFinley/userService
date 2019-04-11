@@ -13,15 +13,25 @@ const changeEmail = require('../controllers/changeEmail.js');
 const refresh = require('../controllers/refresh.js');
 
 const {
-  registrationModel
-} = require('../controllers/utils/validationModels/registration.validate.js');
+  registrationSchema
+} = require('../controllers/utils/validationSchemas/registration.validate.js');
+const {
+  changePasswordSchema
+} = require('../controllers/utils/validationSchemas/changePassword.validate.js');
+const {
+  verifyEmailSchema
+} = require('../controllers/utils/validationSchemas/verifyEmail.validate.js');
 
 /**
  * /userService/registration
  * Body: email, password
  * Adds user to DB
  */
-router.post('/registration', validate(registrationModel), registration.handler);
+router.post(
+  '/registration',
+  validate(registrationSchema),
+  registration.handler
+);
 
 /**
  * /userService/signIn
@@ -40,14 +50,23 @@ router.post('/signIn', signIn.handler);
  * Body: password(current), newPassword
  * Will save new password to DB
  */
-router.post('/changePassword', authenticate, changePassword.handler);
+router.post(
+  '/changePassword',
+  authenticate,
+  validate(changePasswordSchema),
+  changePassword.handler
+);
 
 /**
  * /userService/verifyEmail/<emailHash>
  * Headers: content-type: application/json
  * Changes record in DB to emailVerified: true
  */
-router.get('/verifyEmail/:emailHash', verifyEmail.handler);
+router.get(
+  '/verifyEmail/:emailHash',
+  validate(verifyEmailSchema),
+  verifyEmail.handler
+);
 
 /**
  * userService/profile

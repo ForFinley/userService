@@ -34,7 +34,7 @@ exports.registrationTests = () => {
       .send(registerNewUserExistingEmail.body)
       .end((err, res) => {
         expect(res).to.have.status(409);
-        const toBe = 'Email already in use';
+        const toBe = 'email already in use';
         expect(res.body.message).to.equal(toBe);
         done();
       });

@@ -1,4 +1,4 @@
-exports.registrationModel = [
+exports.registrationSchema = [
   {
     param: 'body',
     field: 'email',

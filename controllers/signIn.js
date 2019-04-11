@@ -60,7 +60,7 @@ const thisUserService = async req => {
     user.salt
   );
   if (!user || !passwordBool)
-    throw new InvalidCredentialsError('Email or password incorrect');
+    throw new InvalidCredentialsError('email or password incorrect');
   return user;
 };
 
@@ -89,7 +89,7 @@ const provider = async req => {
       return putParams;
     }
     throw new InvalidCredentialsError(
-      `Email already in use with ${user.provider}`
+      `email already in use with ${user.provider}`
     );
   }
 };

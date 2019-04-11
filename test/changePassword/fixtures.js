@@ -1,6 +1,6 @@
 const url = '/userService/changePassword';
 const userId = 'f759aa6e-3dec-4d94-bc4c-a380014f7515';
-const password = 'test';
+const password = 'test11';
 const newPassword = 'newPasswordTest';
 const jwt =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmNzU5YWE2ZS0zZGVjLTRkOTQtYmM0Yy1hMzgwMDE0Zjc1MTUiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJyb2xlIjoiUEVBU0FOVCIsImlhdCI6MTU1MzgxMDM0N30.iC5Tl3Uh2zsMAGFQJfXsiSK-w8yKkaoC3_CVX0lyS1g';
@@ -15,7 +15,7 @@ exports.changePassword = {
   user: {
     userId
   },
-  encryptPass: '5bd1e6036c14bd42fe57e32d51e8d1b9', //for password 'test'
+  encryptPass: '5e2711278089c15b3e243e557e019b5c', //for password 'test11'
   salt: 'e90f20'
 };
 

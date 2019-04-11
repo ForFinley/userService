@@ -7,30 +7,13 @@ const {
   resolveErrorSendResponse
 } = require('./utils/errors.js');
 
-const { validate } = require('./utils/validate.js');
-
-const model = [
-  {
-    param: 'body',
-    field: 'email',
-    required: true
-  },
-  {
-    param: 'body',
-    field: 'password',
-    required: true
-  }
-];
-
 module.exports.handler = async function(req, res) {
   try {
-    // if (!validate(req, res, model)) return;
-    const email = req.body.email.trim().toLowerCase();
-    const password = req.body.password;
+    const { email, password } = req.validated;
 
     const user = await queryUserByEmail(email);
     if (user && user.email)
-      throw new ResourceExistsError('Email already in use');
+      throw new ResourceExistsError('email already in use');
 
     const passwordResult = encryptPassword(password);
     const emailHash = hashEncrypt(email);

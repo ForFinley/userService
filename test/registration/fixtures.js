@@ -1,6 +1,6 @@
 const url = '/userService/registration';
 const email = 'registerTest@test.com';
-const password = 'test';
+const password = 'test11';
 
 exports.registerNewUser = {
   url,

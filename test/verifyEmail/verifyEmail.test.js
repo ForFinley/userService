@@ -17,7 +17,7 @@ exports.verifyEmailTests = () => {
       .set(verifyEmail.headers)
       .end(async (err, res) => {
         expect(res).to.have.status(200);
-        const toBe = 'email verified';
+        const toBe = 'Email verified!';
         expect(res.body.message).to.equal(toBe);
         const user = await getUser(verifyEmail.userId);
         expect(user.emailVerified).to.equal(true);
@@ -33,7 +33,7 @@ exports.verifyEmailTests = () => {
       .set(verifyEmailNoHash.headers)
       .end((err, res) => {
         expect(res).to.have.status(400);
-        const toBe = 'Missing required parameter: email';
+        const toBe = 'MISSING_EMAILHASH';
         expect(res.body.message).to.equal(toBe);
         done();
       });
