@@ -6,3 +6,7 @@ package-lock.json
 #nyc
 .nyc_output
 coverage
+
+#serverless
+.serverlessgit
+.serverless

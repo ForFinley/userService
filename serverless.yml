@@ -1,0 +1,36 @@
+service: userService
+
+plugins:
+  # - serverless-offline
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: develop
+  region: us-east-1
+
+functions:
+  handler:
+    name: userService #identity-v2-release
+    handler: handler.handler
+    memorySize: 320
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors:
+            origins:
+              - '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+            allowCredentials: true
+    role: arn:aws:iam::238629524720:role/service-role/LambdaRole
+    # environment: ${file(./env.yaml):${self:custom.stage}
