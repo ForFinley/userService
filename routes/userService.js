@@ -11,6 +11,7 @@ const profile = require('../controllers/profile.js');
 const passwordReset = require('../controllers/passwordReset.js');
 const changeEmail = require('../controllers/changeEmail.js');
 const refresh = require('../controllers/refresh.js');
+const signOut = require('../controllers/signOut.js');
 
 const {
   registrationSchema
@@ -21,6 +22,9 @@ const {
 const {
   verifyEmailSchema
 } = require('../controllers/utils/validationSchemas/verifyEmail.validate.js');
+const {
+  signOutSchema
+} = require('../controllers/utils/validationSchemas/signOut.validate.js');
 
 /**
  * /userService/registration
@@ -106,9 +110,15 @@ router.post('/changeEmail', changeEmail.handler);
 
 /**
  * userService/refresh
- * Headers: content-type: application/json, authorization: <Token>
- * refreshes refresh and access token
+ * Headers: content-type: application/json, authorization: <refreshToken>
+ * refreshes authorization token
  */
 router.get('/refresh', refresh.handler);
+
+/**
+ * userService/signOut
+ * Headers: content-type: application/json, authorization: <refreshToken>
+ */
+router.get('/signOut', validate(signOutSchema), signOut.handler);
 
 module.exports = router;

@@ -14,6 +14,7 @@ const { passwordResetTests } = require('./passwordReset/passwordReset.test.js');
 const { changeEmailTests } = require('./changeEmail/changeEmail.test.js');
 const { profileTests } = require('./profile/profile.test.js');
 const { refreshTests } = require('./refresh/refresh.test.js');
+const { signOutTests } = require('./signOut/signOut.test.js');
 
 const sinon = require('sinon');
 const nodemailer = require('nodemailer/lib/mailer');
@@ -59,5 +60,9 @@ describe('** All Integrated Tests **', () => {
 
   describe('Refresh', () => {
     refreshTests();
+  });
+
+  describe('Sign Out', () => {
+    signOutTests();
   });
 });

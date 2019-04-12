@@ -103,6 +103,7 @@ exports.createRecords = async () => {
   } = require('./changeEmail/fixtures.js');
   const { profileRecord } = require('./profile/fixtures.js');
   const { refreshRecord } = require('./refresh/fixtures.js');
+  const { signOutFixture } = require('./signOut/fixtures.js');
 
   const registerNewUserExistingEmailParams = {
     TableName: USER_TABLE,
@@ -215,6 +216,14 @@ exports.createRecords = async () => {
     }
   };
 
+  const refreshSignOutParams = {
+    TableName: REFRESH_TABLE,
+    Item: {
+      userId: signOutFixture.userId,
+      refreshToken: signOutFixture.headers.authorization
+    }
+  };
+
   const fixtureArray = [
     registerNewUserExistingEmailParams,
     signInUserRecord,
@@ -227,7 +236,8 @@ exports.createRecords = async () => {
     changeEmailInUseParams,
     profileParams,
     refreshParams,
-    refreshUserParams
+    refreshUserParams,
+    refreshSignOutParams
   ];
   await Promise.all(fixtureArray.map(param => docClient.put(param).promise()));
   console.log('TEST RECORDS CREATED');
@@ -257,5 +267,15 @@ exports.getUser = async userId => {
   };
   const result = await docClient.get(params).promise();
   if (result.Item && result.Item.userId) return result.Item;
+  return false;
+};
+
+exports.getRefreshToken = async refreshToken => {
+  const params = {
+    TableName: REFRESH_TABLE,
+    Key: { refreshToken }
+  };
+  const result = await docClient.get(params).promise();
+  if (result.Item && result.Item.refreshToken) return result.Item;
   return false;
 };

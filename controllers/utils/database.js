@@ -125,3 +125,13 @@ exports.getRefresh = async refreshToken => {
   if (token.Item) return token.Item;
   return false;
 };
+
+exports.deleteRefreshRecord = async refreshToken => {
+  const params = {
+    TableName: REFRESH_TABLE,
+    Key: {
+      refreshToken
+    }
+  };
+  return await docClient.delete(params).promise();
+};
