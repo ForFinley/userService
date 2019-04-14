@@ -39,18 +39,20 @@ router.post(
 
 /**
  * /userService/signIn
+ * This user service sign in
  * Body: email, password
- * Returns authorization token
  *
  * Google SignIn
  * Headers: Authorization: google token (googleUser.getAuthResponse().id_token)
  * Body: provider:google
+ *
+ * Returns authorization token and refresh token
  */
 router.post('/signIn', signIn.handler);
 
 /**
  * /userService/changePassword
- * Headers: content-type: application/json, authorization: <Token>
+ * Headers: content-type: application/json, authorization: <authorizationToken>
  * Body: password(current), newPassword
  * Will save new password to DB
  */
@@ -63,7 +65,6 @@ router.post(
 
 /**
  * /userService/verifyEmail/<emailHash>
- * Headers: content-type: application/json
  * Changes record in DB to emailVerified: true
  */
 router.get(
@@ -74,30 +75,30 @@ router.get(
 
 /**
  * userService/profile
- * Headers: content-type: application/json, authorization: <Token>
+ * Headers: content-type: application/json, authorization: <authorizationToken>
  * Returns all user info needed
  */
 router.get('/profile', authenticate, profile.handler);
 
-// /**
-//  * userService/passwordResetInit
-//  * Headers: content-type: application/json
-//  * Body: email
-//  * Sends reset password email.
-//  */
-
-// /**
-//  * userService/passwordResetConfirm
-//  * Headers: content-type: application/json
-//  * Body: passwordResetHash, password(new password)
-//  * Sets new password.
-//  */
+/**
+ * userService/passwordReset
+ *
+ * Initalize
+ * Body: email
+ * Sends reset password email.
+ *
+ * Confirm
+ * Headers: content-type: application/json
+ * Body: passwordResetHash, password(new password)
+ * Sets new password.
+ */
 router.post('/passwordReset', passwordReset.handler);
 
 /**
- * userService/changeEmailInit
- * Headers: content-type: application/json, authorization: <Token>
- * Body: email
+ * userService/changeEmail
+ *
+ * Initalize
+ * Headers: content-type: application/json, authorization: <authorizationToken>
  * Sends change email email.
  */
 /**
@@ -118,6 +119,7 @@ router.get('/refresh', refresh.handler);
 /**
  * userService/signOut
  * Headers: content-type: application/json, authorization: <refreshToken>
+ * Deletes refresh token for current session
  */
 router.get('/signOut', validate(signOutSchema), signOut.handler);
 

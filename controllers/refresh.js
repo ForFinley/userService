@@ -13,6 +13,7 @@ module.exports.handler = async function(req, res) {
     if (!decryptToken) throw new InvalidCredentialsError('unauthorized');
 
     //TODO :: refresh table should have ttl so old refreshTokens get deleted
+    //ALSO MAYBE CHECK USERID MATCHES?
     const refreshRecord = await getRefresh(refreshToken);
     if (!refreshRecord) throw new ResourceExistsError('invalid refresh token');
 
