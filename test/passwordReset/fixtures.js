@@ -8,7 +8,8 @@ exports.resetPasswordInit = {
   headers: {},
   body: {
     email: 'ryqan@gmail.com'
-  }
+  },
+  userId
 };
 
 exports.resetPasswordInitBadEmail = {

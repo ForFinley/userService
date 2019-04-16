@@ -119,7 +119,7 @@
         },
         "responses": {
           "200": {
-            "description": "Response will be 'Password update success!''",
+            "description": "Password update success!",
             "content": {
               "application/json": {
                 "schema": {
@@ -149,7 +149,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Response will be 'Email verified!'",
+            "description": "Email verified!",
             "content": {
               "application/json": {
                 "schema": {

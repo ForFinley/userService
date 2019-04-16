@@ -96,7 +96,10 @@ exports.createRecords = async () => {
   } = require('./signIn/fixtures.js');
   const { verifyEmail } = require('./verifyEmail/fixtures.js');
   const { changePassword } = require('./changePassword/fixtures.js');
-  const { resetPasswordConfirm } = require('./passwordReset/fixtures.js');
+  const {
+    resetPasswordInit,
+    resetPasswordConfirm
+  } = require('./passwordReset/fixtures.js');
   const {
     changeEmailRecord,
     changeEmailInUseRecord
@@ -157,6 +160,14 @@ exports.createRecords = async () => {
       userId: changePassword.user.userId,
       password: changePassword.encryptPass,
       salt: changePassword.salt
+    }
+  };
+
+  const resetPasswordInitParams = {
+    TableName: USER_TABLE,
+    Item: {
+      userId: resetPasswordInit.userId,
+      email: resetPasswordInit.body.email
     }
   };
 
@@ -231,6 +242,7 @@ exports.createRecords = async () => {
     signInUserFBUSerWithGoogleRecord,
     verifyEmailParams,
     changePasswordParams,
+    resetPasswordInitParams,
     resetPasswordConfirmParams,
     changeEmailParams,
     changeEmailInUseParams,

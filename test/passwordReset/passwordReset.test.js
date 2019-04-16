@@ -24,7 +24,7 @@ exports.passwordResetTests = (sandbox, nodemailer) => {
       });
   });
 
-  it('Should return 400 for email not sent', done => {
+  it('Should return 400 for email not in system', done => {
     sandbox.restore();
     sandbox.stub(nodemailer.prototype, 'sendMail').returns(false);
     const { resetPasswordInitBadEmail } = fixtures;
@@ -35,7 +35,7 @@ exports.passwordResetTests = (sandbox, nodemailer) => {
       .send(resetPasswordInitBadEmail.body)
       .end(async (err, res) => {
         expect(res).to.have.status(400);
-        const toBe = 'verification email not sent';
+        const toBe = 'email is not in our system';
         expect(res.body.message).to.equal(toBe);
         //Restores nodemailer to return true
         sandbox.restore();
