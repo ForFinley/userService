@@ -17,7 +17,7 @@
     "/registration": {
       "post": {
         "summary": "Registers a user in the system with thisUserService",
-        "tags": ["userService"],
+        "tags": ["/userService"],
         "requestBody": {
           "description": "Email must be valid format, password must be longer than 5 characters",
           "required": true,
@@ -47,7 +47,7 @@
       "post": {
         "summary": "Signs a user into the system",
         "description": "This endpoint can be used to sign in a user with thisUserService or the google provider. For thisUserService pass in email and password. For the google provider pass in google token in the authorization header and pass provider in the body set to 'google'.",
-        "tags": ["userService"],
+        "tags": ["/userService"],
         "parameters": [
           {
             "name": "authorization",
@@ -94,7 +94,7 @@
     "/changePassword": {
       "post": {
         "summary": "Changes user password in database for thisUserService",
-        "tags": ["userService"],
+        "tags": ["/userService"],
         "parameters": [
           {
             "name": "authorization",
@@ -135,7 +135,7 @@
       "get": {
         "summary": "Updates verifyEmail boolean",
         "description": "When a user registers or signs up with a provider they will recieve an email verify their email address. The email will contain a link to our site which will call this endpoint passing in the emailHash in the path parameter. If successful, verifyEmail boolean will be set to true on the user record.",
-        "tags": ["userService"],
+        "tags": ["/userService"],
         "parameters": [
           {
             "name": "emailHash",
@@ -164,7 +164,7 @@
     "/profile": {
       "get": {
         "summary": "Gets user profile info",
-        "tags": ["userService"],
+        "tags": ["/userService"],
         "parameters": [
           {
             "name": "authorization",
@@ -194,7 +194,7 @@
       "post": {
         "summary": "User can set new password if they do not know their current",
         "description": "If a user forgets their password they can have an email sent to them for a reset. The process has two calls to this endpoint, it is used to send the email(initialize) and change the password(confirm).",
-        "tags": ["userService"],
+        "tags": ["/userService"],
         "requestBody": {
           "description": "* Initialize - Email must be valid format, if it is not in our system it will throw a 400\n* Confirm - Password must be valid, passwordResetHash will be in the path param from the link the user selects in their email.\n",
           "required": true,
@@ -231,7 +231,7 @@
       "post": {
         "summary": "User can change the email on their account",
         "description": "A user may want to change the email address linked to their account. The process has two calls to this endpoint, a link is sent to their current email to set a new email address(initialize). The link will direct them to our page where they can type in the new email they would like to add to their account(confirm), the changeEmailHash will be a path parameter.",
-        "tags": ["userService"],
+        "tags": ["/userService"],
         "parameters": [
           {
             "name": "authorization",
@@ -272,7 +272,7 @@
       "get": {
         "summary": "Returns a new authorization token",
         "description": "When a short lived authroization token expires you will need to get a new one. This endpoint recieves the users refresh token which is given on signIn and if it is valid will return a new authorization token. If the refresh token is expired or blacklisted user should be signed out.",
-        "tags": ["userService"],
+        "tags": ["/userService"],
         "parameters": [
           {
             "name": "authorization",
@@ -302,7 +302,7 @@
       "get": {
         "summary": "Signs out user(deletes refresh token to end session)",
         "description": "This endpoint will delete the refresh token from the database so it can no longer be used. Refresh and authorization tokens should be delete with all other user info on front end.",
-        "tags": ["userService"],
+        "tags": ["/userService"],
         "parameters": [
           {
             "name": "authorization",

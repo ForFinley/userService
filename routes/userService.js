@@ -127,9 +127,9 @@ router.get('/signOut', validate(signOutSchema), signOut.handler);
  * userService/docs
  * Returns json file with swagger docs
  */
-router.get('/docs', () => {
+router.get('/docs', (req, res) => {
   const docs = require('../docs.json');
-  return docs;
+  return res.status(200).send(docs);
 });
 
 module.exports = router;

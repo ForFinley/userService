@@ -1,7 +1,7 @@
 service: userService
 
-plugins:
-  # - serverless-offline
+# plugins:
+# - serverless-offline
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -15,7 +15,7 @@ provider:
 
 functions:
   handler:
-    name: userService #identity-v2-release
+    name: userService
     handler: handler.handler
     memorySize: 320
     events:

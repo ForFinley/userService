@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require('cors');
 // const rateLimit = require('express-rate-limit');
@@ -11,8 +10,6 @@ const userService = require('./routes/userService.js');
 app.use(express.json({ type: '*/*' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
 
 app.use(helmet());
 // const limiter = rateLimit({
@@ -24,6 +21,6 @@ app.use(helmet());
 app.use('/userService', userService);
 
 exports.server = app;
-// exports.server = app.listen(PORT, () => {
+// exports.server = app.listen(3000, () => {
 //   console.log('server running at ' + 3000);
 // });
