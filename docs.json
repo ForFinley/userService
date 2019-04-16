@@ -1,0 +1,464 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "User Service",
+    "description": "https://gemf0cxijj.execute-api.us-east-1.amazonaws.com/develop/userService",
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://gemf0cxijj.execute-api.us-east-1.amazonaws.com/develop/userService"
+    }
+  ],
+  "paths": {
+    "/registration": {
+      "post": {
+        "summary": "Registers a user in the system with thisUserService",
+        "tags": ["userService"],
+        "requestBody": {
+          "description": "Email must be valid format, password must be longer than 5 characters",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registration"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfuly registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registrationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/signIn": {
+      "post": {
+        "summary": "Signs a user into the system",
+        "description": "This endpoint can be used to sign in a user with thisUserService or the google provider. For thisUserService pass in email and password. For the google provider pass in google token in the authorization header and pass provider in the body set to 'google'.",
+        "tags": ["userService"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "google token (googleUser.getAuthResponse().id_token) ONLY FOR GOOGLE",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "* thisUserService - Email must be valid format, password must be longer than 5 characters\n* google - provider should be 'google'\n",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/thisUserService"
+                  },
+                  {
+                    "$ref": "#/components/schemas/google"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfuly signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/signInResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/changePassword": {
+      "post": {
+        "summary": "Changes user password in database for thisUserService",
+        "tags": ["userService"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "password is current user password, newPassword is the password that the user would like to change to.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/changePassword"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Response will be 'Password update success!''",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/verifyEmail/{emailHash}": {
+      "get": {
+        "summary": "Updates verifyEmail boolean",
+        "description": "When a user registers or signs up with a provider they will recieve an email verify their email address. The email will contain a link to our site which will call this endpoint passing in the emailHash in the path parameter. If successful, verifyEmail boolean will be set to true on the user record.",
+        "tags": ["userService"],
+        "parameters": [
+          {
+            "name": "emailHash",
+            "in": "path",
+            "description": "Contains user email, this is decrypted and used to update the user record database property, verifyEmail(boolean).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response will be 'Email verified!'",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profile": {
+      "get": {
+        "summary": "Gets user profile info",
+        "tags": ["userService"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/profileResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/passwordReset": {
+      "post": {
+        "summary": "User can set new password if they do not know their current",
+        "description": "If a user forgets their password they can have an email sent to them for a reset. The process has two calls to this endpoint, it is used to send the email(initialize) and change the password(confirm).",
+        "tags": ["userService"],
+        "requestBody": {
+          "description": "* Initialize - Email must be valid format, if it is not in our system it will throw a 400\n* Confirm - Password must be valid, passwordResetHash will be in the path param from the link the user selects in their email.\n",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/passwordResetInit"
+                  },
+                  {
+                    "$ref": "#/components/schemas/passwordResetConfirm"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password update success!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registrationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/changeEmail": {
+      "post": {
+        "summary": "User can change the email on their account",
+        "description": "A user may want to change the email address linked to their account. The process has two calls to this endpoint, a link is sent to their current email to set a new email address(initialize). The link will direct them to our page where they can type in the new email they would like to add to their account(confirm), the changeEmailHash will be a path parameter.",
+        "tags": ["userService"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authorization token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "changeEmailHash will be a path param of the link they select from their email, email is the new email they will change to.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/changeEmailConfirm"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "* Initialize response - Change email sent!\n* Confirm response - Change email complete!\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refresh": {
+      "get": {
+        "summary": "Returns a new authorization token",
+        "description": "When a short lived authroization token expires you will need to get a new one. This endpoint recieves the users refresh token which is given on signIn and if it is valid will return a new authorization token. If the refresh token is expired or blacklisted user should be signed out.",
+        "tags": ["userService"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Refresh token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns new authorization token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/refreshResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/signOut": {
+      "get": {
+        "summary": "Signs out user(deletes refresh token to end session)",
+        "description": "This endpoint will delete the refresh token from the database so it can no longer be used. Refresh and authorization tokens should be delete with all other user info on front end.",
+        "tags": ["userService"],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Refresh token",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sign out complete!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/message"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "message": {
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "registration": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "registrationResponse": {
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "thisUserService": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "google": {
+        "properties": {
+          "provider": {
+            "type": "string"
+          }
+        }
+      },
+      "signInResponse": {
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              }
+            }
+          },
+          "authorizationToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "changePassword": {
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        }
+      },
+      "profileResponse": {
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "emailVerified": {
+            "type": "boolean"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      },
+      "passwordResetInit": {
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "passwordResetConfirm": {
+        "properties": {
+          "passwordResetHash": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "changeEmailConfirm": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "changeEmailHash": {
+            "type": "string"
+          }
+        }
+      },
+      "refreshResponse": {
+        "properties": {
+          "authorizationToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

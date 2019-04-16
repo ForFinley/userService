@@ -27,6 +27,9 @@ module.exports.handler = async (req, res) => {
     const requestMode = getRequestMode(req.body);
     if (requestMode === 'PASSWORD_RESET_INIT') {
       const email = req.body.email;
+      const emailInSystem = await queryUserByEmail(email);
+      if (!emailInSystem)
+        return res.status(400).send({ message: 'email is not in our system' });
       const passwordResetHash = hashEncrypt(email);
       const mailerResult = await sendPasswordReset(email, passwordResetHash);
       if (!mailerResult)

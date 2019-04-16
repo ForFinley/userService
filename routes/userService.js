@@ -43,7 +43,7 @@ router.post(
  * Body: email, password
  *
  * Google SignIn
- * Headers: Authorization: google token (googleUser.getAuthResponse().id_token)
+ * Headers: authorization: google token (googleUser.getAuthResponse().id_token)
  * Body: provider:google
  *
  * Returns authorization token and refresh token
@@ -122,5 +122,14 @@ router.get('/refresh', refresh.handler);
  * Deletes refresh token for current session
  */
 router.get('/signOut', validate(signOutSchema), signOut.handler);
+
+/**
+ * userService/docs
+ * Returns json file with swagger docs
+ */
+router.get('/docs', () => {
+  const docs = require('../docs.json');
+  return docs;
+});
 
 module.exports = router;
