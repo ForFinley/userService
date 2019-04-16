@@ -1,5 +1,5 @@
 {
-  "name": "expressuserservice",
+  "name": "userservice",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -20,7 +20,7 @@
       "html"
     ]
   },
-  "author": "",
+  "author": "Ryan Feltkamp",
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.393.0",
