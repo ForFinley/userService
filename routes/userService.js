@@ -132,4 +132,11 @@ router.get('/docs', (req, res) => {
   return res.status(200).send(docs);
 });
 
+/**
+ * userService/healthCheck
+ */
+router.get('/healthCheck', (req, res) => {
+  return res.status(200).send('HEALTHY');
+});
+
 module.exports = router;

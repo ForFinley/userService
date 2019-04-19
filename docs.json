@@ -3,14 +3,14 @@
   "info": {
     "version": "1.0.0",
     "title": "User Service",
-    "description": "https://gemf0cxijj.execute-api.us-east-1.amazonaws.com/develop/userService",
+    "description": "https://dev-api.ryanfeltkamp.com/userService",
     "license": {
       "name": "MIT"
     }
   },
   "servers": [
     {
-      "url": "https://gemf0cxijj.execute-api.us-east-1.amazonaws.com/develop/userService"
+      "url": "https://dev-api.ryanfeltkamp.com/userService"
     }
   ],
   "paths": {
