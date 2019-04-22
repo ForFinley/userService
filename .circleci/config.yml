@@ -5,9 +5,9 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Install project dependencies
           command: npm install
       - run: npm run testMac
+          name: Run tests
+          command: npm run testMac
