@@ -13,6 +13,13 @@
     "tabWidth": 2
   },
   "nyc": {
+    "exclude": [
+      "**/errors.js",
+      "**/test",
+      "**/routes",
+      "**/keys",
+      "**/validationSchemas"
+    ],
     "cache": false,
     "reporter": [
       "lcov",
