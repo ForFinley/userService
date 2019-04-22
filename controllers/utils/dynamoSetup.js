@@ -6,7 +6,7 @@ let config = {
 };
 if (process.env.NODE_ENV === 'TEST') {
   config = Object.assign(config, {
-    endpoint: new AWS.Endpoint('http://localhost:8000'),
+    endpoint: new AWS.Endpoint('http://dynamo:8000'),
     accessKeyId: 'accessKeyId',
     secretAccessKey: 'secretAccessKey'
   });

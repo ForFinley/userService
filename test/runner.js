@@ -1,5 +1,6 @@
 const {
   startDynamoLocal,
+  checkTables,
   createTables,
   createRecords,
   stopDynamoLocal
@@ -23,12 +24,12 @@ sandbox.stub(nodemailer.prototype, 'sendMail').returns(true);
 
 describe('** All Integrated Tests **', () => {
   before(async () => {
-    await startDynamoLocal();
+    // await startDynamoLocal();
+    await checkTables();
     await createTables();
     await createRecords();
   });
-
-  after(stopDynamoLocal);
+  // after(stopDynamoLocal);
 
   describe('Registration', () => {
     registrationTests();

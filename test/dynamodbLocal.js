@@ -12,6 +12,13 @@ exports.stopDynamoLocal = () => {
   dynamodbLocal.stop(port);
 };
 
+exports.checkTables = async () => {
+  const tables = await dynamodb.listTables({}).promise();
+  for (let x = 0; x < tables.TableNames.length; x++) {
+    await dynamodb.deleteTable({ TableName: tables.TableNames[x] }).promise();
+  }
+};
+
 exports.createTables = async () => {
   const paramsUserTable = {
     AttributeDefinitions: [
