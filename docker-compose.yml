@@ -1,0 +1,21 @@
+version: '3'
+services:
+  dynamo:
+    image: 'cnadiminti/dynamodb-local'
+    volumes:
+      - ./.data/dynamodb:/dynamodb_local_db
+    ports:
+      - '8000:8000'
+    command: -inMemory
+  app:
+    build: .
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - '49160:3000'
+    depends_on:
+      - dynamo
+    links:
+      - 'dynamo:dynamo'
+    command: >
+      sh -c 'tail -f /dev/null'

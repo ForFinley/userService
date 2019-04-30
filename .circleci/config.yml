@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install project dependencies
+          command: npm install
+      - run: docker-compose build
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run: docker-compose up -d
+      - run: docker-compose run app npm run testMac

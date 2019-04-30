@@ -1,21 +1,87 @@
-const jwt = require("jsonwebtoken");
-const secret = require("../utils/keys/privateKey.js");
-const TOKENTIME = 120 * 60; // in seconds
+const jwt = require('jsonwebtoken');
+const { accessKey, refreshKey } = require('./keys/privateKeys.js');
+const {
+  InvalidCredentialsError,
+  resolveErrorSendResponse
+} = require('./errors.js');
+const ACCESSS_TOKENTIME = 120 * 60; // in seconds
+const REFRESH_TOKENTIME = 1200 * 60; // in seconds
 
-function generateToken(user) {
+exports.generateToken = user => {
   return jwt.sign(
     {
       userId: user.userId,
       email: user.email,
       role: user.role
     },
-    secret.key,
+    accessKey,
     {
-      expiresIn: TOKENTIME
+      expiresIn: ACCESSS_TOKENTIME
     }
   );
-}
-
-module.exports = {
-  generateToken
 };
+
+exports.generateRefreshToken = user => {
+  return jwt.sign(
+    {
+      userId: user.userId
+    },
+    refreshKey,
+    {
+      expiresIn: REFRESH_TOKENTIME
+    }
+  );
+};
+
+exports.authenticateRefresh = async authorization => {
+  try {
+    const token = authorization;
+    const decodeToken = await jwt.verify(token, refreshKey);
+    return {
+      userId: decodeToken.userId
+    };
+  } catch (e) {
+    return false;
+  }
+};
+
+exports.authenticate = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+    const decodeToken = await jwt.verify(token, accessKey);
+
+    req.user = {
+      userId: decodeToken.userId,
+      email: decodeToken.email,
+      role: decodeToken.role
+    };
+    next();
+  } catch (e) {
+    resolveErrorSendResponse(new InvalidCredentialsError('Unauthorized'), res);
+  }
+};
+
+exports.auth = async authorization => {
+  try {
+    const token = authorization;
+    const decodeToken = await jwt.verify(token, accessKey);
+    return {
+      userId: decodeToken.userId,
+      email: decodeToken.email,
+      role: decodeToken.role
+    };
+  } catch (e) {
+    return false;
+  }
+};
+
+// console.log(
+//   jwt.sign(
+//     {
+//       userId: 'c7ab0565-832e-4c22-9518-c2f3a038572e',
+//       email: 'profileemail@test.com',
+//       role: 'PEASANT'
+//     },
+//     accessKey
+//   )
+// );
