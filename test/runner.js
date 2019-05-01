@@ -1,9 +1,7 @@
 const {
-  startDynamoLocal,
   checkTables,
   createTables,
-  createRecords,
-  stopDynamoLocal
+  createRecords
 } = require('./dynamodbLocal.js');
 const { registrationTests } = require('./registration/registration.test.js');
 const { signInTests } = require('./signIn/signIn.test.js');
@@ -24,12 +22,10 @@ sandbox.stub(nodemailer.prototype, 'sendMail').returns(true);
 
 describe('** All Integrated Tests **', () => {
   before(async () => {
-    // await startDynamoLocal();
     await checkTables();
     await createTables();
     await createRecords();
   });
-  // after(stopDynamoLocal);
 
   describe('Registration', () => {
     registrationTests();
