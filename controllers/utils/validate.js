@@ -1,34 +1,35 @@
-exports.validate = model => {
-  return (req, res, next) => {
-    let returnedParams = {};
-    for (let x = 0; x < model.length; x++) {
-      let param = req[model[x].param][model[x].field];
+const validationSchema = require('./validationSchema');
 
-      // Makes sure required fields are present and valid
-      if (model[x].required === true && !requiredFields(model[x], param, res))
-        return false;
+exports.validate = (req, res, next) => {
+  const path = req.path.split('/')[2];
+  if (!validationSchema[path]) return next();
 
-      // Makes sure email is valid format
-      if (model[x].field === 'email') param = param.trim().toLowerCase();
-      if (model[x].field === 'email' && !checkEmail(param, res)) return false;
+  const schema = validationSchema[path];
 
-      //  Makes sure password is valid format
-      if (
-        (model[x].field === 'password' || model[x].field === 'newPassword') &&
-        !checkPassword(param, res)
-      )
-        return false;
+  for (let x = 0; x < schema.length; x++) {
+    let param = req[schema[x].param][schema[x].field];
 
-      returnedParams[model[x].field] = param;
-    }
-    req.validated = returnedParams;
-    next();
-  };
+    // Makes sure required fields are present and valid
+    if (schema[x].required === true && !requiredFields(schema[x], param, res))
+      return;
+
+    // Makes sure email is valid format
+    if (schema[x].field === 'email') param = param.trim().toLowerCase();
+    if (schema[x].field === 'email' && !checkEmail(param, res)) return;
+
+    //  Makes sure password is valid format
+    if (
+      (schema[x].field === 'password' || schema[x].field === 'newPassword') &&
+      !checkPassword(param, res)
+    )
+      return;
+  }
+  return next();
 };
 
-const requiredFields = (model, param, res) => {
+const requiredFields = (schema, param, res) => {
   if (!param || param < 1 || param === 'undefined') {
-    res.status(400).send({ message: `MISSING_${model.field.toUpperCase()}` });
+    res.status(400).send({ message: `MISSING_${schema.field.toUpperCase()}` });
     return false;
   }
   return true;

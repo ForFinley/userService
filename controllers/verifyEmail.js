@@ -7,7 +7,7 @@ const {
 
 module.exports.handler = async function(req, res) {
   try {
-    const { emailHash } = req.validated;
+    const { emailHash } = req.body;
     const email = cryptoUtil.hashDecrypt(emailHash);
     const user = await queryUserByEmail(email);
     if (!user) throw new ValidationError('email hash invalid');

@@ -8,7 +8,7 @@ const {
 module.exports.handler = async function(req, res) {
   try {
     const userId = req.user.userId;
-    const { password, newPassword } = req.validated;
+    const { password, newPassword } = req.body;
 
     const user = await getUser(userId);
 

@@ -1,15 +1,15 @@
 const uuidv1 = require('uuid/v1');
-const { encryptPassword, hashEncrypt } = require('./utils/crypto.js');
-const { sendEmailVerification } = require('./utils/nodemailer.js');
-const { queryUserByEmail, putUser } = require('./utils/database.js');
+const { encryptPassword, hashEncrypt } = require('./utils/crypto');
+const { sendEmailVerification } = require('./utils/nodemailer');
+const { queryUserByEmail, putUser } = require('./utils/database');
 const {
   ResourceExistsError,
   resolveErrorSendResponse
-} = require('./utils/errors.js');
+} = require('./utils/errors');
 
 module.exports.handler = async function(req, res) {
   try {
-    const { email, password } = req.validated;
+    const { email, password } = req.body;
 
     const user = await queryUserByEmail(email);
     if (user && user.email)

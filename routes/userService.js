@@ -1,41 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const { authenticate } = require('../controllers/utils/jwt.js');
-const { validate } = require('../controllers/utils/validate.js');
-
-const registration = require('../controllers/registration.js');
-const signIn = require('../controllers/signIn.js');
-const changePassword = require('../controllers/changePassword.js');
-const verifyEmail = require('../controllers/verifyEmail.js');
-const profile = require('../controllers/profile.js');
-const passwordReset = require('../controllers/passwordReset.js');
-const changeEmail = require('../controllers/changeEmail.js');
-const refresh = require('../controllers/refresh.js');
-const signOut = require('../controllers/signOut.js');
-
-const {
-  registrationSchema
-} = require('../controllers/utils/validationSchemas/registration.validate.js');
-const {
-  changePasswordSchema
-} = require('../controllers/utils/validationSchemas/changePassword.validate.js');
-const {
-  verifyEmailSchema
-} = require('../controllers/utils/validationSchemas/verifyEmail.validate.js');
-const {
-  signOutSchema
-} = require('../controllers/utils/validationSchemas/signOut.validate.js');
+const { authenticate } = require('../controllers/utils/jwt');
+const registration = require('../controllers/registration');
+const signIn = require('../controllers/signIn');
+const changePassword = require('../controllers/changePassword');
+const verifyEmail = require('../controllers/verifyEmail');
+const profile = require('../controllers/profile');
+const passwordReset = require('../controllers/passwordReset');
+const changeEmail = require('../controllers/changeEmail');
+const refresh = require('../controllers/refresh');
+const signOut = require('../controllers/signOut');
 
 /**
  * /userService/registration
  * Body: email, password
  * Adds user to DB
  */
-router.post(
-  '/registration',
-  validate(registrationSchema),
-  registration.handler
-);
+router.post('/registration', registration.handler);
 
 /**
  * /userService/signIn
@@ -56,22 +37,13 @@ router.post('/signIn', signIn.handler);
  * Body: password(current), newPassword
  * Will save new password to DB
  */
-router.post(
-  '/changePassword',
-  authenticate,
-  validate(changePasswordSchema),
-  changePassword.handler
-);
+router.post('/changePassword', authenticate, changePassword.handler);
 
 /**
  * /userService/verifyEmail/<emailHash>
  * Changes record in DB to emailVerified: true
  */
-router.get(
-  '/verifyEmail/:emailHash',
-  validate(verifyEmailSchema),
-  verifyEmail.handler
-);
+router.get('/verifyEmail/:emailHash', verifyEmail.handler);
 
 /**
  * userService/profile
@@ -121,7 +93,7 @@ router.get('/refresh', refresh.handler);
  * Headers: content-type: application/json, authorization: <refreshToken>
  * Deletes refresh token for current session
  */
-router.get('/signOut', validate(signOutSchema), signOut.handler);
+router.get('/signOut', signOut.handler);
 
 /**
  * userService/docs
