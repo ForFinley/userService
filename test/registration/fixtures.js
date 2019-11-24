@@ -1,4 +1,4 @@
-const url = '/userService/registration';
+const url = '/identity-service/registration';
 const email = 'registerTest@test.com';
 const password = 'test11';
 

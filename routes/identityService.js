@@ -5,7 +5,6 @@ const registration = require('../controllers/registration');
 const signIn = require('../controllers/signIn');
 const changePassword = require('../controllers/changePassword');
 const verifyEmail = require('../controllers/verifyEmail');
-const profile = require('../controllers/profile');
 const passwordReset = require('../controllers/passwordReset');
 const changeEmail = require('../controllers/changeEmail');
 const refresh = require('../controllers/refresh');
@@ -44,13 +43,6 @@ router.post('/changePassword', authenticate, changePassword.handler);
  * Changes record in DB to emailVerified: true
  */
 router.get('/verifyEmail/:emailHash', verifyEmail.handler);
-
-/**
- * userService/profile
- * Headers: content-type: application/json, authorization: <authorizationToken>
- * Returns all user info needed
- */
-router.get('/profile', authenticate, profile.handler);
 
 /**
  * userService/passwordReset

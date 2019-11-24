@@ -1,10 +1,13 @@
 {
-  "name": "userservice",
+  "name": "identity-service",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "author": "Ryan Feltkamp",
+  "license": "ISC",
   "scripts": {
-    "nodemon": "nodemon app.js",
+    "start-dynamo": "cross-env NODE_ENV=LOCAL node dynamodb-localhost.js",
+    "start-dev": "cross-env NODE_ENV=LOCAL nodemon start.js",
     "test": "NODE_ENV=TEST nyc mocha ./test/runner.js --timeout 20000 --exit"
   },
   "prettier": {
@@ -26,12 +29,10 @@
       "html"
     ]
   },
-  "author": "Ryan Feltkamp",
-  "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.393.0",
-    "aws-serverless-express": "^3.3.6",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.16.4",
     "express-rate-limit": "^3.3.2",
     "helmet": "^3.15.0",
@@ -44,7 +45,8 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.2.0",
-    "dynamodb-localhost": "0.0.7",
+    "cross-env": "^6.0.3",
+    "dynamodb-localhost": "0.0.9",
     "mocha": "^5.2.0",
     "nock": "^10.0.6",
     "nodemon": "^1.18.9",

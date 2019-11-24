@@ -1,4 +1,4 @@
-const url = '/userService/passwordReset';
+const url = '/identity-service/passwordReset';
 const userId = '9a147e69-9bba-443d-8680-2020cbf52aaa';
 const password = 'test';
 const newPassword = 'newPasswordTest';

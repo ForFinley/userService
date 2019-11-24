@@ -1,4 +1,4 @@
-const url = '/userService/refresh';
+const url = '/identity-service/refresh';
 const userId = '35eace1e-d5ad-4096-b02e-0090fbf5f21a';
 const email = 'refreshuser@test.com';
 const role = 'PEASANT';

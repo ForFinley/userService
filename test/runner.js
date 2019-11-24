@@ -1,5 +1,6 @@
 const {
   checkTables,
+  deleteTables,
   createTables,
   createRecords
 } = require('./dynamodbLocal.js');
@@ -22,34 +23,35 @@ sandbox.stub(nodemailer.prototype, 'sendMail').returns(true);
 
 describe('** All Integrated Tests **', () => {
   before(async () => {
-    await checkTables();
+    const tables = await checkTables();
+    await deleteTables(tables);
     await createTables();
     await createRecords();
   });
 
-  describe('Registration', () => {
-    registrationTests();
-  });
+  // describe('Registration', () => {
+  //   registrationTests();
+  // });
 
-  describe('Sign In', () => {
-    signInTests();
-  });
+  // describe('Sign In', () => {
+  //   signInTests();
+  // });
 
-  describe('Verify Email', () => {
-    verifyEmailTests();
-  });
+  // describe('Verify Email', () => {
+  //   verifyEmailTests();
+  // });
 
-  describe('Change Password', () => {
-    changePasswordTests();
-  });
+  // describe('Change Password', () => {
+  //   changePasswordTests();
+  // });
 
-  describe('Password Reset', () => {
-    passwordResetTests(sandbox, nodemailer);
-  });
+  // describe('Password Reset', () => {
+  //   passwordResetTests(sandbox, nodemailer);
+  // });
 
-  describe('Change Email', () => {
-    changeEmailTests();
-  });
+  // describe('Change Email', () => {
+  //   changeEmailTests();
+  // });
 
   describe('Profile', () => {
     profileTests();

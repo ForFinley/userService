@@ -1,19 +1,11 @@
-const dynamodbLocal = require('dynamodb-localhost');
 const { dynamodb, docClient } = require('../controllers/utils/dynamoSetup.js');
-const { USER_TABLE, REFRESH_TABLE } = require('../env.js');
-const port = 8000;
-
-exports.startDynamoLocal = async () => {
-  dynamodbLocal.install(() => {});
-  dynamodbLocal.start({ port, inMemory: true });
-};
-
-exports.stopDynamoLocal = () => {
-  dynamodbLocal.stop(port);
-};
+const { USER_TABLE, REFRESH_TABLE } = process.env;
 
 exports.checkTables = async () => {
-  const tables = await dynamodb.listTables({}).promise();
+  return await dynamodb.listTables({}).promise();
+};
+
+exports.deleteTables = async tables => {
   for (let x = 0; x < tables.TableNames.length; x++) {
     await dynamodb.deleteTable({ TableName: tables.TableNames[x] }).promise();
   }
@@ -86,7 +78,7 @@ exports.createTables = async () => {
     await dynamodb.createTable(paramsUserTable).promise();
     await dynamodb.createTable(paramsRefreshTable).promise();
     const tables = await dynamodb.listTables({}).promise();
-    console.log('TABLE CREATED:', tables);
+    console.log('TABLES CREATED:', tables);
   } catch (e) {
     console.log(e);
   }

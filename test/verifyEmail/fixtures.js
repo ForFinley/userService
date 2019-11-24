@@ -1,4 +1,4 @@
-const url = '/userService/verifyEmail';
+const url = '/identity-service/verifyEmail';
 const userId = 'd39254ff-30a2-4b97-980e-c19fa75231e1';
 const email = 'verifyEmailTest@test.com';
 const emailHash =

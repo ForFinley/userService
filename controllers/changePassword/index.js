@@ -1,9 +1,9 @@
-const { checkPassword, encryptPassword } = require('./utils/crypto.js');
-const { getUser, updatePassword } = require('./utils/database.js');
+const { checkPassword, encrypt } = require('../utils/crypto.js');
+const { getUser, updatePassword } = require('../utils/database.js');
 const {
   InvalidCredentialsError,
   resolveErrorSendResponse
-} = require('./utils/errors.js');
+} = require('../utils/errors.js');
 
 module.exports.handler = async function(req, res) {
   try {
@@ -12,9 +12,9 @@ module.exports.handler = async function(req, res) {
 
     const user = await getUser(userId);
 
-    if (!checkPassword(password, user.password, user.salt))
+    if (!checkPassword(password, user.password))
       throw new InvalidCredentialsError('password incorrect');
-    const passwordResult = encryptPassword(newPassword);
+    const passwordResult = encrypt(newPassword);
     await updatePassword(userId, passwordResult);
     return res.status(200).send({ message: 'Password update success!' });
   } catch (e) {

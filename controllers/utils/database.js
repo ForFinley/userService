@@ -1,5 +1,5 @@
 const { docClient } = require('./dynamoSetup.js');
-const { USER_TABLE, REFRESH_TABLE } = require('../../env.js');
+const { USER_TABLE, REFRESH_TABLE } = process.env;
 
 exports.queryUserByEmail = async email => {
   const params = {

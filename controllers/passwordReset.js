@@ -1,8 +1,4 @@
-const {
-  hashEncrypt,
-  hashDecrypt,
-  encryptPassword
-} = require('./utils/crypto.js');
+const { hashEncrypt, hashDecrypt, encrypt } = require('./utils/crypto.js');
 const { sendPasswordReset } = require('./utils/nodemailer.js');
 const { queryUserByEmail, updatePassword } = require('./utils/database.js');
 const {
@@ -37,7 +33,7 @@ module.exports.handler = async (req, res) => {
       return res.status(200).send({ message: 'Password reset email sent!' });
     } else if (requestMode === 'PASSWORD_RESET_CONFIRM') {
       const email = hashDecrypt(req.body.passwordResetHash);
-      const passwordResult = encryptPassword(req.body.password);
+      const passwordResult = encrypt(req.body.password);
       const user = await queryUserByEmail(email);
       await updatePassword(user.userId, passwordResult);
       return res.status(200).send({ message: 'Password update success!' });

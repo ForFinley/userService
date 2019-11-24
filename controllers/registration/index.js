@@ -1,11 +1,11 @@
-const uuidv1 = require('uuid/v1');
-const { encryptPassword, hashEncrypt } = require('./utils/crypto');
-const { sendEmailVerification } = require('./utils/nodemailer');
-const { queryUserByEmail, putUser } = require('./utils/database');
+const uuidv4 = require('uuid/v4');
+const { encrypt } = require('../utils/crypto');
+const { sendEmailVerification } = require('../utils/nodemailer');
+const { queryUserByEmail, putUser } = require('../utils/database');
 const {
   ResourceExistsError,
   resolveErrorSendResponse
-} = require('./utils/errors');
+} = require('../utils/errors');
 
 module.exports.handler = async function(req, res) {
   try {
@@ -15,24 +15,24 @@ module.exports.handler = async function(req, res) {
     if (user && user.email)
       throw new ResourceExistsError('email already in use');
 
-    const passwordResult = encryptPassword(password);
-    const emailHash = hashEncrypt(email);
-    const userId = uuidv1();
+    const encryptPass = encrypt(password, true);
+    const emailHash = encrypt(email);
+    const userId = uuidv4();
     const currentDate = new Date().toISOString();
     const putParams = {
       userId,
       email,
-      password: passwordResult.encryptPass,
-      salt: passwordResult.salt,
+      password: encryptPass,
       emailVerified: false,
       provider: 'thisUserService',
       role: 'PEASANT',
       addedDate: currentDate,
       updatedDate: currentDate
     };
+
     putUser(putParams);
-    const mailerResult = await sendEmailVerification(email, emailHash);
-    if (!mailerResult) console.log('ERROR:: Email Not Sent.');
+    // const mailerResult = await sendEmailVerification(email, emailHash);
+    // if (!mailerResult) console.log('ERROR:: Email Not Sent.');
     return res.status(200).send({ userId, email });
   } catch (e) {
     resolveErrorSendResponse(e, res);

@@ -1,11 +1,14 @@
 const jwt = require('jsonwebtoken');
-const { accessKey, refreshKey } = require('./keys/privateKeys.js');
 const {
   InvalidCredentialsError,
   resolveErrorSendResponse
 } = require('./errors.js');
-const ACCESSS_TOKENTIME = 120 * 60; // in seconds
-const REFRESH_TOKENTIME = 1200 * 60; // in seconds
+const {
+  ACCESS_KEY,
+  REFRESH_KEY,
+  ACCESSS_TOKENTIME,
+  REFRESH_TOKENTIME
+} = process.env;
 
 exports.generateToken = user => {
   return jwt.sign(
@@ -14,7 +17,7 @@ exports.generateToken = user => {
       email: user.email,
       role: user.role
     },
-    accessKey,
+    ACCESS_KEY,
     {
       expiresIn: ACCESSS_TOKENTIME
     }
@@ -26,7 +29,7 @@ exports.generateRefreshToken = user => {
     {
       userId: user.userId
     },
-    refreshKey,
+    REFRESH_KEY,
     {
       expiresIn: REFRESH_TOKENTIME
     }
@@ -36,7 +39,7 @@ exports.generateRefreshToken = user => {
 exports.authenticateRefresh = async authorization => {
   try {
     const token = authorization;
-    const decodeToken = await jwt.verify(token, refreshKey);
+    const decodeToken = await jwt.verify(token, REFRESH_KEY);
     return {
       userId: decodeToken.userId
     };
@@ -48,7 +51,7 @@ exports.authenticateRefresh = async authorization => {
 exports.authenticate = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    const decodeToken = await jwt.verify(token, accessKey);
+    const decodeToken = await jwt.verify(token, ACCESS_KEY);
 
     req.user = {
       userId: decodeToken.userId,
@@ -64,7 +67,7 @@ exports.authenticate = async (req, res, next) => {
 exports.auth = async authorization => {
   try {
     const token = authorization;
-    const decodeToken = await jwt.verify(token, accessKey);
+    const decodeToken = await jwt.verify(token, ACCESS_KEY);
     return {
       userId: decodeToken.userId,
       email: decodeToken.email,
@@ -82,6 +85,6 @@ exports.auth = async authorization => {
 //       email: 'profileemail@test.com',
 //       role: 'PEASANT'
 //     },
-//     accessKey
+//     ACCESS_KEY
 //   )
 // );

@@ -1,10 +1,10 @@
-const { getRefresh, getUser } = require('./utils/database.js');
-const { authenticateRefresh, generateToken } = require('./utils/jwt.js');
+const { getRefresh, getUser } = require('../utils/database.js');
+const { authenticateRefresh, generateToken } = require('../utils/jwt.js');
 const {
   InvalidCredentialsError,
   ResourceExistsError,
   resolveErrorSendResponse
-} = require('./utils/errors.js');
+} = require('../utils/errors.js');
 
 module.exports.handler = async function(req, res) {
   try {

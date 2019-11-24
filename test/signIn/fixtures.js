@@ -1,4 +1,4 @@
-const url = '/userService/signIn';
+const url = '/identity-service/signIn';
 const email = 'signin@test.com';
 const password = 'test';
 const encrytPassword = '9d044b1d681b667fe0e934b09c1eb1d0';

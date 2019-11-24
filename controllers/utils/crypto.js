@@ -1,23 +1,35 @@
 const crypto = require('crypto');
-const { encryptKey, encryptPasswordKey } = require('./keys/privateKeys.js');
 const { ValidationError } = require('./errors.js');
+const {
+  ENCRYPTKEY,
+  ENCRYPTPASSWORDKEY,
+  ALGORITHM,
+  INPUTENCODING,
+  OUTPUTENCODING
+} = process.env;
 
-exports.encryptPassword = password => {
-  const cipher = crypto.createCipher('aes-256-ecb', encryptPasswordKey);
-  const salt = crypto.randomBytes(3).toString('hex');
-  const encryptPassword =
-    cipher.update(password + salt, 'utf8', 'hex') + cipher.final('hex');
-  return {
-    encryptPass: encryptPassword,
-    salt: salt
-  };
+exports.encrypt = (text, password) => {
+  let encryptKey = ENCRYPTKEY;
+  if (password) encryptKey = ENCRYPTPASSWORDKEY;
+
+  const iv = Buffer.from(crypto.randomBytes(16));
+  const cipher = crypto.createCipheriv(ALGORITHM, encryptKey, iv);
+  let crypted = cipher.update(text, INPUTENCODING, OUTPUTENCODING);
+  crypted += cipher.final(OUTPUTENCODING);
+  return `${iv.toString(OUTPUTENCODING)}:${crypted.toString()}`;
 };
 
-exports.checkPassword = (password, encryptedDBPassword, salt) => {
+exports.checkPassword = (password, encryptedDBPassword) => {
   try {
-    const cipher = crypto.createCipher('aes-256-ecb', encryptPasswordKey);
-    const encryptPassword =
-      cipher.update(password + salt, 'utf8', 'hex') + cipher.final('hex');
+    encryptedDBPasswordSplit = encryptedDBPassword.split(':');
+    const iv = Buffer.from(encryptedDBPasswordSplit[0], OUTPUTENCODING);
+    const cipher = crypto.createCipheriv(ALGORITHM, ENCRYPTPASSWORDKEY, iv);
+
+    let crypted = cipher.update(password, INPUTENCODING, OUTPUTENCODING);
+    crypted += cipher.final(OUTPUTENCODING);
+    const encryptPassword = `${iv.toString(
+      OUTPUTENCODING
+    )}:${crypted.toString()}`;
 
     if (encryptPassword === encryptedDBPassword) return true;
     return false;
@@ -26,16 +38,41 @@ exports.checkPassword = (password, encryptedDBPassword, salt) => {
   }
 };
 
-exports.hashEncrypt = hash => {
-  const cipher = crypto.createCipher('aes-256-ecb', encryptKey);
-  return cipher.update(hash, 'utf8', 'hex') + cipher.final('hex');
+exports.decrypt = (text, password) => {
+  let encryptKey = ENCRYPTKEY;
+  if (password) encryptKey = ENCRYPTPASSWORDKEY;
+
+  text = text.split(':');
+
+  const iv = Buffer.from(text[0], OUTPUTENCODING);
+  const encryptedpassword = Buffer.from(text[1], OUTPUTENCODING);
+
+  const decipher = crypto.createDecipheriv(ALGORITHM, encryptKey, iv);
+  let decrypted = decipher.update(
+    encryptedpassword,
+    OUTPUTENCODING,
+    INPUTENCODING
+  );
+  decrypted += decipher.final(INPUTENCODING);
+  return decrypted.toString();
 };
 
-//This can also be used to decrypt password
+//Deprecated
+exports.hashEncrypt = hash => {
+  const cipher = crypto.createCipher(ALGORITHM, ENCRYPTKEY);
+  return (
+    cipher.update(hash, INPUTENCODING, OUTPUTENCODING) +
+    cipher.final(OUTPUTENCODING)
+  );
+};
+
 exports.hashDecrypt = hash => {
   try {
-    const cipher = crypto.createDecipher('aes-256-ecb', encryptKey);
-    return cipher.update(hash, 'hex', 'utf8') + cipher.final('utf8');
+    const cipher = crypto.createDecipher(ALGORITHM, ENCRYPTKEY);
+    return (
+      cipher.update(hash, OUTPUTENCODING, INPUTENCODING) +
+      cipher.final(INPUTENCODING)
+    );
   } catch (e) {
     throw new ValidationError('hash invalid');
   }

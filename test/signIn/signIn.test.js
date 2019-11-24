@@ -7,7 +7,7 @@ const fixtures = require('./fixtures.js');
 const jwt = require('jsonwebtoken');
 const { accessKey } = require('../../controllers/utils/keys/privateKeys.js');
 
-const { GOOGLE_DECRYPT_API } = require('../../env.js');
+const { GOOGLE_DECRYPT_API } = process.env;
 
 chai.use(chaihttp);
 const { expect } = chai;

@@ -1,5 +1,5 @@
-const { deleteRefreshRecord } = require('./utils/database.js');
-const { resolveErrorSendResponse } = require('./utils/errors.js');
+const { deleteRefreshRecord } = require('../utils/database.js');
+const { resolveErrorSendResponse } = require('../utils/errors.js');
 
 module.exports.handler = async function(req, res) {
   try {

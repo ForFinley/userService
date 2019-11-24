@@ -1,4 +1,4 @@
-const url = '/userService/profile';
+const url = '/identity-service/profile';
 const userId = 'c7ab0565-832e-4c22-9518-c2f3a038572e';
 const email = 'profileemail@test.com';
 const authorization =
