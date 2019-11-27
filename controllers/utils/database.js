@@ -56,23 +56,19 @@ exports.userEmailVerified = async userId => {
   return docClient.update(params).promise();
 };
 
-exports.updatePassword = async (userId, passwordResult) => {
-  if (!passwordResult.encryptPass || !passwordResult.salt) return false;
+exports.updatePassword = async (userId, encryptPasword) => {
   const params = {
     TableName: USER_TABLE,
     Key: {
       userId: userId
     },
-    UpdateExpression:
-      'set #password = :password, #salt = :salt, #updateDate = :updateDate',
+    UpdateExpression: 'set #password = :password, #updateDate = :updateDate',
     ExpressionAttributeNames: {
       '#password': 'password',
-      '#salt': 'salt',
       '#updateDate': 'updateDate'
     },
     ExpressionAttributeValues: {
-      ':password': passwordResult.encryptPass,
-      ':salt': passwordResult.salt,
+      ':password': encryptPasword,
       ':updateDate': new Date().toISOString()
     },
     ReturnConsumedCapacity: 'TOTAL',

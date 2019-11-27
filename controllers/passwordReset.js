@@ -33,9 +33,9 @@ module.exports.handler = async (req, res) => {
       return res.status(200).send({ message: 'Password reset email sent!' });
     } else if (requestMode === 'PASSWORD_RESET_CONFIRM') {
       const email = hashDecrypt(req.body.passwordResetHash);
-      const passwordResult = encrypt(req.body.password);
+      const encryptedPassword = encrypt(req.body.password, true);
       const user = await queryUserByEmail(email);
-      await updatePassword(user.userId, passwordResult);
+      await updatePassword(user.userId, encryptedPassword);
       return res.status(200).send({ message: 'Password update success!' });
     }
   } catch (e) {

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { authenticate } = require('../controllers/utils/jwt');
+const { authenticate } = require('../middlewares/authenticate');
 const registration = require('../controllers/registration');
 const signIn = require('../controllers/signIn');
 const changePassword = require('../controllers/changePassword');

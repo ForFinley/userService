@@ -9,14 +9,13 @@ const {
 
 module.exports.handler = async function(req, res) {
   try {
-    const { email, password } = req.body;
+    const { email, password, emailBool } = req.body;
 
     const user = await queryUserByEmail(email);
     if (user && user.email)
       throw new ResourceExistsError('email already in use');
 
     const encryptPass = encrypt(password, true);
-    const emailHash = encrypt(email);
     const userId = uuidv4();
     const currentDate = new Date().toISOString();
     const putParams = {
@@ -31,8 +30,13 @@ module.exports.handler = async function(req, res) {
     };
 
     putUser(putParams);
-    // const mailerResult = await sendEmailVerification(email, emailHash);
-    // if (!mailerResult) console.log('ERROR:: Email Not Sent.');
+
+    if (emailBool) {
+      const emailHash = encrypt(email);
+      const mailerResult = await sendEmailVerification(email, emailHash);
+      if (!mailerResult) console.log('ERROR:: Email Not Sent.');
+    }
+
     return res.status(200).send({ userId, email });
   } catch (e) {
     resolveErrorSendResponse(e, res);

@@ -1,8 +1,5 @@
 const jwt = require('jsonwebtoken');
-const {
-  InvalidCredentialsError,
-  resolveErrorSendResponse
-} = require('./errors.js');
+
 const {
   ACCESS_KEY,
   REFRESH_KEY,
@@ -44,23 +41,8 @@ exports.authenticateRefresh = async authorization => {
       userId: decodeToken.userId
     };
   } catch (e) {
+    console.log('ERROR :: authenticateRefresh()', e);
     return false;
-  }
-};
-
-exports.authenticate = async (req, res, next) => {
-  try {
-    const token = req.headers.authorization;
-    const decodeToken = await jwt.verify(token, ACCESS_KEY);
-
-    req.user = {
-      userId: decodeToken.userId,
-      email: decodeToken.email,
-      role: decodeToken.role
-    };
-    next();
-  } catch (e) {
-    resolveErrorSendResponse(new InvalidCredentialsError('Unauthorized'), res);
   }
 };
 
@@ -74,17 +56,7 @@ exports.auth = async authorization => {
       role: decodeToken.role
     };
   } catch (e) {
+    console.log('ERROR :: auth()', e);
     return false;
   }
 };
-
-// console.log(
-//   jwt.sign(
-//     {
-//       userId: 'c7ab0565-832e-4c22-9518-c2f3a038572e',
-//       email: 'profileemail@test.com',
-//       role: 'PEASANT'
-//     },
-//     ACCESS_KEY
-//   )
-// );
