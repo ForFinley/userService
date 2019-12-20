@@ -12,8 +12,9 @@ module.exports.handler = async function(req, res) {
 
     const user = await getUser(userId);
 
-    if (!checkPassword(password, user.password))
+    if (!checkPassword(password, user.password)) {
       throw new InvalidCredentialsError('password incorrect');
+    }
 
     const encryptedPassword = encrypt(newPassword, true);
     await updatePassword(userId, encryptedPassword);

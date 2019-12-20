@@ -11,6 +11,19 @@ const registration = [
   }
 ];
 
+const signIn = [
+  {
+    param: 'body',
+    field: 'email',
+    required: true
+  },
+  {
+    param: 'body',
+    field: 'password',
+    required: true
+  }
+];
+
 const changePassword = [
   {
     param: 'body',
@@ -42,6 +55,7 @@ const verifyEmail = [
 
 module.exports = {
   registration,
+  signIn,
   changePassword,
   signOut,
   verifyEmail

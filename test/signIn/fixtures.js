@@ -1,7 +1,7 @@
 const url = '/identity-service/signIn';
 const email = 'signin@test.com';
-const password = 'test';
-const encrytPassword = '9d044b1d681b667fe0e934b09c1eb1d0';
+const password = 'test1';
+const encrytPassword = '4dbe02f358c38eab183e49a9b9db0787:7b1d44798c';
 const salt = 'b23b46';
 const userId = 'e0409f76-4471-11e9-b210-d663bd873d93';
 
@@ -129,7 +129,7 @@ exports.signInUserInvalidCreds = {
   salt,
   headers: {},
   body: {
-    email: 'wrongEmail',
+    email: 'wrongEmail@junk.com',
     password: 'wrongPassword'
   }
 };

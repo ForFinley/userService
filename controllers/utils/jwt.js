@@ -41,7 +41,7 @@ exports.authenticateRefresh = async authorization => {
       userId: decodeToken.userId
     };
   } catch (e) {
-    console.log('ERROR :: authenticateRefresh()', e);
+    // console.log('ERROR :: authenticateRefresh()', e);
     return false;
   }
 };

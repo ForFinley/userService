@@ -3,7 +3,7 @@ const chai = require('chai');
 const chaihttp = require('chai-http');
 const { it } = require('mocha');
 const fixtures = require('./fixtures.js');
-const { getUser } = require('../dynamodbLocal.js');
+const { getUser } = require('../dynamodbLocal');
 
 chai.use(chaihttp);
 const { expect } = chai;
@@ -58,9 +58,7 @@ exports.verifyEmailTests = () => {
     chai
       .request(server)
       .get(
-        `${verifyEmailcorrectHashBadEmail.url}/${
-          verifyEmailcorrectHashBadEmail.emailHash
-        }`
+        `${verifyEmailcorrectHashBadEmail.url}/${verifyEmailcorrectHashBadEmail.emailHash}`
       )
       .set(verifyEmailcorrectHashBadEmail.headers)
       .end((err, res) => {

@@ -12,8 +12,9 @@ module.exports.handler = async function(req, res) {
     const { email, password, emailBool } = req.body;
 
     const user = await queryUserByEmail(email);
-    if (user && user.email)
+    if (user && user.email) {
       throw new ResourceExistsError('email already in use');
+    }
 
     const encryptPass = encrypt(password, true);
     const userId = uuidv4();

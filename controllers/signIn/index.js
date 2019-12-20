@@ -1,18 +1,19 @@
-const { generateToken, generateRefreshToken } = require('../utils/jwt.js');
-const { queryUserByEmail, putRefresh } = require('../utils/database.js');
-const { checkPassword } = require('../utils/crypto.js');
+const { generateToken, generateRefreshToken } = require('../utils/jwt');
+const { queryUserByEmail, putRefresh } = require('../utils/database');
+const { checkPassword } = require('../utils/crypto');
 const {
   InvalidCredentialsError,
   resolveErrorSendResponse
-} = require('../utils/errors.js');
+} = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
   try {
     const email = req.body.email.trim().toLowerCase();
     const user = await queryUserByEmail(email);
     const passwordBool = checkPassword(req.body.password, user.password);
-    if (!user || !passwordBool)
+    if (!user || !passwordBool) {
       throw new InvalidCredentialsError('email or password incorrect');
+    }
 
     const authorizationToken = generateToken(user);
     const refreshToken = generateRefreshToken(user);

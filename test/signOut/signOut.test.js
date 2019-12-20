@@ -1,15 +1,15 @@
-const { server } = require('../../app.js');
+const { server } = require('../../app');
 const chai = require('chai');
 const chaihttp = require('chai-http');
 const { it } = require('mocha');
-const fixtures = require('./fixtures.js');
-const { getRefreshToken } = require('../dynamodbLocal.js');
+const fixtures = require('./fixtures');
+const { getRefreshToken } = require('../dynamodbLocal');
 
 chai.use(chaihttp);
 const { expect } = chai;
 
 exports.signOutTests = () => {
-  it('Shoud sign out a user', done => {
+  it('Should sign out a user', done => {
     const { signOutFixture } = fixtures;
     chai
       .request(server)

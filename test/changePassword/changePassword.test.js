@@ -3,7 +3,7 @@ const chai = require('chai');
 const chaihttp = require('chai-http');
 const { it } = require('mocha');
 const fixtures = require('./fixtures.js');
-const { getUser } = require('../dynamodbLocal.js');
+const { getUser } = require('../dynamodbLocal');
 
 chai.use(chaihttp);
 const { expect } = chai;
@@ -16,12 +16,12 @@ exports.changePasswordTests = () => {
       .post(changePassword.url)
       .set(changePassword.headers)
       .send(changePassword.body)
-      .end(async (err, res) => {
+      .end((err, res) => {
         expect(res).to.have.status(200);
-        const user = await getUser(changePassword.user.userId);
-        expect(user.password).to.not.equal(changePassword.encryptPass);
-        expect(user.salt).to.not.equal(changePassword.salt);
-        done();
+        getUser(changePassword.user.userId).then(user => {
+          expect(user.password).to.not.equal(changePassword.encryptPass);
+          done();
+        });
       });
   });
 

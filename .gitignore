@@ -3,6 +3,7 @@ node_modules
 jspm_packages
 package-lock.json
 .data
+.env
 
 #nyc
 .nyc_output

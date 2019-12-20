@@ -103,7 +103,6 @@ exports.createRecords = async () => {
     changeEmailRecord,
     changeEmailInUseRecord
   } = require('./changeEmail/fixtures.js');
-  const { profileRecord } = require('./profile/fixtures.js');
   const { refreshRecord } = require('./refresh/fixtures.js');
   const { signOutFixture } = require('./signOut/fixtures.js');
 
@@ -196,17 +195,6 @@ exports.createRecords = async () => {
     }
   };
 
-  const profileParams = {
-    TableName: USER_TABLE,
-    Item: {
-      userId: profileRecord.userId,
-      email: profileRecord.email,
-      billingAddress: profileRecord.billingAddress,
-      creditCard: profileRecord.creditCard,
-      emailVerified: 'false'
-    }
-  };
-
   const refreshParams = {
     TableName: REFRESH_TABLE,
     Item: {
@@ -245,7 +233,6 @@ exports.createRecords = async () => {
     resetPasswordConfirmParams,
     changeEmailParams,
     changeEmailInUseParams,
-    profileParams,
     refreshParams,
     refreshUserParams,
     refreshSignOutParams

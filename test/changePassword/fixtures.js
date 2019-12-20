@@ -1,9 +1,9 @@
 const url = '/identity-service/changePassword';
-const userId = 'f759aa6e-3dec-4d94-bc4c-a380014f7515';
-const password = 'test11';
+const userId = '25ab62fb-e20f-4ceb-95e5-2c59167b71e0';
+const password = 'test1';
 const newPassword = 'newPasswordTest';
 const jwt =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmNzU5YWE2ZS0zZGVjLTRkOTQtYmM0Yy1hMzgwMDE0Zjc1MTUiLCJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJyb2xlIjoiUEVBU0FOVCIsImlhdCI6MTU1MzgxMDM0N30.iC5Tl3Uh2zsMAGFQJfXsiSK-w8yKkaoC3_CVX0lyS1g';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyNWFiNjJmYi1lMjBmLTRjZWItOTVlNS0yYzU5MTY3YjcxZTAiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwicm9sZSI6IlBFQVNBTlQiLCJpYXQiOjE1NzY4Nzc4NDR9.ZI7Nqt9azxfbZ1vzrSX67lGoJ-C-hwE93UFM6YVjMnE';
 
 exports.changePassword = {
   url,
@@ -15,7 +15,7 @@ exports.changePassword = {
   user: {
     userId
   },
-  encryptPass: '5e2711278089c15b3e243e557e019b5c', //for password 'test11'
+  encryptPass: '4dbe02f358c38eab183e49a9b9db0787:7b1d44798c', //for password 'test1'
   salt: 'e90f20'
 };
 
