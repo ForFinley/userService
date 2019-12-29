@@ -1,7 +1,7 @@
-const { deleteRefreshRecord } = require('../utils/database.js');
-const { resolveErrorSendResponse } = require('../utils/errors.js');
+const { deleteRefreshRecord } = require('../utils/database');
+const { resolveErrorSendResponse } = require('../utils/errors');
 
-module.exports.handler = async function(req, res) {
+module.exports.handler = async (req, res) => {
   try {
     const refreshToken = req.headers.authorization;
 

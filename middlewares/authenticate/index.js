@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const {
   InvalidCredentialsError,
   resolveErrorSendResponse
-} = require('../../controllers/utils/errors.js');
+} = require('../../controllers/utils/errors');
 const { ACCESS_KEY } = process.env;
 
 exports.authenticate = async (req, res, next) => {

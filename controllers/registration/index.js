@@ -1,13 +1,13 @@
 const uuidv4 = require('uuid/v4');
 const { encrypt } = require('../utils/crypto');
-const { sendEmailVerification } = require('../utils/nodemailer');
+const { sendEmailVerification } = require('../utils/sendGrid');
 const { queryUserByEmail, putUser } = require('../utils/database');
 const {
   ResourceExistsError,
   resolveErrorSendResponse
 } = require('../utils/errors');
 
-module.exports.handler = async function(req, res) {
+module.exports.handler = async (req, res) => {
   try {
     const { email, password, emailBool } = req.body;
 
@@ -34,8 +34,8 @@ module.exports.handler = async function(req, res) {
 
     if (emailBool) {
       const emailHash = encrypt(email);
-      const mailerResult = await sendEmailVerification(email, emailHash);
-      if (!mailerResult) console.log('ERROR:: Email Not Sent.');
+      console.log(emailHash);
+      sendEmailVerification(email, emailHash);
     }
 
     return res.status(200).send({ userId, email });

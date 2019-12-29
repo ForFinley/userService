@@ -1,10 +1,7 @@
-const { hashEncrypt, hashDecrypt, encrypt } = require('./utils/crypto.js');
-const { sendPasswordReset } = require('./utils/nodemailer.js');
-const { queryUserByEmail, updatePassword } = require('./utils/database.js');
-const {
-  ValidationError,
-  resolveErrorSendResponse
-} = require('./utils/errors.js');
+const { hashEncrypt, hashDecrypt, encrypt } = require('./utils/crypto');
+const { sendPasswordReset } = require('./utils/sendGrid');
+const { queryUserByEmail, updatePassword } = require('./utils/database');
+const { ValidationError, resolveErrorSendResponse } = require('./utils/errors');
 
 const getRequestMode = body => {
   let requestMode;

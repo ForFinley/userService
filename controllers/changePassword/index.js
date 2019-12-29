@@ -1,11 +1,11 @@
-const { checkPassword, encrypt } = require('../utils/crypto.js');
-const { getUser, updatePassword } = require('../utils/database.js');
+const { checkPassword, encrypt } = require('../utils/crypto');
+const { getUser, updatePassword } = require('../utils/database');
 const {
   InvalidCredentialsError,
   resolveErrorSendResponse
-} = require('../utils/errors.js');
+} = require('../utils/errors');
 
-module.exports.handler = async function(req, res) {
+module.exports.handler = async (req, res) => {
   try {
     const userId = req.user.userId;
     const { password, newPassword } = req.body;

@@ -20,7 +20,7 @@ router.post('/registration', registration.handler);
 /**
  * /userService/signIn
  * This user service sign in
- * Body: email, password
+ * Body: email, password, emailBool
  *
  * Google SignIn
  * Headers: authorization: google token (googleUser.getAuthResponse().id_token)
@@ -40,9 +40,10 @@ router.post('/changePassword', authenticate, changePassword.handler);
 
 /**
  * /userService/verifyEmail/<emailHash>
+ * query: emailHash (This comes from the verification email)
  * Changes record in DB to emailVerified: true
  */
-router.get('/verifyEmail/:emailHash', verifyEmail.handler);
+router.get('/verifyEmail', verifyEmail.handler);
 
 /**
  * userService/passwordReset

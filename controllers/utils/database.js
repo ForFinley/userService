@@ -1,32 +1,42 @@
-const { docClient } = require('./dynamoSetup.js');
+const { docClient } = require('./dynamoSetup');
 const { USER_TABLE, REFRESH_TABLE } = process.env;
 
 exports.queryUserByEmail = async email => {
-  const params = {
-    TableName: USER_TABLE,
-    IndexName: 'email-index',
-    KeyConditionExpression: 'email = :email',
-    ExpressionAttributeValues: {
-      ':email': email
-    },
-    ReturnConsumedCapacity: 'TOTAL'
-  };
-  const users = await docClient.query(params).promise();
-  if (users.Items[0]) return users.Items[0];
-  return false;
+  try {
+    const params = {
+      TableName: USER_TABLE,
+      IndexName: 'email-index',
+      KeyConditionExpression: 'email = :email',
+      ExpressionAttributeValues: {
+        ':email': email
+      },
+      ReturnConsumedCapacity: 'TOTAL'
+    };
+    const users = await docClient.query(params).promise();
+    if (users.Items[0]) return users.Items[0];
+    return false;
+  } catch (e) {
+    console.log(`ERROR :: queryUserByEmail: email=${email} :: ${e}`);
+    return false;
+  }
 };
 
 exports.getUser = async userId => {
-  const params = {
-    TableName: USER_TABLE,
-    Key: {
-      userId
-    },
-    ReturnConsumedCapacity: 'TOTAL'
-  };
-  const user = await docClient.get(params).promise();
-  if (user.Item) return user.Item;
-  return false;
+  try {
+    const params = {
+      TableName: USER_TABLE,
+      Key: {
+        userId
+      },
+      ReturnConsumedCapacity: 'TOTAL'
+    };
+    const user = await docClient.get(params).promise();
+    if (user.Item) return user.Item;
+    return false;
+  } catch (e) {
+    console.log(`ERROR :: getUser: userId=${userId} :: ${e}`);
+    return false;
+  }
 };
 
 exports.putUser = async Item => {
@@ -110,16 +120,21 @@ exports.putRefresh = async Item => {
 };
 
 exports.getRefresh = async refreshToken => {
-  const params = {
-    TableName: REFRESH_TABLE,
-    Key: {
-      refreshToken
-    },
-    ReturnConsumedCapacity: 'TOTAL'
-  };
-  const token = await docClient.get(params).promise();
-  if (token.Item) return token.Item;
-  return false;
+  try {
+    const params = {
+      TableName: REFRESH_TABLE,
+      Key: {
+        refreshToken
+      },
+      ReturnConsumedCapacity: 'TOTAL'
+    };
+    const token = await docClient.get(params).promise();
+    if (token.Item) return token.Item;
+    return false;
+  } catch (e) {
+    console.log(`ERROR :: getRefresh: refreshToken=${refreshToken} :: ${e}`);
+    return false;
+  }
 };
 
 exports.deleteRefreshRecord = async refreshToken => {

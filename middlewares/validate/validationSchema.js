@@ -47,7 +47,7 @@ const signOut = [
 
 const verifyEmail = [
   {
-    param: 'params',
+    param: 'query',
     field: 'emailHash',
     required: true
   }

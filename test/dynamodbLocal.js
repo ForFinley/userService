@@ -1,4 +1,4 @@
-const { dynamodb, docClient } = require('../controllers/utils/dynamoSetup.js');
+const { dynamodb, docClient } = require('../controllers/utils/dynamoSetup');
 const { USER_TABLE, REFRESH_TABLE } = process.env;
 
 exports.checkTables = async () => {
@@ -85,26 +85,24 @@ exports.createTables = async () => {
 };
 
 exports.createRecords = async () => {
-  const {
-    registerNewUserExistingEmail
-  } = require('./registration/fixtures.js');
+  const { registerNewUserExistingEmail } = require('./registration/fixtures');
   const {
     signInUser,
     signInExistingUserGoogle,
     signInExistingFBUserWithGoogle
-  } = require('./signIn/fixtures.js');
-  const { verifyEmail } = require('./verifyEmail/fixtures.js');
-  const { changePassword } = require('./changePassword/fixtures.js');
+  } = require('./signIn/fixtures');
+  const { verifyEmail } = require('./verifyEmail/fixtures');
+  const { changePassword } = require('./changePassword/fixtures');
   const {
     resetPasswordInit,
     resetPasswordConfirm
-  } = require('./passwordReset/fixtures.js');
+  } = require('./passwordReset/fixtures');
   const {
     changeEmailRecord,
     changeEmailInUseRecord
-  } = require('./changeEmail/fixtures.js');
-  const { refreshRecord } = require('./refresh/fixtures.js');
-  const { signOutFixture } = require('./signOut/fixtures.js');
+  } = require('./changeEmail/fixtures');
+  const { refreshRecord } = require('./refresh/fixtures');
+  const { signOutFixture } = require('./signOut/fixtures');
 
   const registerNewUserExistingEmailParams = {
     TableName: USER_TABLE,

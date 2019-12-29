@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { ValidationError } = require('./errors.js');
+const { ValidationError } = require('./errors');
 const {
   ENCRYPTKEY,
   ENCRYPTPASSWORDKEY,
@@ -39,22 +39,26 @@ exports.checkPassword = (password, encryptedDBPassword) => {
 };
 
 exports.decrypt = (text, password) => {
-  let encryptKey = ENCRYPTKEY;
-  if (password) encryptKey = ENCRYPTPASSWORDKEY;
+  try {
+    let encryptKey = ENCRYPTKEY;
+    if (password) encryptKey = ENCRYPTPASSWORDKEY;
 
-  text = text.split(':');
+    text = text.split(':');
 
-  const iv = Buffer.from(text[0], OUTPUTENCODING);
-  const encryptedpassword = Buffer.from(text[1], OUTPUTENCODING);
+    const iv = Buffer.from(text[0], OUTPUTENCODING);
+    const encryptedpassword = Buffer.from(text[1], OUTPUTENCODING);
 
-  const decipher = crypto.createDecipheriv(ALGORITHM, encryptKey, iv);
-  let decrypted = decipher.update(
-    encryptedpassword,
-    OUTPUTENCODING,
-    INPUTENCODING
-  );
-  decrypted += decipher.final(INPUTENCODING);
-  return decrypted.toString();
+    const decipher = crypto.createDecipheriv(ALGORITHM, encryptKey, iv);
+    let decrypted = decipher.update(
+      encryptedpassword,
+      OUTPUTENCODING,
+      INPUTENCODING
+    );
+    decrypted += decipher.final(INPUTENCODING);
+    return decrypted.toString();
+  } catch (e) {
+    return false;
+  }
 };
 
 //Deprecated

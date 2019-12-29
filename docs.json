@@ -19,7 +19,7 @@
         "summary": "Registers a user in the system with thisUserService",
         "tags": ["/userService"],
         "requestBody": {
-          "description": "Email must be valid format, password must be longer than 5 characters",
+          "description": "Email must be valid format, password must be longer than 5 characters. If emailBool is true a welcome email will be sent, make sure you have sendGrid setup to use this feature.",
           "required": true,
           "content": {
             "application/json": {
@@ -344,6 +344,9 @@
             "type": "string"
           },
           "password": {
+            "type": "string"
+          },
+          "emailBool": {
             "type": "string"
           }
         }

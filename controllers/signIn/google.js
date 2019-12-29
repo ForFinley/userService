@@ -1,5 +1,5 @@
 const { GOOGLE_DECRYPT_API } = process.env;
-const { sendEmailVerification } = require('../utils/nodemailer.js');
+const { sendEmailVerification } = require('../utils/sendGrid');
 const rp = require('request-promise');
 const uuidv4 = require('uuid/v4');
 

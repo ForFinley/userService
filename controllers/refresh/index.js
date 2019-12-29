@@ -4,9 +4,9 @@ const {
   InvalidCredentialsError,
   ResourceExistsError,
   resolveErrorSendResponse
-} = require('../utils/errors.js');
+} = require('../utils/errors');
 
-module.exports.handler = async function(req, res) {
+module.exports.handler = async (req, res) => {
   try {
     const refreshToken = req.headers.authorization;
     const decryptToken = await authenticateRefresh(refreshToken);
