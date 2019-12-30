@@ -53,10 +53,19 @@ const verifyEmail = [
   }
 ];
 
+const passwordResetInit = [
+  {
+    param: 'body',
+    field: 'email',
+    required: true
+  }
+];
+
 module.exports = {
   registration,
   signIn,
   changePassword,
   signOut,
-  verifyEmail
+  verifyEmail,
+  passwordResetInit
 };

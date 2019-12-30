@@ -1,7 +1,10 @@
-const { hashEncrypt, hashDecrypt, encrypt } = require('./utils/crypto');
-const { sendPasswordReset } = require('./utils/sendGrid');
-const { queryUserByEmail, updatePassword } = require('./utils/database');
-const { ValidationError, resolveErrorSendResponse } = require('./utils/errors');
+const { hashEncrypt, hashDecrypt, encrypt } = require('../utils/crypto');
+const { sendPasswordReset } = require('../utils/sendGrid');
+const { queryUserByEmail, updatePassword } = require('../utils/database');
+const {
+  ValidationError,
+  resolveErrorSendResponse
+} = require('../utils/errors');
 
 const getRequestMode = body => {
   let requestMode;
@@ -22,7 +25,7 @@ module.exports.handler = async (req, res) => {
       const email = req.body.email;
       const emailInSystem = await queryUserByEmail(email);
       if (!emailInSystem) {
-        return res.status(400).send({ message: 'email is not in our system' });
+        throw new ValidationError('email is not in our system');
       }
       const passwordResetHash = hashEncrypt(email);
       const mailerResult = await sendPasswordReset(email, passwordResetHash);

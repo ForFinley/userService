@@ -5,22 +5,24 @@ const registration = require('../controllers/registration');
 const signIn = require('../controllers/signIn');
 const changePassword = require('../controllers/changePassword');
 const verifyEmail = require('../controllers/verifyEmail');
-const passwordReset = require('../controllers/passwordReset');
+const passwordResetInit = require('../controllers/passwordReset/passwordResetInit');
+const passwordResetConfirm = require('../controllers/passwordReset/passwordResetConfirm');
 const changeEmail = require('../controllers/changeEmail');
 const refresh = require('../controllers/refresh');
 const signOut = require('../controllers/signOut');
 
 /**
- * /userService/registration
- * Body: email, password
+ * /identity-service/registration
+ * Headers: content-type: application/json
+ * Body: email, password, emailBool
  * Adds user to DB
  */
 router.post('/registration', registration.handler);
 
 /**
- * /userService/signIn
+ * /identity-service/signIn
  * This user service sign in
- * Body: email, password, emailBool
+ * Body: email, password
  *
  * Google SignIn
  * Headers: authorization: google token (googleUser.getAuthResponse().id_token)
@@ -31,7 +33,7 @@ router.post('/registration', registration.handler);
 router.post('/signIn', signIn.handler);
 
 /**
- * /userService/changePassword
+ * /identity-service/changePassword
  * Headers: content-type: application/json, authorization: <authorizationToken>
  * Body: password(current), newPassword
  * Will save new password to DB
@@ -39,35 +41,40 @@ router.post('/signIn', signIn.handler);
 router.post('/changePassword', authenticate, changePassword.handler);
 
 /**
- * /userService/verifyEmail/<emailHash>
+ * /identity-service/verifyEmail/<emailHash>
  * query: emailHash (This comes from the verification email)
  * Changes record in DB to emailVerified: true
  */
 router.get('/verifyEmail', verifyEmail.handler);
 
 /**
- * userService/passwordReset
+ * /identity-service/passwordResetInit
  *
  * Initalize
+ * Headers: content-type: application/json
  * Body: email
  * Sends reset password email.
- *
- * Confirm
+ */
+router.post('/passwordResetInit', passwordResetInit.handler);
+
+/**
+ * /identity-service/passwordResetConfirm
  * Headers: content-type: application/json
  * Body: passwordResetHash, password(new password)
  * Sets new password.
  */
-router.post('/passwordReset', passwordReset.handler);
+router.post('/passwordResetConfirm', passwordResetConfirm.handler);
 
 /**
- * userService/changeEmail
+ * /identity-service/changeEmail
  *
  * Initalize
  * Headers: content-type: application/json, authorization: <authorizationToken>
  * Sends change email email.
  */
+
 /**
- * userService/changeEmailConfirm
+ * /identity-service/changeEmailConfirm
  * Headers: content-type: application/json
  * Body: changeEmailHash, email(new email)
  * Changes email.
@@ -75,21 +82,21 @@ router.post('/passwordReset', passwordReset.handler);
 router.post('/changeEmail', changeEmail.handler);
 
 /**
- * userService/refresh
+ * /identity-service/refresh
  * Headers: content-type: application/json, authorization: <refreshToken>
  * refreshes authorization token
  */
 router.get('/refresh', refresh.handler);
 
 /**
- * userService/signOut
+ * /identity-service/signOut
  * Headers: content-type: application/json, authorization: <refreshToken>
  * Deletes refresh token for current session
  */
 router.get('/signOut', signOut.handler);
 
 /**
- * userService/docs
+ * /identity-service/docs
  * Returns json file with swagger docs
  */
 router.get('/docs', (req, res) => {
@@ -98,7 +105,7 @@ router.get('/docs', (req, res) => {
 });
 
 /**
- * userService/healthCheck
+ * /identity-service/healthCheck
  */
 router.get('/healthCheck', (req, res) => {
   return res.status(200).send('HEALTHY');

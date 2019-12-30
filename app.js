@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const morgan = require('morgan');
 const { validate } = require('./middlewares/validate');
 // const rateLimit = require('express-rate-limit');
 
@@ -8,6 +9,7 @@ const app = express();
 
 const identityService = require('./routes/identityService');
 
+// app.use(morgan('tiny'));
 app.use(express.json({ type: '*/*' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());

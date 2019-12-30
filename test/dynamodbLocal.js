@@ -172,8 +172,7 @@ exports.createRecords = async () => {
     Item: {
       userId: resetPasswordConfirm.userId,
       email: resetPasswordConfirm.email,
-      password: resetPasswordConfirm.oldPassword,
-      salt: resetPasswordConfirm.salt
+      password: resetPasswordConfirm.oldPassword
     }
   };
 

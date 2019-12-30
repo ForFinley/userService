@@ -30,11 +30,10 @@ module.exports.handler = async (req, res) => {
       updatedDate: currentDate
     };
 
-    putUser(putParams);
+    await putUser(putParams);
 
     if (emailBool) {
       const emailHash = encrypt(email);
-      console.log(emailHash);
       sendEmailVerification(email, emailHash);
     }
 
