@@ -1,10 +1,9 @@
 const rp = require('request-promise');
-
-const { SG_API_KEY, SG_URL } = process.env;
+const { SG_API_KEY, SG_URL, FE_HOST } = process.env;
 
 exports.sendEmailVerification = async (email, emailHash) => {
   try {
-    const url = 'http://localhost:3000/verify/' + emailHash;
+    const url = `${FE_HOST}/verify/${emailHash}`;
 
     const requestParams = {
       method: 'POST',
@@ -32,13 +31,13 @@ exports.sendEmailVerification = async (email, emailHash) => {
     };
     return await rp(requestParams);
   } catch (e) {
-    console.log('ERROR :: sendEmailVerification ::', e);
+    console.log(`ERROR :: sendEmailVerification :: for ${email} :: ${e}`);
   }
 };
 
 exports.sendPasswordReset = async (email, hash) => {
   try {
-    const url = 'http://localhost:3000/passwordReset/' + hash;
+    const url = `${FE_HOST}/passwordReset/${hash}`;
 
     const requestParams = {
       method: 'POST',
@@ -50,7 +49,7 @@ exports.sendPasswordReset = async (email, hash) => {
         personalizations: [
           {
             to: [{ email, name: email }],
-            subject: 'Email verification'
+            subject: 'Reset Password'
           }
         ],
         content: [
@@ -66,28 +65,42 @@ exports.sendPasswordReset = async (email, hash) => {
     };
     return await rp(requestParams);
   } catch (e) {
-    console.log('ERROR :: sendPasswordReset ::', e);
+    console.log(`ERROR :: sendPasswordReset :: for ${email} :: ${e}`);
     return true;
   }
 };
 
-// exports.sendChangeEmail = async (email, hash) => {
-//   try {
-//     const url = 'http://localhost:3000/changeEmail/' + hash;
-//     const mailOptions = {
-//       from: '"Change Email" <ryqanbb@gmail.com>',
-//       to: email,
-//       subject: 'Change Email',
-//       // text: 'Hello world?',
-//       html:
-//         '<p>Click link to change your email.</p> <a href=' +
-//         url +
-//         '>' +
-//         url +
-//         '</a>'
-//     };
-//     return await transporter.sendMail(mailOptions);
-//   } catch (e) {
-//     return false;
-//   }
-// };
+exports.sendChangeEmail = async (email, hash) => {
+  try {
+    const url = `${FE_HOST}/changeEmail/${hash}`;
+
+    const requestParams = {
+      method: 'POST',
+      uri: `${SG_URL}/v3/mail/send`,
+      headers: {
+        Authorization: `Bearer ${SG_API_KEY}`
+      },
+      body: {
+        personalizations: [
+          {
+            to: [{ email, name: email }],
+            subject: 'Change Email'
+          }
+        ],
+        content: [
+          {
+            type: 'text/plain',
+            value: `Click link to change your email.\n ${url}`
+          }
+        ],
+        from: { email: 'ryanwfeltkamp@gmail.com', name: 'Verify Email' },
+        reply_to: { email: 'ryanwfeltkamp@gmail.com', name: 'No Reply' }
+      },
+      json: true
+    };
+    return await rp(requestParams);
+  } catch (e) {
+    console.log(`ERROR :: sendChangeEmail :: for ${email} :: ${e}`);
+    return false;
+  }
+};

@@ -7,7 +7,8 @@ const changePassword = require('../controllers/changePassword');
 const verifyEmail = require('../controllers/verifyEmail');
 const passwordResetInit = require('../controllers/passwordReset/passwordResetInit');
 const passwordResetConfirm = require('../controllers/passwordReset/passwordResetConfirm');
-const changeEmail = require('../controllers/changeEmail');
+const changeEmailInit = require('../controllers/changeEmailInit');
+const changeEmailConfirm = require('../controllers/changeEmailConfirm');
 const refresh = require('../controllers/refresh');
 const signOut = require('../controllers/signOut');
 
@@ -34,7 +35,7 @@ router.post('/signIn', signIn.handler);
 
 /**
  * /identity-service/changePassword
- * Headers: content-type: application/json, authorization: <authorizationToken>
+ * Headers: content-type: application/json, authorization: <authorization>
  * Body: password(current), newPassword
  * Will save new password to DB
  */
@@ -66,31 +67,30 @@ router.post('/passwordResetInit', passwordResetInit.handler);
 router.post('/passwordResetConfirm', passwordResetConfirm.handler);
 
 /**
- * /identity-service/changeEmail
- *
- * Initalize
- * Headers: content-type: application/json, authorization: <authorizationToken>
+ * /identity-service/changeEmailInit
+ * Headers: content-type: application/json, authorization: <authorization>
  * Sends change email email.
  */
+router.get('/changeEmailInit', authenticate, changeEmailInit.handler);
 
 /**
  * /identity-service/changeEmailConfirm
  * Headers: content-type: application/json
  * Body: changeEmailHash, email(new email)
- * Changes email.
+ * Changes email in db.
  */
-router.post('/changeEmail', changeEmail.handler);
+router.post('/changeEmailConfirm', changeEmailConfirm.handler);
 
 /**
  * /identity-service/refresh
- * Headers: content-type: application/json, authorization: <refreshToken>
+ * Headers: content-type: application/json, authorization: <refresh>
  * refreshes authorization token
  */
 router.get('/refresh', refresh.handler);
 
 /**
  * /identity-service/signOut
- * Headers: content-type: application/json, authorization: <refreshToken>
+ * Headers: content-type: application/json, authorization: <refresh>
  * Deletes refresh token for current session
  */
 router.get('/signOut', signOut.handler);

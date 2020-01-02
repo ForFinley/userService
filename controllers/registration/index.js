@@ -34,7 +34,11 @@ module.exports.handler = async (req, res) => {
 
     if (emailBool) {
       const emailHash = encrypt(email);
-      sendEmailVerification(email, emailHash);
+      const emailError = await sendEmailVerification(email, emailHash);
+      if (emailError) {
+        console.log('ERROR:: Email Not Sent.');
+        //TODO: do something here to retry
+      }
     }
 
     return res.status(200).send({ userId, email });

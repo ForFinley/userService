@@ -61,11 +61,25 @@ const passwordResetInit = [
   }
 ];
 
+const changeEmailConfirm = [
+  {
+    param: 'body',
+    field: 'changeEmailHash',
+    required: true
+  },
+  {
+    param: 'body',
+    field: 'email',
+    required: true
+  }
+];
+
 module.exports = {
   registration,
   signIn,
   changePassword,
   signOut,
   verifyEmail,
-  passwordResetInit
+  passwordResetInit,
+  changeEmailConfirm
 };
