@@ -1,18 +1,24 @@
-const { encrypt, decrypt } = require('./utils/crypto');
-const { sendEmailVerification } = require('./utils/sendGrid');
-const { queryUserByEmail, updateEmail } = require('./utils/database');
+const { encrypt, decrypt } = require('../utils/crypto');
+const { sendEmailVerification } = require('../utils/sendGrid');
+const { queryUserByEmail, updateEmail } = require('../utils/database');
 const {
+  ValidationError,
   ResourceExistsError,
   resolveErrorSendResponse
-} = require('./utils/errors');
+} = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
   try {
     const email = req.body.email.trim().toLowerCase();
     const userId = decrypt(req.body.changeEmailHash);
+    if (!userId) {
+      throw new ValidationError('invalid email hash');
+    }
 
     const user = await queryUserByEmail(email);
-    if (user) throw new ResourceExistsError('email already in use');
+    if (user) {
+      throw new ResourceExistsError('email already in use');
+    }
 
     await updateEmail(userId, email);
 

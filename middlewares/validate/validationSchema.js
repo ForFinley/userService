@@ -61,6 +61,14 @@ const passwordResetInit = [
   }
 ];
 
+const changeEmailInit = [
+  {
+    param: 'headers',
+    field: 'authorization',
+    required: true
+  }
+];
+
 const changeEmailConfirm = [
   {
     param: 'body',
@@ -81,5 +89,6 @@ module.exports = {
   signOut,
   verifyEmail,
   passwordResetInit,
+  changeEmailInit,
   changeEmailConfirm
 };

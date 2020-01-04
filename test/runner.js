@@ -15,7 +15,10 @@ const {
 const {
   passwordResetConfirmTests
 } = require('./passwordReset/passwordResetConfirm.test');
-const { changeEmailTests } = require('./changeEmail/changeEmail.test');
+const { changeEmailInitTests } = require('./changeEmail/changeEmailInit.test');
+const {
+  changeEmailConfirmTests
+} = require('./changeEmail/changeEmailConfirm.test');
 const { refreshTests } = require('./refresh/refresh.test');
 const { signOutTests } = require('./signOut/signOut.test');
 
@@ -51,9 +54,13 @@ describe('** All End To End Tests **', () => {
     passwordResetConfirmTests();
   });
 
-  // describe('Change Email', () => {
-  //   changeEmailTests();
-  // });
+  describe('Change Email Init', () => {
+    changeEmailInitTests();
+  });
+
+  describe('Change Email Confirm', () => {
+    changeEmailConfirmTests();
+  });
 
   describe('Refresh', () => {
     refreshTests();

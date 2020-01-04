@@ -7,8 +7,8 @@ const changePassword = require('../controllers/changePassword');
 const verifyEmail = require('../controllers/verifyEmail');
 const passwordResetInit = require('../controllers/passwordReset/passwordResetInit');
 const passwordResetConfirm = require('../controllers/passwordReset/passwordResetConfirm');
-const changeEmailInit = require('../controllers/changeEmailInit');
-const changeEmailConfirm = require('../controllers/changeEmailConfirm');
+const changeEmailInit = require('../controllers/changeEmail/changeEmailInit');
+const changeEmailConfirm = require('../controllers/changeEmail/changeEmailConfirm');
 const refresh = require('../controllers/refresh');
 const signOut = require('../controllers/signOut');
 
