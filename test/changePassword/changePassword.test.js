@@ -55,7 +55,7 @@ exports.changePasswordTests = () => {
       });
   });
 
-  it('Should return 400 for wrong password in request', done => {
+  it('Should return 401 for wrong password in request', done => {
     const { changePasswordWrongPassword } = fixtures;
     chai
       .request(server)

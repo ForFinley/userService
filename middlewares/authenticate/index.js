@@ -1,23 +1,46 @@
 const jwt = require('jsonwebtoken');
 const {
   InvalidCredentialsError,
+  ForbiddenError,
   resolveErrorSendResponse
 } = require('../../controllers/utils/errors');
 const { ACCESS_KEY } = process.env;
 
-exports.authenticate = async (req, res, next) => {
+const authenticate = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    const decodeToken = await jwt.verify(token, ACCESS_KEY);
+    let decodeToken = {};
+
+    try {
+      decodeToken = await jwt.verify(token, ACCESS_KEY);
+    } catch (e) {
+      console.log('ERROR :: authenticate()', e);
+      throw new InvalidCredentialsError('Unauthorized');
+    }
 
     req.user = {
       userId: decodeToken.userId,
       email: decodeToken.email,
       role: decodeToken.role
     };
+
     next();
   } catch (e) {
-    console.log('ERROR :: authenticate()', e);
-    resolveErrorSendResponse(new InvalidCredentialsError('Unauthorized'), res);
+    resolveErrorSendResponse(e, res);
   }
 };
+
+exports.authRole = role => {
+  return (req, res, next) => {
+    authenticate(req, res, () => {
+      if (role === req.user.role) {
+        next();
+      } else {
+        console.log('ERROR :: authenticateRole()', e);
+        throw new ForbiddenError('Insufficient permissions');
+      }
+    });
+  };
+};
+
+exports.authenticate = authenticate;

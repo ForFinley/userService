@@ -34,6 +34,15 @@ class ResourceNotFoundError extends Error {
   }
 }
 
+class ForbiddenError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = this.constructor.name;
+    this.statusCode = 403;
+    this.message = message;
+  }
+}
+
 const resolveErrorSendResponse = (e, res) => {
   if (e.statusCode) {
     res.status(e.statusCode).send({
@@ -52,5 +61,6 @@ module.exports = {
   ResourceExistsError,
   ValidationError,
   ResourceNotFoundError,
+  ForbiddenError,
   resolveErrorSendResponse
 };

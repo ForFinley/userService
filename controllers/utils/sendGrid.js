@@ -1,9 +1,9 @@
 const rp = require('request-promise');
-const { SG_API_KEY, SG_URL, FE_HOST } = process.env;
+const { SG_API_KEY, SG_URL, EMAIL_FE_HOST } = process.env;
 
 exports.sendEmailVerification = async (email, emailHash) => {
   try {
-    const url = `${FE_HOST}/verify/${emailHash}`;
+    const url = `${EMAIL_FE_HOST}/verify/${emailHash}`;
 
     const requestParams = {
       method: 'POST',
@@ -37,7 +37,7 @@ exports.sendEmailVerification = async (email, emailHash) => {
 
 exports.sendPasswordReset = async (email, hash) => {
   try {
-    const url = `${FE_HOST}/passwordReset/${hash}`;
+    const url = `${EMAIL_FE_HOST}/passwordReset/${hash}`;
 
     const requestParams = {
       method: 'POST',
@@ -72,7 +72,7 @@ exports.sendPasswordReset = async (email, hash) => {
 
 exports.sendChangeEmail = async (email, hash) => {
   try {
-    const url = `${FE_HOST}/changeEmail/${hash}`;
+    const url = `${EMAIL_FE_HOST}/changeEmail/${hash}`;
 
     const requestParams = {
       method: 'POST',

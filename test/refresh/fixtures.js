@@ -17,7 +17,7 @@ exports.refreshRecord = {
 
 exports.refreshFixture = {
   url,
-  headers: { authorization: refreshToken },
+  headers: { Authorization: refreshToken },
   body: {},
   userId,
   email,
@@ -26,14 +26,14 @@ exports.refreshFixture = {
 
 exports.refreshFixtureUnauthorized = {
   url,
-  headers: { authorization: 'BAD REFRESH TOKEN' },
+  headers: { Authorization: 'BAD REFRESH TOKEN' },
   body: {}
 };
 
 exports.refreshFixture409 = {
   url,
   headers: {
-    authorization:
+    Authorization:
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0OGJiNDhhOS0yYjg5LTQ2ODktYTM3OC1lNTNlZTdiNWIzZTAiLCJpYXQiOjE1NzY4NzkyMjl9.yRmx7Y4imgG0tMqA6oZXH2RvVuY8NYayqbWvtETD5iw'
   },
   body: {}

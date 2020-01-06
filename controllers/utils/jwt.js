@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 const {
   ACCESS_KEY,
   REFRESH_KEY,
-  ACCESSS_TOKENTIME,
-  REFRESH_TOKENTIME
+  ACCESSS_TOKEN_TIME,
+  REFRESH_TOKEN_TIME
 } = process.env;
 
 exports.generateToken = user => {
@@ -16,7 +16,7 @@ exports.generateToken = user => {
     },
     ACCESS_KEY,
     {
-      expiresIn: ACCESSS_TOKENTIME
+      expiresIn: ACCESSS_TOKEN_TIME
     }
   );
 };
@@ -28,7 +28,7 @@ exports.generateRefreshToken = user => {
     },
     REFRESH_KEY,
     {
-      expiresIn: REFRESH_TOKENTIME
+      expiresIn: REFRESH_TOKEN_TIME
     }
   );
 };

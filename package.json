@@ -6,9 +6,9 @@
   "author": "Ryan Feltkamp",
   "license": "ISC",
   "scripts": {
-    "start-dynamo": "cross-env NODE_ENV=LOCAL node dynamodb-localhost.js",
-    "start-dev": "cross-env NODE_ENV=LOCAL nodemon start.js",
-    "test": "NODE_ENV=TEST nyc mocha ./test/runner.js --timeout 10000 --exit"
+    "start-dynamo": "cross-env NODE_ENV=LOCAL node ./test/dynamodbLocalServer.js",
+    "start-dev": "cross-env NODE_ENV=LOCAL nodemon app.js",
+    "test": "NODE_ENV=TEST USER_TABLE=users REFRESH_TABLE=refresh REGION=us-east-1 ACCESSS_TOKEN_TIME=72000 REFRESH_TOKEN_TIME=720000 ACCESS_KEY=server_secret REFRESH_KEY=refresh_secret CIPHER_ALGORITHM=aes-256-ctr ENCRYPT_PASSWORD_KEY=b2df428b9929d3ace7c598bbf4e496b2 ENCRYPT_KEY=ciphersjdkfituejdnvmgjfhnskcjsme INPUT_ENCODING=utf8 OUTPUT_ENCODING=hex PORT=3000 DYNAMODB_PORT=8000 SG_URL=https://api.sendgrid.com EMAIL_FE_HOST=http://localhost:3000 nyc mocha ./test/runner.js --timeout 10000 --exit"
   },
   "prettier": {
     "singleQuote": true,

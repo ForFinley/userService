@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-const { REGION, NODE_ENV } = process.env;
+const { REGION, NODE_ENV,DYNAMODB_PORT } = process.env;
 
 let config = {
   region: REGION || 'us-east-1'
@@ -7,7 +7,7 @@ let config = {
 
 if (NODE_ENV === 'TEST' || NODE_ENV === 'LOCAL') {
   config = Object.assign(config, {
-    endpoint: new AWS.Endpoint('http://localhost:8000'),
+    endpoint: new AWS.Endpoint(`http://localhost:${DYNAMODB_PORT}`),
     accessKeyId: 'accessKeyId',
     secretAccessKey: 'secretAccessKey'
   });

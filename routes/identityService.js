@@ -13,28 +13,23 @@ const refresh = require('../controllers/refresh');
 const signOut = require('../controllers/signOut');
 
 /**
- * /identity-service/registration
+ * /registration
  * Headers: content-type: application/json
  * Body: email, password, emailBool
- * Adds user to DB
+ * Adds user to DB. Will only send verificaion email if emailBool is true.
  */
 router.post('/registration', registration.handler);
 
 /**
- * /identity-service/signIn
+ * /signIn
  * This user service sign in
  * Body: email, password
- *
- * Google SignIn
- * Headers: authorization: google token (googleUser.getAuthResponse().id_token)
- * Body: provider:google
- *
  * Returns authorization token and refresh token
  */
 router.post('/signIn', signIn.handler);
 
 /**
- * /identity-service/changePassword
+ * /changePassword
  * Headers: content-type: application/json, authorization: <authorization>
  * Body: password(current), newPassword
  * Will save new password to DB
@@ -42,67 +37,56 @@ router.post('/signIn', signIn.handler);
 router.post('/changePassword', authenticate, changePassword.handler);
 
 /**
- * /identity-service/verifyEmail/<emailHash>
+ * /verifyEmail/<emailHash>
  * query: emailHash (This comes from the verification email)
  * Changes record in DB to emailVerified: true
  */
 router.get('/verifyEmail', verifyEmail.handler);
 
 /**
- * /identity-service/passwordResetInit
- *
- * Initalize
+ * /passwordResetInit
  * Headers: content-type: application/json
  * Body: email
- * Sends reset password email.
+ * Sends reset password email to passed in email address.
  */
 router.post('/passwordResetInit', passwordResetInit.handler);
 
 /**
- * /identity-service/passwordResetConfirm
+ * /passwordResetConfirm
  * Headers: content-type: application/json
  * Body: passwordResetHash, password(new password)
- * Sets new password.
+ * Sets new password in database. passwordResetHash comes from passwordResetInit endpoint.
  */
 router.post('/passwordResetConfirm', passwordResetConfirm.handler);
 
 /**
- * /identity-service/changeEmailInit
+ * /changeEmailInit
  * Headers: content-type: application/json, authorization: <authorization>
  * Sends change email email.
  */
 router.get('/changeEmailInit', authenticate, changeEmailInit.handler);
 
 /**
- * /identity-service/changeEmailConfirm
+ * /changeEmailConfirm
  * Headers: content-type: application/json
  * Body: changeEmailHash, email(new email)
- * Changes email in db.
+ * Changes email in db. changeEmailHash comes from changeEmailInit endpoint.
  */
 router.post('/changeEmailConfirm', changeEmailConfirm.handler);
 
 /**
- * /identity-service/refresh
+ * /refresh
  * Headers: content-type: application/json, authorization: <refresh>
- * refreshes authorization token
+ * Sends a new authorization token
  */
 router.get('/refresh', refresh.handler);
 
 /**
  * /identity-service/signOut
  * Headers: content-type: application/json, authorization: <refresh>
- * Deletes refresh token for current session
+ * Deletes refresh token from database.
  */
 router.get('/signOut', signOut.handler);
-
-/**
- * /identity-service/docs
- * Returns json file with swagger docs
- */
-router.get('/docs', (req, res) => {
-  const docs = require('../docs.json');
-  return res.status(200).send(docs);
-});
 
 /**
  * /identity-service/healthCheck

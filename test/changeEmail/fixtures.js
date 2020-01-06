@@ -1,7 +1,7 @@
 const urlInit = '/identity-service/changeEmailInit';
 const urlConfirm = '/identity-service/changeEmailConfirm';
 const userId = '375d7ab0-8af2-4092-b8d2-4ef0bec0159d';
-const authorization =
+const Authorization =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4NDU4MWFmMC05MzE2LTQ4YmYtOGFiMi1hM2IwM2ZkMWRlNTIiLCJlbWFpbCI6Im9nZW1haWxAdGVzdC5jb20iLCJyb2xlIjoiUEVBU0FOVCIsImlhdCI6MTU3ODEwMTAyMH0.rFqoRbG4SMMx-VfI3zmkc7SlE2-xpr_9SpCZLI2yih4';
 const email = 'ogemail@test.com';
 const newEmail = 'newemail@test.com';
@@ -24,13 +24,13 @@ exports.changeEmailInUseRecord = {
 
 exports.changeEmailInit = {
   url: urlInit,
-  headers: { authorization },
+  headers: { Authorization },
   body: {}
 };
 
 exports.changeEmailUnauthorized = {
   url: urlInit,
-  headers: { authorization: 'BAD_AUTH_TOKEN' },
+  headers: { Authorization: 'BAD_AUTH_TOKEN' },
   body: {}
 };
 

@@ -7,7 +7,7 @@ const jwt =
 
 exports.changePassword = {
   url,
-  headers: { authorization: jwt },
+  headers: { Authorization: jwt },
   body: {
     newPassword,
     password
@@ -21,7 +21,7 @@ exports.changePassword = {
 
 exports.changePasswordNoPassword = {
   url,
-  headers: { authorization: jwt },
+  headers: { Authorization: jwt },
   body: {
     newPassword
   },
@@ -32,7 +32,7 @@ exports.changePasswordNoPassword = {
 
 exports.changePasswordNoNewPassword = {
   url,
-  headers: { authorization: jwt },
+  headers: { Authorization: jwt },
   body: {
     password
   },
@@ -42,7 +42,7 @@ exports.changePasswordNoNewPassword = {
 };
 exports.changePasswordWrongPassword = {
   url,
-  headers: { authorization: jwt },
+  headers: { Authorization: jwt },
   body: {
     newPassword,
     password: 'WrongPassword'
