@@ -7,8 +7,8 @@ exports.registerNewUser = {
   headers: {},
   body: {
     email,
-    password
-  }
+    password,
+  },
 };
 
 exports.registerNewUserExistingEmail = {
@@ -16,23 +16,23 @@ exports.registerNewUserExistingEmail = {
   headers: {},
   body: {
     email: 'existingemail@test.com',
-    password
+    password,
   },
-  userId: '133aa554-7b51-44f9-854d-2ecdc34bba6a'
+  userId: '133aa554-7b51-44f9-854d-2ecdc34bba6a',
 };
 
 exports.registerNewUserNoEmail = {
   url,
   headers: {},
   body: {
-    password
-  }
+    password,
+  },
 };
 
 exports.registerNewUserNoPassword = {
   url,
   headers: {},
   body: {
-    email
-  }
+    email,
+  },
 };

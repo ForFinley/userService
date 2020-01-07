@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 const urlInit = '/identity-service/changeEmailInit';
 const urlConfirm = '/identity-service/changeEmailConfirm';
 const userId = '375d7ab0-8af2-4092-b8d2-4ef0bec0159d';
@@ -14,49 +15,49 @@ const emailInUseTest = 'emailinuse@test.com';
 exports.changeEmailRecord = {
   userId,
   email,
-  password: 'asdkfjsiejsdjfs'
+  password: 'asdkfjsiejsdjfs',
 };
 
 exports.changeEmailInUseRecord = {
   userId: 'c05c490c-b77e-42d6-9497-0a0be8bcf2d7',
-  email: emailInUseTest
+  email: emailInUseTest,
 };
 
 exports.changeEmailInit = {
   url: urlInit,
   headers: { Authorization },
-  body: {}
+  body: {},
 };
 
 exports.changeEmailUnauthorized = {
   url: urlInit,
   headers: { Authorization: 'BAD_AUTH_TOKEN' },
-  body: {}
+  body: {},
 };
 
 exports.changeEmailInvalidParams = {
   url: urlInit,
   headers: {},
-  body: { email }
+  body: { email },
 };
 
 exports.changeEmailConfirm = {
   url: urlConfirm,
   headers: {},
   body: { email: newEmail, changeEmailHash },
-  userId
+  userId,
 };
 
 exports.changeEmailInUse = {
   url: urlConfirm,
   headers: {},
   body: { email: emailInUseTest, changeEmailHash: changeEmailHashEmailInUse },
-  userId
+  userId,
 };
 
 exports.changeEmailConfirmBadHash = {
   url: urlConfirm,
   headers: {},
   body: { email: 'NEW_NEW_NEW_Email@test.com', changeEmailHash: 'BAD_HASH' },
-  userId
+  userId,
 };

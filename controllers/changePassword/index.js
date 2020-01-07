@@ -2,12 +2,12 @@ const { checkPassword, encrypt } = require('../utils/crypto');
 const { getUser, updatePassword } = require('../utils/database');
 const {
   InvalidCredentialsError,
-  resolveErrorSendResponse
+  resolveErrorSendResponse,
 } = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const { userId } = req.user;
     const { password, newPassword } = req.body;
 
     const user = await getUser(userId);
@@ -20,6 +20,6 @@ module.exports.handler = async (req, res) => {
     await updatePassword(userId, encryptedPassword);
     return res.status(200).send({ message: 'Password update success!' });
   } catch (e) {
-    resolveErrorSendResponse(e, res);
+    return resolveErrorSendResponse(e, res);
   }
 };

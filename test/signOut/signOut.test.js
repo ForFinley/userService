@@ -1,7 +1,7 @@
-const { server } = require('../../app');
 const chai = require('chai');
 const chaihttp = require('chai-http');
 const { it } = require('mocha');
+const { server } = require('../../app');
 const fixtures = require('./fixtures');
 const { getRefreshToken } = require('../dynamodbLocal');
 
@@ -20,8 +20,8 @@ exports.signOutTests = () => {
         const toBe = 'Sign out complete!';
         expect(res.body.message).to.equal(toBe);
 
-        let refreshRecordAfter = await getRefreshToken(
-          signOutFixture.headers.authorization
+        const refreshRecordAfter = await getRefreshToken(
+          signOutFixture.headers.authorization,
         );
         expect(refreshRecordAfter).to.equal(false);
         done();

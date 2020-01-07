@@ -1,7 +1,7 @@
-const { server } = require('../../app');
 const chai = require('chai');
 const chaihttp = require('chai-http');
 const { it } = require('mocha');
+const { server } = require('../../app');
 const fixtures = require('./fixtures');
 const { getUser } = require('../dynamodbLocal');
 
@@ -44,7 +44,7 @@ exports.verifyEmailTests = () => {
     chai
       .request(server)
       .get(
-        `${verifyEmailBadHash.url}?emailHash=${verifyEmailBadHash.emailHash}`
+        `${verifyEmailBadHash.url}?emailHash=${verifyEmailBadHash.emailHash}`,
       )
       .set(verifyEmailBadHash.headers)
       .end((err, res) => {
@@ -60,7 +60,7 @@ exports.verifyEmailTests = () => {
     chai
       .request(server)
       .get(
-        `${verifyEmailcorrectHashBadEmail.url}?emailHash=${verifyEmailcorrectHashBadEmail.emailHash}`
+        `${verifyEmailcorrectHashBadEmail.url}?emailHash=${verifyEmailcorrectHashBadEmail.emailHash}`,
       )
       .set(verifyEmailcorrectHashBadEmail.headers)
       .end((err, res) => {

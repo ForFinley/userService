@@ -1,9 +1,10 @@
-const { server } = require('../../app');
 const chai = require('chai');
 const chaihttp = require('chai-http');
 const { it } = require('mocha');
-const fixtures = require('./fixtures');
 const jwt = require('jsonwebtoken');
+const { server } = require('../../app');
+const fixtures = require('./fixtures');
+
 const { ACCESS_KEY } = process.env;
 
 chai.use(chaihttp);

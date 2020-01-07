@@ -1,4 +1,5 @@
 const { docClient } = require('./dynamoSetup');
+
 const { USER_TABLE, REFRESH_TABLE } = process.env;
 
 exports.queryUserByEmail = async email => {
@@ -8,9 +9,9 @@ exports.queryUserByEmail = async email => {
       IndexName: 'email-index',
       KeyConditionExpression: 'email = :email',
       ExpressionAttributeValues: {
-        ':email': email
+        ':email': email,
       },
-      ReturnConsumedCapacity: 'TOTAL'
+      ReturnConsumedCapacity: 'TOTAL',
     };
     const users = await docClient.query(params).promise();
     if (users.Items[0]) return users.Items[0];
@@ -26,9 +27,9 @@ exports.getUser = async userId => {
     const params = {
       TableName: USER_TABLE,
       Key: {
-        userId
+        userId,
       },
-      ReturnConsumedCapacity: 'TOTAL'
+      ReturnConsumedCapacity: 'TOTAL',
     };
     const user = await docClient.get(params).promise();
     if (user.Item) return user.Item;
@@ -42,7 +43,7 @@ exports.getUser = async userId => {
 exports.putUser = async Item => {
   const params = {
     TableName: USER_TABLE,
-    Item
+    Item,
   };
   return docClient.put(params).promise();
 };
@@ -51,17 +52,17 @@ exports.userEmailVerified = async userId => {
   const params = {
     TableName: USER_TABLE,
     Key: {
-      userId: userId
+      userId,
     },
     UpdateExpression: 'set #emailVerified = :emailVerified',
     ExpressionAttributeNames: {
-      '#emailVerified': 'emailVerified'
+      '#emailVerified': 'emailVerified',
     },
     ExpressionAttributeValues: {
-      ':emailVerified': true
+      ':emailVerified': true,
     },
     ReturnConsumedCapacity: 'TOTAL',
-    ReturnValues: 'UPDATED_NEW'
+    ReturnValues: 'UPDATED_NEW',
   };
   return docClient.update(params).promise();
 };
@@ -70,19 +71,19 @@ exports.updatePassword = async (userId, encryptPasword) => {
   const params = {
     TableName: USER_TABLE,
     Key: {
-      userId: userId
+      userId,
     },
     UpdateExpression: 'set #password = :password, #updateDate = :updateDate',
     ExpressionAttributeNames: {
       '#password': 'password',
-      '#updateDate': 'updateDate'
+      '#updateDate': 'updateDate',
     },
     ExpressionAttributeValues: {
       ':password': encryptPasword,
-      ':updateDate': new Date().toISOString()
+      ':updateDate': new Date().toISOString(),
     },
     ReturnConsumedCapacity: 'TOTAL',
-    ReturnValues: 'UPDATED_NEW'
+    ReturnValues: 'UPDATED_NEW',
   };
   return docClient.update(params).promise();
 };
@@ -91,22 +92,22 @@ exports.updateEmail = async (userId, email) => {
   const params = {
     TableName: USER_TABLE,
     Key: {
-      userId: userId
+      userId,
     },
     UpdateExpression:
       'set #email = :email, #emailVerified = :emailVerified, #updateDate = :updateDate',
     ExpressionAttributeNames: {
       '#email': 'email',
       '#emailVerified': 'emailVerified',
-      '#updateDate': 'updateDate'
+      '#updateDate': 'updateDate',
     },
     ExpressionAttributeValues: {
       ':email': email,
       ':emailVerified': false,
-      ':updateDate': new Date().toISOString()
+      ':updateDate': new Date().toISOString(),
     },
     ReturnConsumedCapacity: 'TOTAL',
-    ReturnValues: 'UPDATED_NEW'
+    ReturnValues: 'UPDATED_NEW',
   };
   return docClient.update(params).promise();
 };
@@ -114,7 +115,7 @@ exports.updateEmail = async (userId, email) => {
 exports.putRefresh = async Item => {
   const params = {
     TableName: REFRESH_TABLE,
-    Item
+    Item,
   };
   return docClient.put(params).promise();
 };
@@ -124,9 +125,9 @@ exports.getRefresh = async refreshToken => {
     const params = {
       TableName: REFRESH_TABLE,
       Key: {
-        refreshToken
+        refreshToken,
       },
-      ReturnConsumedCapacity: 'TOTAL'
+      ReturnConsumedCapacity: 'TOTAL',
     };
     const token = await docClient.get(params).promise();
     if (token.Item) return token.Item;
@@ -141,8 +142,8 @@ exports.deleteRefreshRecord = async refreshToken => {
   const params = {
     TableName: REFRESH_TABLE,
     Key: {
-      refreshToken
-    }
+      refreshToken,
+    },
   };
-  return await docClient.delete(params).promise();
+  return docClient.delete(params).promise();
 };

@@ -4,5 +4,5 @@ const { authenticate, authRole } = require('./middlewares/authenticate');
 module.exports = {
   identityService,
   authenticate,
-  authRole
+  authRole,
 };

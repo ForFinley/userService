@@ -29,7 +29,7 @@ const googleResponseNewUser = {
   jti: 'b25cc6ed92d1d55b19ec76bdda5819545fed7b71',
   alg: 'RS256',
   kid: '0905d6f9cd9b0f1f852e8b207e8f673abca4bf75',
-  typ: 'JWT'
+  typ: 'JWT',
 };
 const googleResponseExistingUser = {
   iss: 'accounts.google.com',
@@ -53,7 +53,7 @@ const googleResponseExistingUser = {
   jti: 'b25cc6ed92d1d55b19ec76bdda5819545fed7b71',
   alg: 'RS256',
   kid: '0905d6f9cd9b0f1f852e8b207e8f673abca4bf75',
-  typ: 'JWT'
+  typ: 'JWT',
 };
 
 exports.signInUser = {
@@ -64,8 +64,8 @@ exports.signInUser = {
   headers: {},
   body: {
     email,
-    password
-  }
+    password,
+  },
 };
 
 exports.signInNewUserGoogle = {
@@ -74,8 +74,8 @@ exports.signInNewUserGoogle = {
   googleResponseNewUser,
   headers: { authorization: googleToken },
   body: {
-    provider: 'google'
-  }
+    provider: 'google',
+  },
 };
 
 exports.signInExistingUserGoogle = {
@@ -85,8 +85,8 @@ exports.signInExistingUserGoogle = {
   googleResponseExistingUser,
   headers: { authorization: googleToken },
   body: {
-    provider: 'google'
-  }
+    provider: 'google',
+  },
 };
 
 exports.signInExistingFBUserWithGoogle = {
@@ -96,8 +96,8 @@ exports.signInExistingFBUserWithGoogle = {
   googleResponseExistingUser: { email: 'usersignedinwithfacebook@test.com' },
   headers: { authorization: googleToken },
   body: {
-    provider: 'google'
-  }
+    provider: 'google',
+  },
 };
 
 exports.signInUserNoEmail = {
@@ -107,8 +107,8 @@ exports.signInUserNoEmail = {
   salt,
   headers: {},
   body: {
-    password
-  }
+    password,
+  },
 };
 
 exports.signInUserNoPassword = {
@@ -118,8 +118,8 @@ exports.signInUserNoPassword = {
   salt,
   headers: {},
   body: {
-    email
-  }
+    email,
+  },
 };
 
 exports.signInUserInvalidCreds = {
@@ -130,6 +130,6 @@ exports.signInUserInvalidCreds = {
   headers: {},
   body: {
     email: 'wrongEmail@junk.com',
-    password: 'wrongPassword'
-  }
+    password: 'wrongPassword',
+  },
 };

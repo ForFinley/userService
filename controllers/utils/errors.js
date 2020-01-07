@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 class InvalidCredentialsError extends Error {
   constructor(message) {
     super(message);
@@ -46,12 +47,12 @@ class ForbiddenError extends Error {
 const resolveErrorSendResponse = (e, res) => {
   if (e.statusCode) {
     res.status(e.statusCode).send({
-      message: e.message
+      message: e.message,
     });
   } else {
     console.log(`ERROR:: ${e.stack}`);
     res.status(500).send({
-      message: 'Internal Server Error'
+      message: 'Internal Server Error',
     });
   }
 };
@@ -62,5 +63,5 @@ module.exports = {
   ValidationError,
   ResourceNotFoundError,
   ForbiddenError,
-  resolveErrorSendResponse
+  resolveErrorSendResponse,
 };

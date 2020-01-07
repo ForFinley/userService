@@ -1,5 +1,4 @@
 const express = require('express');
-const router = express.Router();
 const { authenticate } = require('../middlewares/authenticate');
 const registration = require('../controllers/registration');
 const signIn = require('../controllers/signIn');
@@ -11,6 +10,8 @@ const changeEmailInit = require('../controllers/changeEmail/changeEmailInit');
 const changeEmailConfirm = require('../controllers/changeEmail/changeEmailConfirm');
 const refresh = require('../controllers/refresh');
 const signOut = require('../controllers/signOut');
+
+const router = express.Router();
 
 /**
  * /registration
@@ -91,8 +92,6 @@ router.get('/signOut', signOut.handler);
 /**
  * /identity-service/healthCheck
  */
-router.get('/healthCheck', (req, res) => {
-  return res.status(200).send('HEALTHY');
-});
+router.get('/healthCheck', (req, res) => res.status(200).send('HEALTHY'));
 
 module.exports = router;

@@ -6,8 +6,8 @@ module.exports.handler = async (req, res) => {
     const refreshToken = req.headers.authorization;
 
     await deleteRefreshRecord(refreshToken);
-    res.status(200).send({ message: 'Sign out complete!' });
+    return res.status(200).send({ message: 'Sign out complete!' });
   } catch (e) {
-    resolveErrorSendResponse(e, res);
+    return resolveErrorSendResponse(e, res);
   }
 };

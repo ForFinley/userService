@@ -3,7 +3,7 @@ const { queryUserByEmail, putRefresh } = require('../utils/database');
 const { checkPassword } = require('../utils/crypto');
 const {
   InvalidCredentialsError,
-  resolveErrorSendResponse
+  resolveErrorSendResponse,
 } = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
@@ -21,18 +21,18 @@ module.exports.handler = async (req, res) => {
       refreshToken,
       userId: user.userId,
       userAgent: req.headers['user-agent'],
-      addedDate: new Date().toISOString()
+      addedDate: new Date().toISOString(),
       // TODO: maybe add tll so old refreshtoken records do not pile up
       // ttl: REFRESH_TOKENTIME
     };
     putRefresh(refreshParams);
 
-    res.status(200).send({
+    return res.status(200).send({
       userId: user.userId,
       authorization: authorizationToken,
-      refresh: refreshToken
+      refresh: refreshToken,
     });
   } catch (e) {
-    resolveErrorSendResponse(e, res);
+    return resolveErrorSendResponse(e, res);
   }
 };

@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 const url = '/identity-service/signOut';
 const userId = 'c875e2b9-d552-45b8-889d-8e58412349eb';
 const refreshToken =
@@ -6,5 +7,5 @@ const refreshToken =
 exports.signOutFixture = {
   url,
   headers: { authorization: refreshToken },
-  userId
+  userId,
 };

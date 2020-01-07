@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 const url = '/identity-service/changePassword';
 const userId = '25ab62fb-e20f-4ceb-95e5-2c59167b71e0';
 const password = 'test1';
@@ -10,44 +11,44 @@ exports.changePassword = {
   headers: { Authorization: jwt },
   body: {
     newPassword,
-    password
+    password,
   },
   user: {
-    userId
+    userId,
   },
-  encryptPass: '4dbe02f358c38eab183e49a9b9db0787:7b1d44798c', //for password 'test1'
-  salt: 'e90f20'
+  encryptPass: '4dbe02f358c38eab183e49a9b9db0787:7b1d44798c', // for password 'test1'
+  salt: 'e90f20',
 };
 
 exports.changePasswordNoPassword = {
   url,
   headers: { Authorization: jwt },
   body: {
-    newPassword
+    newPassword,
   },
   user: {
-    userId
-  }
+    userId,
+  },
 };
 
 exports.changePasswordNoNewPassword = {
   url,
   headers: { Authorization: jwt },
   body: {
-    password
+    password,
   },
   user: {
-    userId
-  }
+    userId,
+  },
 };
 exports.changePasswordWrongPassword = {
   url,
   headers: { Authorization: jwt },
   body: {
     newPassword,
-    password: 'WrongPassword'
+    password: 'WrongPassword',
   },
   user: {
-    userId
-  }
+    userId,
+  },
 };

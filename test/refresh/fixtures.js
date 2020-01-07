@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 const url = '/identity-service/refresh';
 const userId = '1370a6e1-1311-4af6-9eb8-6ede26d7be49';
 const email = 'refreshuser@test.com';
@@ -12,7 +13,7 @@ exports.refreshRecord = {
   refreshToken,
   userAgent,
   email,
-  role
+  role,
 };
 
 exports.refreshFixture = {
@@ -21,20 +22,20 @@ exports.refreshFixture = {
   body: {},
   userId,
   email,
-  role
+  role,
 };
 
 exports.refreshFixtureUnauthorized = {
   url,
   headers: { Authorization: 'BAD REFRESH TOKEN' },
-  body: {}
+  body: {},
 };
 
 exports.refreshFixture409 = {
   url,
   headers: {
     Authorization:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0OGJiNDhhOS0yYjg5LTQ2ODktYTM3OC1lNTNlZTdiNWIzZTAiLCJpYXQiOjE1NzY4NzkyMjl9.yRmx7Y4imgG0tMqA6oZXH2RvVuY8NYayqbWvtETD5iw'
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI0OGJiNDhhOS0yYjg5LTQ2ODktYTM3OC1lNTNlZTdiNWIzZTAiLCJpYXQiOjE1NzY4NzkyMjl9.yRmx7Y4imgG0tMqA6oZXH2RvVuY8NYayqbWvtETD5iw',
   },
-  body: {}
+  body: {},
 };

@@ -2,7 +2,7 @@ const { queryUserByEmail, userEmailVerified } = require('../utils/database');
 const { decrypt } = require('../utils/crypto');
 const {
   ValidationError,
-  resolveErrorSendResponse
+  resolveErrorSendResponse,
 } = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
@@ -22,6 +22,6 @@ module.exports.handler = async (req, res) => {
     await userEmailVerified(user.userId);
     return res.status(200).send({ message: 'Email verified!' });
   } catch (e) {
-    resolveErrorSendResponse(e, res);
+    return resolveErrorSendResponse(e, res);
   }
 };

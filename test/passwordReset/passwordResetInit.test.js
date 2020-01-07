@@ -1,9 +1,10 @@
-const { server } = require('../../app');
 const chai = require('chai');
 const chaihttp = require('chai-http');
 const { it } = require('mocha');
 const nock = require('nock');
+const { server } = require('../../app');
 const fixtures = require('./fixtures');
+
 const { SG_URL } = process.env;
 
 chai.use(chaihttp);
@@ -60,7 +61,7 @@ exports.passwordResetInitTests = () => {
       });
   });
 
-  //This causes an ugly console
+  // This causes an ugly console
   // it('Should return 400 for email not being sent', done => {
   //   const { resetPasswordInit } = fixtures;
 

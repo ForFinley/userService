@@ -2,84 +2,84 @@ const registration = [
   {
     param: 'body',
     field: 'email',
-    required: true
+    required: true,
   },
   {
     param: 'body',
     field: 'password',
-    required: true
-  }
+    required: true,
+  },
 ];
 
 const signIn = [
   {
     param: 'body',
     field: 'email',
-    required: true
+    required: true,
   },
   {
     param: 'body',
     field: 'password',
-    required: true
-  }
+    required: true,
+  },
 ];
 
 const changePassword = [
   {
     param: 'body',
     field: 'password',
-    required: true
+    required: true,
   },
   {
     param: 'body',
     field: 'newPassword',
-    required: true
-  }
+    required: true,
+  },
 ];
 
 const signOut = [
   {
     param: 'headers',
     field: 'authorization',
-    required: true
-  }
+    required: true,
+  },
 ];
 
 const verifyEmail = [
   {
     param: 'query',
     field: 'emailHash',
-    required: true
-  }
+    required: true,
+  },
 ];
 
 const passwordResetInit = [
   {
     param: 'body',
     field: 'email',
-    required: true
-  }
+    required: true,
+  },
 ];
 
 const changeEmailInit = [
   {
     param: 'headers',
     field: 'authorization',
-    required: true
-  }
+    required: true,
+  },
 ];
 
 const changeEmailConfirm = [
   {
     param: 'body',
     field: 'changeEmailHash',
-    required: true
+    required: true,
   },
   {
     param: 'body',
     field: 'email',
-    required: true
-  }
+    required: true,
+  },
 ];
 
 module.exports = {
@@ -90,5 +90,5 @@ module.exports = {
   verifyEmail,
   passwordResetInit,
   changeEmailInit,
-  changeEmailConfirm
+  changeEmailConfirm,
 };

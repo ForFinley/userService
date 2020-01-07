@@ -1,23 +1,25 @@
 require('dotenv').config();
+const { describe, before } = require('mocha');
+
 const {
   checkTables,
   deleteTables,
   createTables,
-  createRecords
+  createRecords,
 } = require('./dynamodbLocal');
 const { registrationTests } = require('./registration/registration.test');
 const { signInTests } = require('./signIn/signIn.test');
 const { verifyEmailTests } = require('./verifyEmail/verifyEmail.test');
 const { changePasswordTests } = require('./changePassword/changePassword.test');
 const {
-  passwordResetInitTests
+  passwordResetInitTests,
 } = require('./passwordReset/passwordResetInit.test');
 const {
-  passwordResetConfirmTests
+  passwordResetConfirmTests,
 } = require('./passwordReset/passwordResetConfirm.test');
 const { changeEmailInitTests } = require('./changeEmail/changeEmailInit.test');
 const {
-  changeEmailConfirmTests
+  changeEmailConfirmTests,
 } = require('./changeEmail/changeEmailConfirm.test');
 const { refreshTests } = require('./refresh/refresh.test');
 const { signOutTests } = require('./signOut/signOut.test');

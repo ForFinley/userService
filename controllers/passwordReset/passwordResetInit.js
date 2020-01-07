@@ -3,12 +3,12 @@ const { sendPasswordReset } = require('../utils/sendGrid');
 const { queryUserByEmail } = require('../utils/database');
 const {
   ValidationError,
-  resolveErrorSendResponse
+  resolveErrorSendResponse,
 } = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
   try {
-    const email = req.body.email;
+    const { email } = req.body;
 
     const user = await queryUserByEmail(email);
     if (!user) {
@@ -24,6 +24,6 @@ module.exports.handler = async (req, res) => {
 
     return res.status(200).send({ message: 'Password reset email sent!' });
   } catch (e) {
-    resolveErrorSendResponse(e, res);
+    return resolveErrorSendResponse(e, res);
   }
 };

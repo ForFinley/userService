@@ -1,9 +1,10 @@
-const { server } = require('../../app');
 const chai = require('chai');
 const chaihttp = require('chai-http');
 const { it } = require('mocha');
 const nock = require('nock');
+const { server } = require('../../app');
 const fixtures = require('./fixtures');
+
 const { SG_URL } = process.env;
 
 chai.use(chaihttp);

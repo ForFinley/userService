@@ -1,4 +1,5 @@
 const rp = require('request-promise');
+
 const { SG_API_KEY, SG_URL, EMAIL_FE_HOST } = process.env;
 
 exports.sendEmailVerification = async (email, emailHash) => {
@@ -9,25 +10,25 @@ exports.sendEmailVerification = async (email, emailHash) => {
       method: 'POST',
       uri: `${SG_URL}/v3/mail/send`,
       headers: {
-        Authorization: `Bearer ${SG_API_KEY}`
+        Authorization: `Bearer ${SG_API_KEY}`,
       },
       body: {
         personalizations: [
           {
             to: [{ email, name: email }],
-            subject: 'Email verification'
-          }
+            subject: 'Email verification',
+          },
         ],
         content: [
           {
             type: 'text/plain',
-            value: `Click link to verify email address.\n ${url}`
-          }
+            value: `Click link to verify email address.\n ${url}`,
+          },
         ],
         from: { email: 'ryanwfeltkamp@gmail.com', name: 'Verify Email' },
-        reply_to: { email: 'ryanwfeltkamp@gmail.com', name: 'No Reply' }
+        reply_to: { email: 'ryanwfeltkamp@gmail.com', name: 'No Reply' },
       },
-      json: true
+      json: true,
     };
     return await rp(requestParams);
   } catch (e) {
@@ -43,25 +44,25 @@ exports.sendPasswordReset = async (email, hash) => {
       method: 'POST',
       uri: `${SG_URL}/v3/mail/send`,
       headers: {
-        Authorization: `Bearer ${SG_API_KEY}`
+        Authorization: `Bearer ${SG_API_KEY}`,
       },
       body: {
         personalizations: [
           {
             to: [{ email, name: email }],
-            subject: 'Reset Password'
-          }
+            subject: 'Reset Password',
+          },
         ],
         content: [
           {
             type: 'text/plain',
-            value: `Click link to reset your password.\n ${url}`
-          }
+            value: `Click link to reset your password.\n ${url}`,
+          },
         ],
         from: { email: 'ryanwfeltkamp@gmail.com', name: 'Verify Email' },
-        reply_to: { email: 'ryanwfeltkamp@gmail.com', name: 'No Reply' }
+        reply_to: { email: 'ryanwfeltkamp@gmail.com', name: 'No Reply' },
       },
-      json: true
+      json: true,
     };
     return await rp(requestParams);
   } catch (e) {
@@ -78,25 +79,25 @@ exports.sendChangeEmail = async (email, hash) => {
       method: 'POST',
       uri: `${SG_URL}/v3/mail/send`,
       headers: {
-        Authorization: `Bearer ${SG_API_KEY}`
+        Authorization: `Bearer ${SG_API_KEY}`,
       },
       body: {
         personalizations: [
           {
             to: [{ email, name: email }],
-            subject: 'Change Email'
-          }
+            subject: 'Change Email',
+          },
         ],
         content: [
           {
             type: 'text/plain',
-            value: `Click link to change your email.\n ${url}`
-          }
+            value: `Click link to change your email.\n ${url}`,
+          },
         ],
         from: { email: 'ryanwfeltkamp@gmail.com', name: 'Verify Email' },
-        reply_to: { email: 'ryanwfeltkamp@gmail.com', name: 'No Reply' }
+        reply_to: { email: 'ryanwfeltkamp@gmail.com', name: 'No Reply' },
       },
-      json: true
+      json: true,
     };
     return await rp(requestParams);
   } catch (e) {

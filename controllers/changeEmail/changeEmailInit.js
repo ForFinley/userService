@@ -2,7 +2,7 @@ const { encrypt } = require('../utils/crypto');
 const { sendChangeEmail } = require('../utils/sendGrid');
 const {
   ValidationError,
-  resolveErrorSendResponse
+  resolveErrorSendResponse,
 } = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
@@ -16,6 +16,6 @@ module.exports.handler = async (req, res) => {
 
     return res.status(200).send({ message: 'Change email sent!' });
   } catch (e) {
-    resolveErrorSendResponse(e, res);
+    return resolveErrorSendResponse(e, res);
   }
 };

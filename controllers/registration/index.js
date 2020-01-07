@@ -4,7 +4,7 @@ const { sendEmailVerification } = require('../utils/sendGrid');
 const { queryUserByEmail, putUser } = require('../utils/database');
 const {
   ResourceExistsError,
-  resolveErrorSendResponse
+  resolveErrorSendResponse,
 } = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
@@ -27,7 +27,7 @@ module.exports.handler = async (req, res) => {
       provider: 'thisUserService',
       role: 'PEASANT',
       addedDate: currentDate,
-      updatedDate: currentDate
+      updatedDate: currentDate,
     };
 
     await putUser(putParams);
@@ -37,12 +37,12 @@ module.exports.handler = async (req, res) => {
       const emailError = await sendEmailVerification(email, emailHash);
       if (emailError) {
         console.log('ERROR:: Email Not Sent.');
-        //TODO: do something here to retry
+        // TODO: do something here to retry
       }
     }
 
     return res.status(200).send({ userId, email });
   } catch (e) {
-    resolveErrorSendResponse(e, res);
+    return resolveErrorSendResponse(e, res);
   }
 };

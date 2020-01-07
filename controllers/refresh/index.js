@@ -3,7 +3,7 @@ const { authenticateRefresh, generateToken } = require('../utils/jwt');
 const {
   InvalidCredentialsError,
   ResourceExistsError,
-  resolveErrorSendResponse
+  resolveErrorSendResponse,
 } = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
@@ -14,7 +14,7 @@ module.exports.handler = async (req, res) => {
       throw new InvalidCredentialsError('unauthorized');
     }
 
-    //TODO :: refresh table should have ttl so old refreshTokens get deleted
+    // TODO :: refresh table should have ttl so old refreshTokens get deleted
     const refreshRecord = await getRefresh(refreshToken);
     if (!refreshRecord) {
       throw new ResourceExistsError('invalid refresh token');
@@ -25,9 +25,9 @@ module.exports.handler = async (req, res) => {
 
     return res.status(200).send({
       authorization,
-      refresh: refreshToken
+      refresh: refreshToken,
     });
   } catch (e) {
-    resolveErrorSendResponse(e, res);
+    return resolveErrorSendResponse(e, res);
   }
 };

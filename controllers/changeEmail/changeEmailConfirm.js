@@ -4,7 +4,7 @@ const { queryUserByEmail, updateEmail } = require('../utils/database');
 const {
   ValidationError,
   ResourceExistsError,
-  resolveErrorSendResponse
+  resolveErrorSendResponse,
 } = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
@@ -27,11 +27,11 @@ module.exports.handler = async (req, res) => {
     const emailError = await sendEmailVerification(email, emailHash);
     if (emailError) {
       console.log('ERROR:: Email Not Sent.');
-      //TODO: do something here to retry
+      // TODO: do something here to retry
     }
 
     return res.status(200).send({ message: 'Change email complete!' });
   } catch (e) {
-    resolveErrorSendResponse(e, res);
+    return resolveErrorSendResponse(e, res);
   }
 };

@@ -1,8 +1,8 @@
 {
-  "name": "identity-service",
-  "version": "1.0.0",
+  "name": "ryanfelt-identity-service",
+  "version": "0.0.1",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "author": "Ryan Feltkamp",
   "license": "ISC",
   "scripts": {
@@ -12,7 +12,8 @@
   },
   "prettier": {
     "singleQuote": true,
-    "tabWidth": 2
+    "tabWidth": 2,
+    "trailingComma": "all"
   },
   "nyc": {
     "exclude": [
@@ -36,6 +37,7 @@
     "express-rate-limit": "^3.3.2",
     "helmet": "^3.15.0",
     "jsonwebtoken": "^8.4.0",
+    "morgan": "^1.9.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "uuid": "^3.3.2"
@@ -45,8 +47,10 @@
     "chai-http": "^4.2.0",
     "cross-env": "^6.0.3",
     "dynamodb-localhost": "0.0.9",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.19.1",
     "mocha": "^5.2.0",
-    "morgan": "^1.9.1",
     "nock": "^10.0.6",
     "nodemon": "^1.18.9",
     "nyc": "^13.3.0",
