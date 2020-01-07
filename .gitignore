@@ -12,3 +12,5 @@ coverage
 #serverless
 .serverlessgit
 .serverless
+
+.DS_Store

@@ -10,9 +10,9 @@ const rateLimit = require('express-rate-limit');
 
 const app = express();
 
-const identityService = require('./routes/identityService');
+const identityService = require('./routes');
 
-// app.use(morgan('tiny'));
+app.use(morgan('tiny'));
 app.use(express.json({ type: '*/*' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());

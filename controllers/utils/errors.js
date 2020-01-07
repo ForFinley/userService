@@ -49,7 +49,7 @@ const resolveErrorSendResponse = (e, res) => {
       message: e.message
     });
   } else {
-    console.log(e);
+    console.log(`ERROR:: ${e.stack}`);
     res.status(500).send({
       message: 'Internal Server Error'
     });
