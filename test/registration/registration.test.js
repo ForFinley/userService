@@ -1,9 +1,9 @@
-const { server } = require('../../app.js');
 const chai = require('chai');
 const chaihttp = require('chai-http');
 const { it } = require('mocha');
-const fixtures = require('./fixtures.js');
-const { userInDynamo } = require('../dynamodbLocal.js');
+const { server } = require('../../app');
+const fixtures = require('./fixtures');
+const { userInDynamo } = require('../dynamodbLocal');
 
 chai.use(chaihttp);
 const { expect } = chai;
@@ -16,11 +16,12 @@ exports.registrationTests = () => {
       .post(registerNewUser.url)
       .set(registerNewUser.headers)
       .send(registerNewUser.body)
-      .end(async (err, res) => {
+      .end((err, res) => {
         expect(res).to.have.status(200);
-        const userBool = await userInDynamo(res.body.userId);
-        expect(userBool).to.equal(true);
-        done();
+        userInDynamo(res.body.userId).then(userBool => {
+          expect(userBool).to.equal(true);
+          done();
+        });
       });
   });
 

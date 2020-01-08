@@ -1,10 +1,11 @@
-const { server } = require('../../app.js');
 const chai = require('chai');
 const chaihttp = require('chai-http');
 const { it } = require('mocha');
-const fixtures = require('./fixtures.js');
 const jwt = require('jsonwebtoken');
-const { accessKey } = require('../../controllers/utils/keys/privateKeys.js');
+const { server } = require('../../app');
+const fixtures = require('./fixtures');
+
+const { ACCESS_KEY } = process.env;
 
 chai.use(chaihttp);
 const { expect } = chai;
@@ -17,11 +18,11 @@ exports.refreshTests = () => {
       .get(refreshFixture.url)
       .set(refreshFixture.headers)
       .send(refreshFixture.body)
-      .end(async (err, res) => {
+      .end((err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body).to.have.all.keys('authorizationToken', 'refreshToken');
+        expect(res.body).to.have.all.keys('authorization', 'refresh');
 
-        const decodedToken = jwt.verify(res.body.authorizationToken, accessKey);
+        const decodedToken = jwt.verify(res.body.authorization, ACCESS_KEY);
         expect(refreshFixture.userId).to.equal(decodedToken.userId);
         expect(refreshFixture.email).to.equal(decodedToken.email);
         expect(refreshFixture.role).to.equal(decodedToken.role);
@@ -37,7 +38,7 @@ exports.refreshTests = () => {
       .get(refreshFixtureUnauthorized.url)
       .set(refreshFixtureUnauthorized.headers)
       .send(refreshFixtureUnauthorized.body)
-      .end(async (err, res) => {
+      .end((err, res) => {
         expect(res).to.have.status(401);
         const toBe = 'unauthorized';
         expect(res.body.message).to.equal(toBe);
@@ -52,7 +53,7 @@ exports.refreshTests = () => {
       .get(refreshFixture409.url)
       .set(refreshFixture409.headers)
       .send(refreshFixture409.body)
-      .end(async (err, res) => {
+      .end((err, res) => {
         expect(res).to.have.status(409);
         const toBe = 'invalid refresh token';
         expect(res.body.message).to.equal(toBe);

@@ -1,8 +1,7 @@
-const url = '/userService/verifyEmail';
+const url = '/identity-service/verifyEmail';
 const userId = 'd39254ff-30a2-4b97-980e-c19fa75231e1';
-const email = 'verifyEmailTest@test.com';
-const emailHash =
-  'efc97663e61d78130eacf24ce75caa4a44b6cc3baccbc98506b7c38690906947';
+const email = 'test1@gmail.com';
+const emailHash = '0eabf36e530404c9e915a970df2869cc:9a6324b8bfb18b12e5a00049937f54';
 const headers = {};
 
 exports.verifyEmail = {
@@ -10,14 +9,14 @@ exports.verifyEmail = {
   headers,
   emailHash,
   userId,
-  email
+  email,
 };
 
 exports.verifyEmailNoHash = {
   url,
   headers,
   userId,
-  email
+  email,
 };
 
 exports.verifyEmailBadHash = {
@@ -25,14 +24,16 @@ exports.verifyEmailBadHash = {
   headers,
   emailHash: 'GARBAGE HASH BB',
   userId,
-  email
+  email,
 };
 
-//This is probably never going to happen, this is when there is a good emailHash with a email not in our system
+// This is probably never going to happen,
+// this is when there is a good emailHash with a email not in our system
 exports.verifyEmailcorrectHashBadEmail = {
   url,
   headers,
-  emailHash: '782f267054bd09756911c1b61d0ab0b18b1ba0c8a09886a0e36d0d65d87f3422',
+  emailHash:
+    '7d8e1a2a1f907456cadd62d313971151:a2c4ea02e9ff7176e7a4b929dee73c682a309a910249fba92d6c',
   userId,
-  email
+  email,
 };

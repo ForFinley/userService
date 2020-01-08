@@ -1,9 +1,9 @@
-const { server } = require('../../app.js');
 const chai = require('chai');
 const chaihttp = require('chai-http');
 const { it } = require('mocha');
-const fixtures = require('./fixtures.js');
-const { getUser } = require('../dynamodbLocal.js');
+const { server } = require('../../app');
+const fixtures = require('./fixtures');
+const { getUser } = require('../dynamodbLocal');
 
 chai.use(chaihttp);
 const { expect } = chai;
@@ -13,7 +13,7 @@ exports.verifyEmailTests = () => {
     const { verifyEmail } = fixtures;
     chai
       .request(server)
-      .get(`${verifyEmail.url}/${verifyEmail.emailHash}`)
+      .get(`${verifyEmail.url}?emailHash=${verifyEmail.emailHash}`)
       .set(verifyEmail.headers)
       .end(async (err, res) => {
         expect(res).to.have.status(200);
@@ -29,7 +29,7 @@ exports.verifyEmailTests = () => {
     const { verifyEmailNoHash } = fixtures;
     chai
       .request(server)
-      .get(`${verifyEmailNoHash.url}/${verifyEmailNoHash.emailHash}`)
+      .get(`${verifyEmailNoHash.url}`)
       .set(verifyEmailNoHash.headers)
       .end((err, res) => {
         expect(res).to.have.status(400);
@@ -43,11 +43,11 @@ exports.verifyEmailTests = () => {
     const { verifyEmailBadHash } = fixtures;
     chai
       .request(server)
-      .get(`${verifyEmailBadHash.url}/${verifyEmailBadHash.emailHash}`)
+      .get(`${verifyEmailBadHash.url}?emailHash=${verifyEmailBadHash.emailHash}`)
       .set(verifyEmailBadHash.headers)
       .end((err, res) => {
         expect(res).to.have.status(400);
-        const toBe = 'hash invalid';
+        const toBe = 'email hash invalid';
         expect(res.body.message).to.equal(toBe);
         done();
       });
@@ -58,14 +58,12 @@ exports.verifyEmailTests = () => {
     chai
       .request(server)
       .get(
-        `${verifyEmailcorrectHashBadEmail.url}/${
-          verifyEmailcorrectHashBadEmail.emailHash
-        }`
+        `${verifyEmailcorrectHashBadEmail.url}?emailHash=${verifyEmailcorrectHashBadEmail.emailHash}`,
       )
       .set(verifyEmailcorrectHashBadEmail.headers)
       .end((err, res) => {
         expect(res).to.have.status(400);
-        const toBe = 'email hash invalid';
+        const toBe = 'user email hash invalid';
         expect(res.body.message).to.equal(toBe);
         done();
       });

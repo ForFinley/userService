@@ -1,5 +1,5 @@
-# userService
+# Identity Service
 
-### Docs
+### Test
 
-http://petstore.swagger.io/?url=https://gemf0cxijj.execute-api.us-east-1.amazonaws.com/develop/userService/docs#/
+Before running the 'test' script make sure you run 'npm run start-dynamo'. This will start your local dynamodb database.

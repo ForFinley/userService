@@ -1,7 +1,7 @@
-const url = '/userService/signIn';
+const url = '/identity-service/signIn';
 const email = 'signin@test.com';
-const password = 'test';
-const encrytPassword = '9d044b1d681b667fe0e934b09c1eb1d0';
+const password = 'test1';
+const encrytPassword = '4dbe02f358c38eab183e49a9b9db0787:7b1d44798c';
 const salt = 'b23b46';
 const userId = 'e0409f76-4471-11e9-b210-d663bd873d93';
 
@@ -9,10 +9,8 @@ const googleToken = 'eyJhbGciOiJSU_TEST_TOKEN';
 const mockGoogleUrl = `/oauth2/v3/tokeninfo?idToken=${googleToken}`;
 const googleResponseNewUser = {
   iss: 'accounts.google.com',
-  azp:
-    '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
-  aud:
-    '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
+  azp: '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
+  aud: '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
   sub: '107180533427686243831',
   hd: 'test.com',
   email: 'newgooglesigning@test.com',
@@ -29,14 +27,12 @@ const googleResponseNewUser = {
   jti: 'b25cc6ed92d1d55b19ec76bdda5819545fed7b71',
   alg: 'RS256',
   kid: '0905d6f9cd9b0f1f852e8b207e8f673abca4bf75',
-  typ: 'JWT'
+  typ: 'JWT',
 };
 const googleResponseExistingUser = {
   iss: 'accounts.google.com',
-  azp:
-    '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
-  aud:
-    '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
+  azp: '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
+  aud: '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
   sub: '107180533427686243831',
   hd: 'test.com',
   email: 'googlesignin@test.com',
@@ -53,7 +49,7 @@ const googleResponseExistingUser = {
   jti: 'b25cc6ed92d1d55b19ec76bdda5819545fed7b71',
   alg: 'RS256',
   kid: '0905d6f9cd9b0f1f852e8b207e8f673abca4bf75',
-  typ: 'JWT'
+  typ: 'JWT',
 };
 
 exports.signInUser = {
@@ -64,8 +60,8 @@ exports.signInUser = {
   headers: {},
   body: {
     email,
-    password
-  }
+    password,
+  },
 };
 
 exports.signInNewUserGoogle = {
@@ -74,8 +70,8 @@ exports.signInNewUserGoogle = {
   googleResponseNewUser,
   headers: { authorization: googleToken },
   body: {
-    provider: 'google'
-  }
+    provider: 'google',
+  },
 };
 
 exports.signInExistingUserGoogle = {
@@ -85,8 +81,8 @@ exports.signInExistingUserGoogle = {
   googleResponseExistingUser,
   headers: { authorization: googleToken },
   body: {
-    provider: 'google'
-  }
+    provider: 'google',
+  },
 };
 
 exports.signInExistingFBUserWithGoogle = {
@@ -96,8 +92,8 @@ exports.signInExistingFBUserWithGoogle = {
   googleResponseExistingUser: { email: 'usersignedinwithfacebook@test.com' },
   headers: { authorization: googleToken },
   body: {
-    provider: 'google'
-  }
+    provider: 'google',
+  },
 };
 
 exports.signInUserNoEmail = {
@@ -107,8 +103,8 @@ exports.signInUserNoEmail = {
   salt,
   headers: {},
   body: {
-    password
-  }
+    password,
+  },
 };
 
 exports.signInUserNoPassword = {
@@ -118,8 +114,8 @@ exports.signInUserNoPassword = {
   salt,
   headers: {},
   body: {
-    email
-  }
+    email,
+  },
 };
 
 exports.signInUserInvalidCreds = {
@@ -129,7 +125,7 @@ exports.signInUserInvalidCreds = {
   salt,
   headers: {},
   body: {
-    email: 'wrongEmail',
-    password: 'wrongPassword'
-  }
+    email: 'wrongEmail@junk.com',
+    password: 'wrongPassword',
+  },
 };

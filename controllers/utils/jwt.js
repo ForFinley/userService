@@ -1,87 +1,58 @@
 const jwt = require('jsonwebtoken');
-const { accessKey, refreshKey } = require('./keys/privateKeys.js');
-const {
-  InvalidCredentialsError,
-  resolveErrorSendResponse
-} = require('./errors.js');
-const ACCESSS_TOKENTIME = 120 * 60; // in seconds
-const REFRESH_TOKENTIME = 1200 * 60; // in seconds
 
-exports.generateToken = user => {
-  return jwt.sign(
+// eslint-disable-next-line object-curly-newline
+const { ACCESS_KEY, REFRESH_KEY, ACCESSS_TOKEN_TIME, REFRESH_TOKEN_TIME } = process.env;
+
+exports.generateToken = user =>
+  // eslint-disable-next-line implicit-arrow-linebreak
+  jwt.sign(
     {
       userId: user.userId,
       email: user.email,
-      role: user.role
+      role: user.role,
     },
-    accessKey,
+    ACCESS_KEY,
     {
-      expiresIn: ACCESSS_TOKENTIME
-    }
+      expiresIn: ACCESSS_TOKEN_TIME,
+    },
   );
-};
 
-exports.generateRefreshToken = user => {
-  return jwt.sign(
+exports.generateRefreshToken = user =>
+  // eslint-disable-next-line implicit-arrow-linebreak
+  jwt.sign(
     {
-      userId: user.userId
+      userId: user.userId,
     },
-    refreshKey,
+    REFRESH_KEY,
     {
-      expiresIn: REFRESH_TOKENTIME
-    }
+      expiresIn: REFRESH_TOKEN_TIME,
+    },
   );
-};
 
 exports.authenticateRefresh = async authorization => {
   try {
     const token = authorization;
-    const decodeToken = await jwt.verify(token, refreshKey);
+    const decodeToken = await jwt.verify(token, REFRESH_KEY);
     return {
-      userId: decodeToken.userId
-    };
-  } catch (e) {
-    return false;
-  }
-};
-
-exports.authenticate = async (req, res, next) => {
-  try {
-    const token = req.headers.authorization;
-    const decodeToken = await jwt.verify(token, accessKey);
-
-    req.user = {
       userId: decodeToken.userId,
-      email: decodeToken.email,
-      role: decodeToken.role
     };
-    next();
   } catch (e) {
-    resolveErrorSendResponse(new InvalidCredentialsError('Unauthorized'), res);
+    console.log('ERROR :: authenticateRefresh()', e);
+    return false;
   }
 };
 
 exports.auth = async authorization => {
   try {
     const token = authorization;
-    const decodeToken = await jwt.verify(token, accessKey);
+    const decodeToken = await jwt.verify(token, ACCESS_KEY);
     return {
       userId: decodeToken.userId,
       email: decodeToken.email,
-      role: decodeToken.role
+      role: decodeToken.role,
     };
   } catch (e) {
+    console.log('ERROR :: auth()', e);
     return false;
   }
 };
-
-// console.log(
-//   jwt.sign(
-//     {
-//       userId: 'c7ab0565-832e-4c22-9518-c2f3a038572e',
-//       email: 'profileemail@test.com',
-//       role: 'PEASANT'
-//     },
-//     accessKey
-//   )
-// );
