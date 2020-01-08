@@ -25,9 +25,9 @@ const authenticate = async (req, res, next) => {
       role: decodeToken.role,
     };
 
-    next();
+    return next();
   } catch (e) {
-    resolveErrorSendResponse(e, res);
+    return resolveErrorSendResponse(e, res);
   }
 };
 
