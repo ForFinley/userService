@@ -32,13 +32,8 @@
   },
   "dependencies": {
     "aws-sdk": "^2.393.0",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
     "express": "^4.16.4",
-    "express-rate-limit": "^3.3.2",
-    "helmet": "^3.15.0",
     "jsonwebtoken": "^8.4.0",
-    "morgan": "^1.9.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "uuid": "^3.3.2"
@@ -47,6 +42,7 @@
     "chai": "^4.2.0",
     "chai-http": "^4.2.0",
     "cross-env": "^6.0.3",
+    "dotenv": "^8.2.0",
     "dynamodb-localhost": "0.0.9",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",

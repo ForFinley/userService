@@ -1,5 +1,6 @@
 const express = require('express');
 const { authenticate } = require('../middlewares/authenticate');
+const { validate } = require('../middlewares/validate');
 const registration = require('../controllers/registration');
 const signIn = require('../controllers/signIn');
 const changePassword = require('../controllers/changePassword');
@@ -12,6 +13,8 @@ const refresh = require('../controllers/refresh');
 const signOut = require('../controllers/signOut');
 
 const router = express.Router();
+
+router.use(validate);
 
 /**
  * /registration

@@ -23,7 +23,7 @@ const checkPassword = param => {
 };
 
 exports.validate = (req, res, next) => {
-  const path = req.path.split('/')[2];
+  const path = req.path.split('/')[1];
   if (!validationSchema[path]) {
     return next();
   }
