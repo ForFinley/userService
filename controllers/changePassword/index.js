@@ -1,9 +1,6 @@
 const { checkPassword, encrypt } = require('../utils/crypto');
 const { getUser, updatePassword } = require('../utils/database');
-const {
-  InvalidCredentialsError,
-  resolveErrorSendResponse,
-} = require('../utils/errors');
+const { InvalidCredentialsError, resolveErrorSendResponse } = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
   try {

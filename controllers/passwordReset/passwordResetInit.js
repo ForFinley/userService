@@ -1,10 +1,7 @@
 const { encrypt } = require('../utils/crypto');
 const { sendPasswordReset } = require('../utils/sendGrid');
 const { queryUserByEmail } = require('../utils/database');
-const {
-  ValidationError,
-  resolveErrorSendResponse,
-} = require('../utils/errors');
+const { ValidationError, resolveErrorSendResponse } = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
   try {

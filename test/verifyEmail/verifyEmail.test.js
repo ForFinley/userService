@@ -43,9 +43,7 @@ exports.verifyEmailTests = () => {
     const { verifyEmailBadHash } = fixtures;
     chai
       .request(server)
-      .get(
-        `${verifyEmailBadHash.url}?emailHash=${verifyEmailBadHash.emailHash}`,
-      )
+      .get(`${verifyEmailBadHash.url}?emailHash=${verifyEmailBadHash.emailHash}`)
       .set(verifyEmailBadHash.headers)
       .end((err, res) => {
         expect(res).to.have.status(400);

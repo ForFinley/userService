@@ -1,9 +1,6 @@
 const { encrypt } = require('../utils/crypto');
 const { sendChangeEmail } = require('../utils/sendGrid');
-const {
-  ValidationError,
-  resolveErrorSendResponse,
-} = require('../utils/errors');
+const { ValidationError, resolveErrorSendResponse } = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
   try {

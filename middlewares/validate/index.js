@@ -35,9 +35,7 @@ exports.validate = (req, res, next) => {
 
     // Makes sure required fields are present and valid
     if (schema[x].required === true && !requiredFields(param)) {
-      return res
-        .status(400)
-        .send({ message: `MISSING_${schema[x].field.toUpperCase()}` });
+      return res.status(400).send({ message: `MISSING_${schema[x].field.toUpperCase()}` });
     }
 
     // Makes sure email is valid format

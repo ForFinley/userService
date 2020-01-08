@@ -23,17 +23,11 @@ exports.checkPassword = (password, encryptedDBPassword) => {
   try {
     const encryptedDBPasswordSplit = encryptedDBPassword.split(':');
     const iv = Buffer.from(encryptedDBPasswordSplit[0], OUTPUT_ENCODING);
-    const cipher = crypto.createCipheriv(
-      CIPHER_ALGORITHM,
-      ENCRYPT_PASSWORD_KEY,
-      iv,
-    );
+    const cipher = crypto.createCipheriv(CIPHER_ALGORITHM, ENCRYPT_PASSWORD_KEY, iv);
 
     let crypted = cipher.update(password, INPUT_ENCODING, OUTPUT_ENCODING);
     crypted += cipher.final(OUTPUT_ENCODING);
-    const encryptPassword = `${iv.toString(
-      OUTPUT_ENCODING,
-    )}:${crypted.toString()}`;
+    const encryptPassword = `${iv.toString(OUTPUT_ENCODING)}:${crypted.toString()}`;
 
     if (encryptPassword === encryptedDBPassword) return true;
     return false;
@@ -53,11 +47,7 @@ exports.decrypt = (text, password) => {
     const encryptedpassword = Buffer.from(textArr[1], OUTPUT_ENCODING);
 
     const decipher = crypto.createDecipheriv(CIPHER_ALGORITHM, encryptKey, iv);
-    let decrypted = decipher.update(
-      encryptedpassword,
-      OUTPUT_ENCODING,
-      INPUT_ENCODING,
-    );
+    let decrypted = decipher.update(encryptedpassword, OUTPUT_ENCODING, INPUT_ENCODING);
     decrypted += decipher.final(INPUT_ENCODING);
     return decrypted.toString();
   } catch (e) {

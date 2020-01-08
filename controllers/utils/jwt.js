@@ -1,11 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const {
-  ACCESS_KEY,
-  REFRESH_KEY,
-  ACCESSS_TOKEN_TIME,
-  REFRESH_TOKEN_TIME,
-} = process.env;
+// eslint-disable-next-line object-curly-newline
+const { ACCESS_KEY, REFRESH_KEY, ACCESSS_TOKEN_TIME, REFRESH_TOKEN_TIME } = process.env;
 
 exports.generateToken = user =>
   // eslint-disable-next-line implicit-arrow-linebreak

@@ -2,10 +2,7 @@ const uuidv4 = require('uuid/v4');
 const { encrypt } = require('../utils/crypto');
 const { sendEmailVerification } = require('../utils/sendGrid');
 const { queryUserByEmail, putUser } = require('../utils/database');
-const {
-  ResourceExistsError,
-  resolveErrorSendResponse,
-} = require('../utils/errors');
+const { ResourceExistsError, resolveErrorSendResponse } = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
   try {

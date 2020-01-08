@@ -93,14 +93,8 @@ exports.createRecords = async () => {
   } = require('./signIn/fixtures');
   const { verifyEmail } = require('./verifyEmail/fixtures');
   const { changePassword } = require('./changePassword/fixtures');
-  const {
-    resetPasswordInit,
-    resetPasswordConfirm,
-  } = require('./passwordReset/fixtures');
-  const {
-    changeEmailRecord,
-    changeEmailInUseRecord,
-  } = require('./changeEmail/fixtures');
+  const { resetPasswordInit, resetPasswordConfirm } = require('./passwordReset/fixtures');
+  const { changeEmailRecord, changeEmailInUseRecord } = require('./changeEmail/fixtures');
   const { refreshRecord } = require('./refresh/fixtures');
   const { signOutFixture } = require('./signOut/fixtures');
 

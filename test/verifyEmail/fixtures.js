@@ -1,9 +1,7 @@
-/* eslint-disable operator-linebreak */
 const url = '/identity-service/verifyEmail';
 const userId = 'd39254ff-30a2-4b97-980e-c19fa75231e1';
 const email = 'test1@gmail.com';
-const emailHash =
-  '0eabf36e530404c9e915a970df2869cc:9a6324b8bfb18b12e5a00049937f54';
+const emailHash = '0eabf36e530404c9e915a970df2869cc:9a6324b8bfb18b12e5a00049937f54';
 const headers = {};
 
 exports.verifyEmail = {

@@ -9,10 +9,8 @@ const googleToken = 'eyJhbGciOiJSU_TEST_TOKEN';
 const mockGoogleUrl = `/oauth2/v3/tokeninfo?idToken=${googleToken}`;
 const googleResponseNewUser = {
   iss: 'accounts.google.com',
-  azp:
-    '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
-  aud:
-    '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
+  azp: '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
+  aud: '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
   sub: '107180533427686243831',
   hd: 'test.com',
   email: 'newgooglesigning@test.com',
@@ -33,10 +31,8 @@ const googleResponseNewUser = {
 };
 const googleResponseExistingUser = {
   iss: 'accounts.google.com',
-  azp:
-    '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
-  aud:
-    '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
+  azp: '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
+  aud: '944002775347-indhvt6hb5ol9eov726hbijclsbrvnii.apps.googleusercontent.com',
   sub: '107180533427686243831',
   hd: 'test.com',
   email: 'googlesignin@test.com',

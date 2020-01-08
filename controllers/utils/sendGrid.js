@@ -33,6 +33,7 @@ exports.sendEmailVerification = async (email, emailHash) => {
     return await rp(requestParams);
   } catch (e) {
     console.log(`ERROR :: sendEmailVerification :: for ${email} :: ${e}`);
+    return true;
   }
 };
 
@@ -102,6 +103,6 @@ exports.sendChangeEmail = async (email, hash) => {
     return await rp(requestParams);
   } catch (e) {
     console.log(`ERROR :: sendChangeEmail :: for ${email} :: ${e}`);
-    return false;
+    return true;
   }
 };

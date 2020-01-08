@@ -20,9 +20,7 @@ exports.signOutTests = () => {
         const toBe = 'Sign out complete!';
         expect(res.body.message).to.equal(toBe);
 
-        const refreshRecordAfter = await getRefreshToken(
-          signOutFixture.headers.authorization,
-        );
+        const refreshRecordAfter = await getRefreshToken(signOutFixture.headers.authorization);
         expect(refreshRecordAfter).to.equal(false);
         done();
       });

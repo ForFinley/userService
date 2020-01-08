@@ -1,10 +1,7 @@
 const { generateToken, generateRefreshToken } = require('../utils/jwt');
 const { queryUserByEmail, putRefresh } = require('../utils/database');
 const { checkPassword } = require('../utils/crypto');
-const {
-  InvalidCredentialsError,
-  resolveErrorSendResponse,
-} = require('../utils/errors');
+const { InvalidCredentialsError, resolveErrorSendResponse } = require('../utils/errors');
 
 module.exports.handler = async (req, res) => {
   try {
